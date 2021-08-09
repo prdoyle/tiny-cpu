@@ -1,70 +1,135 @@
 #! /usr/bin/python
 
-# State
-memory = [0] * 256
-acc = 0
-pc = 0
+# Idea: an 8-bit processor just powerful enough to implement
+# an interpreter for itself. 
 
-REG_ACC = 0
-REG_PC = 1
+PC = 3 # Program counter is register 3
 
-def load( reg, addr4 ):
-    if reg == REG_ACC:
-        acc = memory[ addr4 ]
-    else:
-        pc = memory[ addr4 ]
+class State:
 
-def store( reg, addr4 ):
-    if reg == REG_ACC:
-        memory[ addr4 ] = acc
-    else:
-        memory[ addr4 ] = pc
+    def __init__( self ):
+        self.mem = [0] * 32
+        self.regs = [0, 0, 0, 0]
+        self.flags = set()
 
-def xchg( reg, addr4 ):
-    if reg == REG_ACC:
-        memory[ addr4 ] = acc
-    else:
-        memory[ addr4 ] = pc
+    def __str__( self ):
+        return "Flags: %s\nRegs: %s\n Mem: %s" % ( self.flags, self.regs, self.mem )
 
-# High 4 bits of instruction word
-LOAD = 0
-JABS = 1 # Jump absolute = LOAD to PC
-XCHG = 2
-JLNK = 3 # Jump and link = XCNG to PC
-ADD = 4
-JREL = 5 # Jump relative = ADD to PC
-REG = 6  # Register-only instructions
+    def load( self, treg, sreg, u2 ):
+        """
+        Flags unaffected
+        00 tt ss ff
+        """
+        def go():
+            self.regs[ treg ] = mem[address( self.regs[ sreg ], u2 )]
+        return self._wrap( go )
 
-# Regs:
-# - PC
-# - Accumulator
-# - Link
-# - Flags
-# Internal:
-# - Instruction
-# - B (ALU second operand)
+    def store( self, treg, u2, sreg ):
+        """
+        Flags unaffected
+        01 tt ss ff
+        """
+        def go():
+            mem[address( self.regs[ treg ], u2 )] = self.self.regs[ sreg ]
+        return self._wrap( go )
 
-# Want to be ambiguous between call/return vs trace exit
-# - No recursion
-# - No side-effects in anything architecturally visible
-CALL # Add mem to PC; store next PC in link reg
-RETL # Return to link reg
+    def add( self, treg, sreg ):
+        """
+        T = T + S + C
+        """
+        def go():
+            self.regs[ treg ] = self._alu_sum( self.regs[ treg ], self.regs[ sreg ] )
+        return self._wrap( go )
 
-# Now, the user can make architecturally-visible side effects if desired
-LLNK # Load link reg to acc
-SLNK # Store link reg from acc
-LFLG # Load flags reg to acc
-SFLG # Store flags reg from acc
+    def dec( self, treg, u3 ):
+        """
+        Flags unaffected
+        T = T - u3
+        """
+        def go() :
+            self.regs[ treg ] = ( 256 + self.regs[ treg ] - u3 ) & 255
+        return self._wrap( go )
 
-LOAD # Load acc from mem
-STOR # Store acc to mem
-ACC  # Set accumulator to immediate
-ADD  # Add mem to acc
+    def neg( self, treg ):
+        """
+        Sets Z flag. C unaffected
+        T = 256-T & 255
+        """
+        def go():
+            self.regs[ treg ] = self._setZ( 256 - self.regs[ treg ] )
+        return self._wrap( go )
 
-NEG # Two's complement acc
+    def lsr( self, treg, bits3 ):
+        """
+        Logical shift right
+        Sets Z flag. C unaffected
+        T = T >>> bits3
+        """
+        def go():
+            self.regs[ treg ] = self._setZ( self.regs[ treg ] >> bits3 )
+        return self._wrap( go )
 
-# Flags
-Z # Acc is zero
-C # Carry
+    def shl( self, treg, bits3 ):
+        """
+        Sets Z flag. C unaffected
+        T = T << bits3
+        """
+        def go():
+            self.regs[ treg ] = self._setZ( self.regs[ treg ] << bits3 )
+        return self._wrap( go )
 
+    def _wrap( self, function ):
+        def wrapped():
+            self.regs[ PC ] = ( self.regs[ PC ] + 1 ) & 255
+            function()
+            # Do we want a zero register? Can we afford one?
+            #self.regs[ 0 ] = 0
+        return wrapped
 
+    def _alu_sum( self, left, right ):
+        carry_in = 'c' in self.flags
+        result = (left&255)+ (right&255)+ carry_in
+        if result == 0:
+            self.flags = {'z'}
+        elif result <= 255:
+            self.flags = set()
+        elif result == 256:
+            self.flags = {'c','z'}
+            result = 0
+        else:
+            self.flags = {'c'}
+            result = result & 255
+        return result
+
+    def _setZ( self, result ):
+        result = result & 255
+        if result == 0:
+            self.flags.add('z')
+        else:
+            self.flags.discard('z')
+        return result
+
+def address( base, u2 ):
+    return ( base + (u2 & 3) ) & 255
+
+def main():
+    state = State()
+    state.mem[31] = 1
+    fibonacci = [
+        # Initialize
+        state.dec( 1, 1 ),
+        state.neg( 1 ),
+        state.dec( 2, 1 ),
+        state.neg( 2 ),
+        # Add back and forth
+        state.add( 1, 2 ),
+        state.add( 2, 1 ),
+        # Loop
+        state.dec( PC, 3 )
+    ]
+    for n in range( 1, 10 ):
+        instr = fibonacci[ state.regs[PC] ]
+        instr()
+        print( str(state) )
+
+main()
