@@ -3,51 +3,67 @@
 # Idea: an 8-bit processor just powerful enough to implement
 # an interpreter for itself. 
 
-PC = 3 # Program counter is register 3
-
 class State:
 
     def __init__( self ):
-        self.mem = [0] * 32
-        self.regs = [0, 0, 0, 0]
+        self.belt = [0] * 4
+        self.pc = 0
         self.flags = set()
+        self.mem = [0] * 32
 
     def __str__( self ):
-        return "Flags: %s\nRegs: %s\n Mem: %s" % ( self.flags, self.regs, self.mem )
+        return "Belt: %s\n  PC: %s\nFlags: %s\nMem: %s" % ( self.belt, self.pc, self.belt, self.mem )
 
-    def load( self, treg, sreg, u2 ):
-        """
-        Flags unaffected
-        00 tt ss ff
-        """
+    def push( self, imm ):
         def go():
-            self.regs[ treg ] = mem[address( self.regs[ sreg ], u2 )]
+            self._push( imm )
         return self._wrap( go )
 
-    def store( self, treg, u2, sreg ):
+    def load( self, disp ):
+        """
+        Flags unaffected
+        """
+        def go():
+            self._push( mem[address( self.belt[0], disp )] )
+        return self._wrap( go )
+
+    def store( self, disp ):
         """
         Flags unaffected
         01 tt ss ff
         """
         def go():
-            mem[address( self.regs[ treg ], u2 )] = self.self.regs[ sreg ]
+            mem[address( self.belt[0], disp )] = self.belt[0]
         return self._wrap( go )
 
-    def add( self, treg, sreg ):
+    def dup( self ):
+        def go():
+            self._push( self.belt[0] )
+        return self._wrap( go )
+
+    def revolve( self, n ):
+        def go():
+            belt = self.belt
+            self.belt = [belt[ n ]] + belt[ 0:n ] + belt[ n+1: ]
+        return self._wrap( go )
+
+    def inc( self, imm ):
+        def go():
+            self._push( self._alu_sum( self.belt[ 0 ], imm, 0 ) )
+        return self._wrap( go )
+
+    def add( self ):
         """
         T = T + S + C
         """
         def go():
-            self.regs[ treg ] = self._alu_sum( self.regs[ treg ], self.regs[ sreg ] )
+            self._push( self._alu_sum( self.belt[ 0 ], self.belt[ 1 ], 0 ) )
         return self._wrap( go )
 
-    def dec( self, treg, u3 ):
-        """
-        Flags unaffected
-        T = T - u3
-        """
-        def go() :
-            self.regs[ treg ] = ( 256 + self.regs[ treg ] - u3 ) & 255
+    def adc( self ):
+        def go():
+            carry_in = 'c' in self.flags
+            self._push( self._alu_sum( self.belt[ 0 ], self.belt[ 1 ], carry_in ) )
         return self._wrap( go )
 
     def neg( self, treg ):
@@ -56,17 +72,17 @@ class State:
         T = 256-T & 255
         """
         def go():
-            self.regs[ treg ] = self._setZ( 256 - self.regs[ treg ] )
+            self.belt[ 0 ] = self._setZ( 256 - self.belt[ 0 ] )
         return self._wrap( go )
 
-    def lsr( self, treg, bits3 ):
+    def lsr( self, bits3 ):
         """
         Logical shift right
         Sets Z flag. C unaffected
         T = T >>> bits3
         """
         def go():
-            self.regs[ treg ] = self._setZ( self.regs[ treg ] >> bits3 )
+            self.belt[ 0 ] = self._setZ( self.belt[ 0 ] >> bits3 )
         return self._wrap( go )
 
     def shl( self, treg, bits3 ):
@@ -75,19 +91,45 @@ class State:
         T = T << bits3
         """
         def go():
-            self.regs[ treg ] = self._setZ( self.regs[ treg ] << bits3 )
+            self.belt[ 0 ] = self._setZ( self.belt[ 0 ] << bits3 )
+        return self._wrap( go )
+
+    def jmp( self, offset ):
+        def go() :
+            self.pc += offset
+        return self._wrap( go )
+
+    def jc( self, offset ):
+        def go() :
+            if 'c' in self.flags:
+                self.pc += offset
+        return self._wrap( go )
+
+    def jnc( self, offset ):
+        def go() :
+            if not 'c' in self.flags:
+                self.pc += offset
+        return self._wrap( go )
+
+    def jz( self, offset ):
+        def go() :
+            if 'z' in self.flags:
+                self.pc += offset
+        return self._wrap( go )
+
+    def jnz( self, offset ):
+        def go() :
+            if not 'z' in self.flags:
+                self.pc += offset
         return self._wrap( go )
 
     def _wrap( self, function ):
         def wrapped():
-            self.regs[ PC ] = ( self.regs[ PC ] + 1 ) & 255
+            self.pc = ( self.pc + 1 ) & 255
             function()
-            # Do we want a zero register? Can we afford one?
-            #self.regs[ 0 ] = 0
         return wrapped
 
-    def _alu_sum( self, left, right ):
-        carry_in = 'c' in self.flags
+    def _alu_sum( self, left, right, carry_in ):
         result = (left&255)+ (right&255)+ carry_in
         if result == 0:
             self.flags = {'z'}
@@ -109,27 +151,28 @@ class State:
             self.flags.discard('z')
         return result
 
-def address( base, u2 ):
-    return ( base + (u2 & 3) ) & 255
+    def _push( self, value ):
+        self.belt = [ value ] + self.belt[ :-1 ]
 
-def main():
+def address( base, disp ):
+    return ( base + disp ) & 255
+
+def fib():
     state = State()
-    state.mem[31] = 1
     fibonacci = [
         # Initialize
-        state.dec( 1, 1 ),
-        state.neg( 1 ),
-        state.dec( 2, 1 ),
-        state.neg( 2 ),
+        state.push( 1 ),
+        state.push( 1 ),
         # Add back and forth
-        state.add( 1, 2 ),
-        state.add( 2, 1 ),
+        state.add(),
         # Loop
-        state.dec( PC, 3 )
+        state.jnc( -2 ),
+        # Result
+        state.revolve( 1 )
     ]
-    for n in range( 1, 10 ):
-        instr = fibonacci[ state.regs[PC] ]
+    while state.pc < len( fibonacci ):
+        instr = fibonacci[ state.pc ]
         instr()
         print( str(state) )
 
-main()
+fib()
