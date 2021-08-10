@@ -174,6 +174,19 @@ class State:
             self.pc = self.link
         return self._wrap( go )
 
+    def halt( self ):
+        """
+        11011111
+
+        Stop advancing pc.
+
+        Flags unaffected.
+        """
+        def go():
+            self.pc -= 1
+            raise StopIteration
+        return self._wrap( go )
+
     def lsr( self, bits3 ):
         """
         11100sss
@@ -346,12 +359,17 @@ def fib():
         state.ret(),
         # Result
         state.pick( 1 ),
+        state.halt()
     ]
-    while state.pc < len( fibonacci ):
-        instr = fibonacci[ state.pc ]
-        print( "-- %s --" % instr.__name__ )
-        instr()
-        print( str(state) )
-        print()
+    try:
+        while state.pc < len( fibonacci ):
+            instr = fibonacci[ state.pc ]
+            print( "-- %s --" % instr.__name__ )
+            instr()
+            print( str(state) )
+            print()
+        print("\n== No more instructions ==")
+    except StopIteration:
+        print("\n== Halted ==")
 
 fib()
