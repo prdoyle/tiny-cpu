@@ -10,7 +10,7 @@ from typing import *
 # 000 (0,1) - push (mnemonic: small numbers represent themselves as literals)
 # 001 (2,3) - store (mnemonic: 2 = "to")
 # 010 (4,5) - load
-# 011 (6,7) - pick
+# 011 (6,7) - get
 # 100 (8,9) - jmp
 # 101 (a,b) - opcode-only instructions
 # 110 (c,d) - skip (conditional jump forward) (mnemonic: c = "clear")
@@ -35,7 +35,7 @@ class State:
         self.mem = [0] * 32
 
     def __str__( self ):
-        return "Belt: %s\n  PC: %s\nLink: %s\nFlags: %s\nMem: %s" % ( self.belt, self.pc, self.link, self.belt, self.mem )
+        return "Belt: %s\n  PC: %s\nLink: %s\nFlags: %s\nMem: %s" % ( self.belt, self.pc, self.link, list(self.flags), self.mem )
 
     def push( self, imm ):
         """
@@ -79,29 +79,49 @@ class State:
             self._push( mem[address( self.belt[0], disp )] )
         return self._wrap( "load", 0x40 + disp, go )
 
-    def pick( self, n ):
+    def get( self, n ):
         """
         011000nn
 
         n = unsigned belt index
 
-        Rotate belt items 0..n (inclusive) by one position,
+        Rotate belt items 0..n (inclusive) down by one position,
         leaving item 0 at 1, 1 at 2, ... and item n at 0.
 
-        Note that pick 0 is a no-op.
+        Note that get 0 is a no-op.
 
-        All other instructions starting with 011 are reserved.
+        All other instructions starting with 0110 are reserved.
 
         Flags unaffected.
         """
         def go():
             belt = self.belt
             self.belt = [belt[ n ]] + belt[ 0:n ] + belt[ n+1: ]
-        return self._wrap( "pick", 0x60 + n, go ) # mnemonic: 6 = g = "get"
+        return self._wrap( "get", 0x60 + n, go ) # mnemonic: 6 = g = "get"
+
+    def drop( self, n ):
+        """
+        011100nn
+
+        n = unsigned belt index
+
+        Shift items from n+1 upward up by one position,
+        leaving item n+1 at n, n+2 at n+1, and so on.
+        Items before n are unaffected. Item n is discarded.
+        The item at the bottom of the belt is set to zero.
+
+        All other instructions starting with 0111 are reserved.
+
+        Flags unaffected.
+        """
+        def go():
+            del self.belt[ n ]
+            self.belt.append( 0xdd )
+        return self._wrap( "drop", 0x70 + n, go )
 
     def dup( self ):
         """
-        10100002
+        10110002
 
         Push belt[0], thereby leaving two copies of it on the belt.
 
@@ -109,7 +129,7 @@ class State:
         """
         def go():
             self._push( self.belt[0] )
-        return self._wrap( "dup", 0xa2, go ) # mnemonic: 2 = make two
+        return self._wrap( "dup", 0xb2, go ) # mnemonic: b2 = be two
 
     def neg( self ):
         """
@@ -121,7 +141,7 @@ class State:
         """
         def go():
             self._push(self._setZ( 256 - self.belt[ 0 ] ))
-        return self._wrap( "neg", 0xaf, go ) # mnemonic: f = flip sign
+        return self._wrap( "neg", 0xaf, go ) # mnemonic: af = arithmetic flip
 
     def adc( self ):
         """
@@ -171,6 +191,32 @@ class State:
         def go():
             self._push( self.link )
         return self._wrap( "link", 0xb1, go ) # mnemonic: b1 = BL = belt <= link
+
+    def wflags( self ):
+        """
+        10101111
+
+        Write flags register from belt[0].
+
+        Flags all affected.
+        """
+        def go():
+            self.link = self.belt[0]
+        return self._wrap( "wlink", 0xaf, go ) # mnemonic: af = alter flags
+
+    def flags( self ):
+        """
+        10111111
+
+        Push flags register.
+        C = bit 7
+        Z = bit 6
+
+        Flags unaffected.
+        """
+        def go():
+            self._push( self.link )
+        return self._wrap( "link", 0xbf, go ) # mnemonic: bf = belt <= flags
 
     def ret( self ):
         """
@@ -365,14 +411,14 @@ def fib():
         state.sc( 0 ),
         state.ret(),
         # Result
-        state.pick( 1 ),
+        state.drop( 0 ),
         state.halt()
     ]
     def fib_binary():
         for instr in fibonacci:
             yield instr.encoding
     binary = bytearray( fib_binary() )
-    print(binary)
+    print("Binary: " + binary.hex(" "))
     try:
         while state.pc < len( fibonacci ):
             instr = fibonacci[ state.pc ]
@@ -385,3 +431,4 @@ def fib():
         print("\n== Halted ==")
 
 fib()
+
