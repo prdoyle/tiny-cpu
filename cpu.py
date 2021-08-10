@@ -367,6 +367,11 @@ def fib():
         state.pick( 1 ),
         state.halt()
     ]
+    def fib_binary():
+        for instr in fibonacci:
+            yield instr.encoding
+    binary = bytearray( fib_binary() )
+    print(binary)
     try:
         while state.pc < len( fibonacci ):
             instr = fibonacci[ state.pc ]
