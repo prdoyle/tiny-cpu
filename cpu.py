@@ -7,14 +7,14 @@ from typing import *
 #
 # First three bits of each instruction:
 #
-# 000 - push
-# 001 - load
-# 010 - store
-# 011 - pick
-# 100 - jmp
-# 101 - skip (conditional jump forward)
-# 110 - opcode-only instructions
-# 111 - other
+# 000 (0,1) - push (mnemonic: small numbers represent themselves as literals)
+# 001 (2,3) - store (mnemonic: 2 = "to")
+# 010 (4,5) - load
+# 011 (6,7) - pick
+# 100 (8,9) - jmp
+# 101 (a,b) - opcode-only instructions
+# 110 (c,d) - skip (conditional jump forward) (mnemonic: c = "clear")
+# 111 (e,f) - other
 
 @dataclass
 class Instruction:
@@ -51,23 +51,9 @@ class State:
             self._push( imm )
         return self._wrap( "push", 0x00 + imm, go );
 
-    def load( self, disp ):
-        """
-        001ddddd
-
-        d = signed 5-bit displacement
-
-        Load contents of [belt[0] + d] onto belt.
-
-        Flags unaffected.
-        """
-        def go():
-            self._push( mem[address( self.belt[0], disp )] )
-        return self._wrap( "load", 0x20 + disp, go )
-
     def store( self, disp ):
         """
-        010ddddd
+        001ddddd
 
         d = signed 5-bit displacement
 
@@ -77,7 +63,21 @@ class State:
         """
         def go():
             mem[address( self.belt[0], disp )] = self.belt[0]
-        return self._wrap( store, 0x40 + disp, go )
+        return self._wrap( store, 0x20 + disp, go )
+
+    def load( self, disp ):
+        """
+        010ddddd
+
+        d = signed 5-bit displacement
+
+        Load contents of [belt[0] + d] onto belt.
+
+        Flags unaffected.
+        """
+        def go():
+            self._push( mem[address( self.belt[0], disp )] )
+        return self._wrap( "load", 0x40 + disp, go )
 
     def pick( self, n ):
         """
@@ -88,7 +88,7 @@ class State:
         Rotate belt items 0..n (inclusive) by one position,
         leaving item 0 at 1, 1 at 2, ... and item n at 0.
 
-        Note that revolve by 0 is a no-op.
+        Note that pick 0 is a no-op.
 
         All other instructions starting with 011 are reserved.
 
@@ -97,11 +97,11 @@ class State:
         def go():
             belt = self.belt
             self.belt = [belt[ n ]] + belt[ 0:n ] + belt[ n+1: ]
-        return self._wrap( "pick", 0x50 + n, go )
+        return self._wrap( "pick", 0x60 + n, go ) # mnemonic: 6 = g = "get"
 
     def dup( self ):
         """
-        11000000
+        10100002
 
         Push belt[0], thereby leaving two copies of it on the belt.
 
@@ -109,11 +109,11 @@ class State:
         """
         def go():
             self._push( self.belt[0] )
-        return self._wrap( "dup", 0xc0, go )
+        return self._wrap( "dup", 0xa2, go ) # mnemonic: 2 = make two
 
     def neg( self ):
         """
-        11000001
+        10101111
 
         Push two's complement of belt[0].
 
@@ -121,23 +121,11 @@ class State:
         """
         def go():
             self._push(self._setZ( 256 - self.belt[ 0 ] ))
-        return self._wrap( "neg", 0xc1, go )
-
-    def add( self ):
-        """
-        11000010
-
-        Push belt[0] + belt[1].
-
-        Sets Z and C.
-        """
-        def go():
-            self._push( self._alu_sum( self.belt[ 0 ], self.belt[ 1 ], 0 ) )
-        return self._wrap( "add", 0xc2, go )
+        return self._wrap( "neg", 0xaf, go ) # mnemonic: f = flip sign
 
     def adc( self ):
         """
-        11000011
+        10101100
 
         Push belt[0] + belt[1] + C.
 
@@ -146,23 +134,23 @@ class State:
         def go():
             carry_in = 'c' in self.flags
             self._push( self._alu_sum( self.belt[ 0 ], self.belt[ 1 ], carry_in ) )
-        return self._wrap( "adc", 0xc3, go )
+        return self._wrap( "adc", 0xac, go ) # mnemonic: ac = add with carry
 
-    def link( self ):
+    def add( self ):
         """
-        11000100
+        10101101
 
-        Push link register.
+        Push belt[0] + belt[1].
 
-        Flags unaffected.
+        Sets Z and C.
         """
         def go():
-            self._push( self.link )
-        return self._wrap( "link", 0xc4, go )
+            self._push( self._alu_sum( self.belt[ 0 ], self.belt[ 1 ], 0 ) )
+        return self._wrap( "add", 0xad, go ) # mnemonic: ad = "add"
 
     def wlink( self ):
         """
-        11000101
+        10100001
 
         Write link register from belt[0].
 
@@ -170,11 +158,23 @@ class State:
         """
         def go():
             self.link = self.belt[0]
-        return self._wrap( "wlink", 0xc5, go )
+        return self._wrap( "wlink", 0xa1, go ) # mnemonic: a1 = AL = alter link
+
+    def link( self ):
+        """
+        10110001
+
+        Push link register.
+
+        Flags unaffected.
+        """
+        def go():
+            self._push( self.link )
+        return self._wrap( "link", 0xb1, go ) # mnemonic: b1 = BL = belt <= link
 
     def ret( self ):
         """
-        11000110
+        10110100
 
         Move link register to pc.
 
@@ -182,11 +182,11 @@ class State:
         """
         def go():
             self.pc = self.link
-        return self._wrap( "ret", 0xc6, go )
+        return self._wrap( "ret", 0xb4, go ) # mnemonic: b4 = before
 
     def halt( self ):
         """
-        11011111
+        10111101
 
         Stop advancing pc.
 
@@ -195,7 +195,7 @@ class State:
         def go():
             self.pc -= 1
             raise StopIteration
-        return self._wrap( "halt",0xdf, go )
+        return self._wrap( "halt",0xbd, go ) # mnemonic: bd = be dormant
 
     def lsr( self, bits3 ):
         """
@@ -247,7 +247,8 @@ class State:
 
         Unconditional jump. Sets link register to address of following instruction.
 
-        Note that jmp -1 is like a "halt" busy-loop instruction.
+        Note that jmp 0 has no effect but to set the link register,
+        and jmp -1 is an endless busy-loop.
 
         Flags unaffected.
         """
@@ -258,7 +259,7 @@ class State:
 
     def snc( self, offset ):
         """
-        101000dd
+        110000dd
 
         d = unsigned displacement from instruction after next
 
@@ -269,11 +270,11 @@ class State:
         def go() :
             if not 'c' in self.flags:
                 self.pc += offset + 1
-        return self._wrap( "snc", 0xa0 + offset, go )
+        return self._wrap( "snc", 0xc0 + offset, go )
 
     def sc( self, offset ):
         """
-        101100dd
+        110100dd
 
         d = unsigned displacement from instruction after next
 
@@ -284,11 +285,11 @@ class State:
         def go() :
             if 'c' in self.flags:
                 self.pc += offset + 1
-        return self._wrap( "sc", 0xb0 + offset, go )
+        return self._wrap( "sc", 0xd0 + offset, go )
 
     def snz( self, offset ):
         """
-        101010dd
+        110010dd
 
         d = unsigned displacement from instruction after next
 
@@ -299,11 +300,11 @@ class State:
         def go() :
             if not 'z' in self.flags:
                 self.pc += offset + 1
-        return self._wrap( "snz", 0xa8 + offset, go )
+        return self._wrap( "snz", 0xc8 + offset, go )
 
     def sz( self, offset ):
         """
-        101110dd
+        110110dd
 
         d = unsigned displacement from instruction after next
 
@@ -314,7 +315,7 @@ class State:
         def go() :
             if 'z' in self.flags:
                 self.pc += offset + 1
-        return self._wrap( "sz", 0xb8 + offset, go )
+        return self._wrap( "sz", 0xd8 + offset, go )
 
     def _wrap( self, name, encoding, handler ):
         def wrapped():
