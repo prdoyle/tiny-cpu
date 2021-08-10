@@ -1,5 +1,6 @@
 #! /usr/bin/python
-import sys
+from dataclasses import dataclass
+from typing import *
 
 # Idea: an 8-bit processor just powerful enough to implement
 # an interpreter for itself. 
@@ -14,6 +15,12 @@ import sys
 # 101 - skip (conditional jump forward)
 # 110 - opcode-only instructions
 # 111 - other
+
+@dataclass
+class Instruction:
+    name: str
+    encoding: int
+    handler: Callable[[], None]
 
 class State:
 
@@ -39,7 +46,7 @@ class State:
         """
         def go():
             self._push( imm )
-        return self._wrap( go )
+        return self._wrap( "push", 0x00 + imm, go );
 
     def load( self, disp ):
         """
@@ -53,7 +60,7 @@ class State:
         """
         def go():
             self._push( mem[address( self.belt[0], disp )] )
-        return self._wrap( go )
+        return self._wrap( "load", 0x20 + disp, go )
 
     def store( self, disp ):
         """
@@ -67,7 +74,7 @@ class State:
         """
         def go():
             mem[address( self.belt[0], disp )] = self.belt[0]
-        return self._wrap( go )
+        return self._wrap( store, 0x40 + disp, go )
 
     def pick( self, n ):
         """
@@ -87,7 +94,7 @@ class State:
         def go():
             belt = self.belt
             self.belt = [belt[ n ]] + belt[ 0:n ] + belt[ n+1: ]
-        return self._wrap( go )
+        return self._wrap( "pick", 0x50 + n, go )
 
     def dup( self ):
         """
@@ -99,7 +106,7 @@ class State:
         """
         def go():
             self._push( self.belt[0] )
-        return self._wrap( go )
+        return self._wrap( "dup", 0xc0, go )
 
     def neg( self ):
         """
@@ -111,7 +118,7 @@ class State:
         """
         def go():
             self._push(self._setZ( 256 - self.belt[ 0 ] ))
-        return self._wrap( go )
+        return self._wrap( "neg", 0xc1, go )
 
     def add( self ):
         """
@@ -123,7 +130,7 @@ class State:
         """
         def go():
             self._push( self._alu_sum( self.belt[ 0 ], self.belt[ 1 ], 0 ) )
-        return self._wrap( go )
+        return self._wrap( "add", 0xc2, go )
 
     def adc( self ):
         """
@@ -136,7 +143,7 @@ class State:
         def go():
             carry_in = 'c' in self.flags
             self._push( self._alu_sum( self.belt[ 0 ], self.belt[ 1 ], carry_in ) )
-        return self._wrap( go )
+        return self._wrap( "adc", 0xc3, go )
 
     def link( self ):
         """
@@ -148,7 +155,7 @@ class State:
         """
         def go():
             self._push( self.link )
-        return self._wrap( go )
+        return self._wrap( "link", 0xc4, go )
 
     def wlink( self ):
         """
@@ -160,7 +167,7 @@ class State:
         """
         def go():
             self.link = self.belt[0]
-        return self._wrap( go )
+        return self._wrap( "wlink", 0xc5, go )
 
     def ret( self ):
         """
@@ -172,7 +179,7 @@ class State:
         """
         def go():
             self.pc = self.link
-        return self._wrap( go )
+        return self._wrap( "ret", 0xc6, go )
 
     def halt( self ):
         """
@@ -185,7 +192,7 @@ class State:
         def go():
             self.pc -= 1
             raise StopIteration
-        return self._wrap( go )
+        return self._wrap( "halt",0xdf, go )
 
     def lsr( self, bits3 ):
         """
@@ -199,7 +206,7 @@ class State:
         """
         def go():
             self._push( self._setZ( self.belt[ 0 ] >> bits3 ) )
-        return self._wrap( go )
+        return self._wrap( "lsr", 0xe0 + bits3, go )
 
     def shl( self, treg, bits3 ):
         """
@@ -213,7 +220,7 @@ class State:
         """
         def go():
             self._push(self._setZ( self.belt[ 0 ] << bits3 ))
-        return self._wrap( go )
+        return self._wrap( "shl", 0xe8 + bits3, go )
 
     def inc( self, imm ):
         """
@@ -227,7 +234,7 @@ class State:
         """
         def go():
             self._push( self._alu_sum( self.belt[ 0 ], imm, 0 ) )
-        return self._wrap( go )
+        return self._wrap( "inc", 0xf0 + imm, go )
 
     def jmp( self, offset ):
         """
@@ -244,7 +251,7 @@ class State:
         def go() :
             self.link = self.pc
             self.pc += offset
-        return self._wrap( go )
+        return self._wrap( "jmp", 0x80 + offset, go )
 
     def snc( self, offset ):
         """
@@ -259,7 +266,7 @@ class State:
         def go() :
             if not 'c' in self.flags:
                 self.pc += offset + 1
-        return self._wrap( go )
+        return self._wrap( "snc", 0xa0 + offset, go )
 
     def sc( self, offset ):
         """
@@ -274,7 +281,7 @@ class State:
         def go() :
             if 'c' in self.flags:
                 self.pc += offset + 1
-        return self._wrap( go )
+        return self._wrap( "sc", 0xb0 + offset, go )
 
     def snz( self, offset ):
         """
@@ -289,7 +296,7 @@ class State:
         def go() :
             if not 'z' in self.flags:
                 self.pc += offset + 1
-        return self._wrap( go )
+        return self._wrap( "snz", 0xa8 + offset, go )
 
     def sz( self, offset ):
         """
@@ -304,16 +311,14 @@ class State:
         def go() :
             if 'z' in self.flags:
                 self.pc += offset + 1
-        return self._wrap( go )
+        return self._wrap( "sz", 0xb8 + offset, go )
 
-    def _wrap( self, function ):
+    def _wrap( self, name, encoding, handler ):
         def wrapped():
             self.pc = ( self.pc + 1 ) & 255
-            function()
+            handler()
         result = wrapped
-        # https://stackoverflow.com/questions/2654113/how-to-get-the-callers-method-name-in-the-called-method
-        caller_name = sys._getframe().f_back.f_code.co_name
-        result.__name__ = caller_name
+        result.__name__ = "%s [%02x]" % ( name, encoding )
         return result
 
     def _alu_sum( self, left, right, carry_in ):
