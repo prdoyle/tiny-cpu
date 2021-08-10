@@ -22,6 +22,9 @@ class Instruction:
     encoding: int
     handler: Callable[[], None]
 
+    def __str__( self ):
+        return "%s [%02x]" % ( self.name, self.encoding )
+
 class State:
 
     def __init__( self ):
@@ -317,9 +320,7 @@ class State:
         def wrapped():
             self.pc = ( self.pc + 1 ) & 255
             handler()
-        result = wrapped
-        result.__name__ = "%s [%02x]" % ( name, encoding )
-        return result
+        return Instruction( name, encoding, wrapped )
 
     def _alu_sum( self, left, right, carry_in ):
         result = (left&255)+ (right&255)+ carry_in
@@ -369,8 +370,8 @@ def fib():
     try:
         while state.pc < len( fibonacci ):
             instr = fibonacci[ state.pc ]
-            print( "-- %s --" % instr.__name__ )
-            instr()
+            print( "-- %s --" % instr )
+            instr.handler()
             print( str(state) )
             print()
         print("\n== No more instructions ==")
