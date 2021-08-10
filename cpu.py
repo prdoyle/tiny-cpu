@@ -1,27 +1,55 @@
 #! /usr/bin/python
+import sys
 
 # Idea: an 8-bit processor just powerful enough to implement
 # an interpreter for itself. 
+#
+# First three bits of each instruction:
+#
+# 000 - push
+# 001 - load
+# 010 - store
+# 011 - pick
+# 100 - jmp
+# 101 - skip (conditional jump forward)
+# 110 - opcode-only instructions
+# 111 - other
 
 class State:
 
     def __init__( self ):
         self.belt = [0] * 4
         self.pc = 0
+        self.link = 0
         self.flags = set()
         self.mem = [0] * 32
 
     def __str__( self ):
-        return "Belt: %s\n  PC: %s\nFlags: %s\nMem: %s" % ( self.belt, self.pc, self.belt, self.mem )
+        return "Belt: %s\n  PC: %s\nLink: %s\nFlags: %s\nMem: %s" % ( self.belt, self.pc, self.link, self.belt, self.mem )
 
     def push( self, imm ):
+        """
+        000iiiii
+
+        i = signed 5-bit immediate
+
+        Push i on the belt, shifting all other entries by 1.
+
+        Flags unaffected.
+        """
         def go():
             self._push( imm )
         return self._wrap( go )
 
     def load( self, disp ):
         """
-        Flags unaffected
+        001ddddd
+
+        d = signed 5-bit displacement
+
+        Load contents of [belt[0] + d] onto belt.
+
+        Flags unaffected.
         """
         def go():
             self._push( mem[address( self.belt[0], disp )] )
@@ -29,97 +57,239 @@ class State:
 
     def store( self, disp ):
         """
-        Flags unaffected
-        01 tt ss ff
+        010ddddd
+
+        d = signed 5-bit displacement
+
+        Store belt[1] to [belt[0] + d].
+
+        Flags unaffected.
         """
         def go():
             mem[address( self.belt[0], disp )] = self.belt[0]
         return self._wrap( go )
 
-    def dup( self ):
-        def go():
-            self._push( self.belt[0] )
-        return self._wrap( go )
+    def pick( self, n ):
+        """
+        011000nn
 
-    def revolve( self, n ):
+        n = unsigned belt index
+
+        Rotate belt items 0..n (inclusive) by one position,
+        leaving item 0 at 1, 1 at 2, ... and item n at 0.
+
+        Note that revolve by 0 is a no-op.
+
+        All other instructions starting with 011 are reserved.
+
+        Flags unaffected.
+        """
         def go():
             belt = self.belt
             self.belt = [belt[ n ]] + belt[ 0:n ] + belt[ n+1: ]
         return self._wrap( go )
 
-    def inc( self, imm ):
+    def dup( self ):
+        """
+        11000000
+
+        Push belt[0], thereby leaving two copies of it on the belt.
+
+        Flags unaffected.
+        """
         def go():
-            self._push( self._alu_sum( self.belt[ 0 ], imm, 0 ) )
+            self._push( self.belt[0] )
+        return self._wrap( go )
+
+    def neg( self ):
+        """
+        11000001
+
+        Push two's complement of belt[0].
+
+        Sets Z.
+        """
+        def go():
+            self._push(self._setZ( 256 - self.belt[ 0 ] ))
         return self._wrap( go )
 
     def add( self ):
         """
-        T = T + S + C
+        11000010
+
+        Push belt[0] + belt[1].
+
+        Sets Z and C.
         """
         def go():
             self._push( self._alu_sum( self.belt[ 0 ], self.belt[ 1 ], 0 ) )
         return self._wrap( go )
 
     def adc( self ):
+        """
+        11000011
+
+        Push belt[0] + belt[1] + C.
+
+        Sets Z and C.
+        """
         def go():
             carry_in = 'c' in self.flags
             self._push( self._alu_sum( self.belt[ 0 ], self.belt[ 1 ], carry_in ) )
         return self._wrap( go )
 
-    def neg( self, treg ):
+    def link( self ):
         """
-        Sets Z flag. C unaffected
-        T = 256-T & 255
+        11000100
+
+        Push link register.
+
+        Flags unaffected.
         """
         def go():
-            self.belt[ 0 ] = self._setZ( 256 - self.belt[ 0 ] )
+            self._push( self.link )
+        return self._wrap( go )
+
+    def wlink( self ):
+        """
+        11000101
+
+        Write link register from belt[0].
+
+        Flags unaffected.
+        """
+        def go():
+            self.link = self.belt[0]
+        return self._wrap( go )
+
+    def ret( self ):
+        """
+        11000110
+
+        Move link register to pc.
+
+        Flags unaffected.
+        """
+        def go():
+            self.pc = self.link
         return self._wrap( go )
 
     def lsr( self, bits3 ):
         """
-        Logical shift right
-        Sets Z flag. C unaffected
-        T = T >>> bits3
+        11100sss
+
+        s = unsigned shift distance
+
+        Logical shift right.  Push belt[0] >> s.
+
+        Sets Z.
         """
         def go():
-            self.belt[ 0 ] = self._setZ( self.belt[ 0 ] >> bits3 )
+            self._push( self._setZ( self.belt[ 0 ] >> bits3 ) )
         return self._wrap( go )
 
     def shl( self, treg, bits3 ):
         """
-        Sets Z flag. C unaffected
-        T = T << bits3
+        11101sss
+
+        s = unsigned shift distance
+
+        Bitwise shift left.  Push belt[0] << s.
+
+        Sets Z.
         """
         def go():
-            self.belt[ 0 ] = self._setZ( self.belt[ 0 ] << bits3 )
+            self._push(self._setZ( self.belt[ 0 ] << bits3 ))
+        return self._wrap( go )
+
+    def inc( self, imm ):
+        """
+        11110iii
+
+        i = signed 3-bit immediate
+
+        Push belt[0] + i.
+
+        Sets Z and C.
+        """
+        def go():
+            self._push( self._alu_sum( self.belt[ 0 ], imm, 0 ) )
         return self._wrap( go )
 
     def jmp( self, offset ):
+        """
+        100ddddd
+
+        d = signed displacement from following instruction
+
+        Unconditional jump. Sets link register to address of following instruction.
+
+        Note that jmp -1 is like a "halt" busy-loop instruction.
+
+        Flags unaffected.
+        """
         def go() :
+            self.link = self.pc
             self.pc += offset
         return self._wrap( go )
 
-    def jc( self, offset ):
-        def go() :
-            if 'c' in self.flags:
-                self.pc += offset
-        return self._wrap( go )
+    def snc( self, offset ):
+        """
+        101000dd
 
-    def jnc( self, offset ):
+        d = unsigned displacement from following instruction
+
+        Skip if C clear.
+
+        Flags unaffected.
+        """
         def go() :
             if not 'c' in self.flags:
                 self.pc += offset
         return self._wrap( go )
 
-    def jz( self, offset ):
+    def sc( self, offset ):
+        """
+        101100dd
+
+        d = unsigned displacement from following instruction
+
+        Skip if C set.
+
+        Flags unaffected.
+        """
         def go() :
-            if 'z' in self.flags:
+            if 'c' in self.flags:
                 self.pc += offset
         return self._wrap( go )
 
-    def jnz( self, offset ):
+    def snz( self, offset ):
+        """
+        101010dd
+
+        d = unsigned displacement from following instruction
+
+        Skip if Z clear.
+
+        Flags unaffected.
+        """
         def go() :
             if not 'z' in self.flags:
+                self.pc += offset
+        return self._wrap( go )
+
+    def sz( self, offset ):
+        """
+        101110dd
+
+        d = unsigned displacement from following instruction
+
+        Skip if Z set.
+
+        Flags unaffected.
+        """
+        def go() :
+            if 'z' in self.flags:
                 self.pc += offset
         return self._wrap( go )
 
@@ -127,7 +297,11 @@ class State:
         def wrapped():
             self.pc = ( self.pc + 1 ) & 255
             function()
-        return wrapped
+        result = wrapped
+        # https://stackoverflow.com/questions/2654113/how-to-get-the-callers-method-name-in-the-called-method
+        caller_name = sys._getframe().f_back.f_code.co_name
+        result.__name__ = caller_name
+        return result
 
     def _alu_sum( self, left, right, carry_in ):
         result = (left&255)+ (right&255)+ carry_in
@@ -163,16 +337,21 @@ def fib():
         # Initialize
         state.push( 1 ),
         state.push( 1 ),
-        # Add back and forth
+        # Record loop entry point
+        state.jmp( 0 ),
+        # Add last two items
         state.add(),
         # Loop
-        state.jnc( -2 ),
+        state.sc( 1 ),
+        state.ret(),
         # Result
-        state.revolve( 1 )
+        state.pick( 1 ),
     ]
     while state.pc < len( fibonacci ):
         instr = fibonacci[ state.pc ]
+        print( "-- %s --" % instr.__name__ )
         instr()
         print( str(state) )
+        print()
 
 fib()
