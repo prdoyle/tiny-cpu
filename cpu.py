@@ -237,7 +237,7 @@ class State:
         """
         101000dd
 
-        d = unsigned displacement from following instruction
+        d = unsigned displacement from instruction after next
 
         Skip if C clear.
 
@@ -245,14 +245,14 @@ class State:
         """
         def go() :
             if not 'c' in self.flags:
-                self.pc += offset
+                self.pc += offset + 1
         return self._wrap( go )
 
     def sc( self, offset ):
         """
         101100dd
 
-        d = unsigned displacement from following instruction
+        d = unsigned displacement from instruction after next
 
         Skip if C set.
 
@@ -260,14 +260,14 @@ class State:
         """
         def go() :
             if 'c' in self.flags:
-                self.pc += offset
+                self.pc += offset + 1
         return self._wrap( go )
 
     def snz( self, offset ):
         """
         101010dd
 
-        d = unsigned displacement from following instruction
+        d = unsigned displacement from instruction after next
 
         Skip if Z clear.
 
@@ -275,14 +275,14 @@ class State:
         """
         def go() :
             if not 'z' in self.flags:
-                self.pc += offset
+                self.pc += offset + 1
         return self._wrap( go )
 
     def sz( self, offset ):
         """
         101110dd
 
-        d = unsigned displacement from following instruction
+        d = unsigned displacement from instruction after next
 
         Skip if Z set.
 
@@ -290,7 +290,7 @@ class State:
         """
         def go() :
             if 'z' in self.flags:
-                self.pc += offset
+                self.pc += offset + 1
         return self._wrap( go )
 
     def _wrap( self, function ):
@@ -342,7 +342,7 @@ def fib():
         # Add last two items
         state.add(),
         # Loop
-        state.sc( 1 ),
+        state.sc( 0 ),
         state.ret(),
         # Result
         state.pick( 1 ),
