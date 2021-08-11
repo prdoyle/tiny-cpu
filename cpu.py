@@ -105,6 +105,15 @@ class State:
 
         n = unsigned belt index
 
+        I don't really like this one. The intent was to offer a way to discard
+        some belt entries so they don't push more desirable entries off the end
+        prematurely. So, for example, you could get a "compare" operation by
+        doing a "subtract" that discards the result that would have gone on the
+        top of the belt; or you could get a destructive add by overwriting the
+        top of the belt instead of pushing. However, this "drop" concept
+        happens after the fact, after the damage is done, so there's no way to
+        recover that lost item, making this rather pointless.
+
         Shift items from n+1 upward up by one position,
         leaving item n+1 at n, n+2 at n+1, and so on.
         Items before n are unaffected. Item n is discarded.
@@ -371,17 +380,12 @@ class State:
 
     def _alu_sum( self, left, right, carry_in ):
         result = (left&255)+ (right&255)+ carry_in
-        if result == 0:
-            self.flags = {'z'}
-        elif result <= 255:
-            self.flags = set()
-        elif result == 256:
-            self.flags = {'c','z'}
-            result = 0
-        else:
-            self.flags = {'c'}
+        if result >= 256:
+            self.flags.add('c')
             result = result & 255
-        return result
+        else:
+            self.flags.discard('c')
+        return self._setZ( result )
 
     def _setZ( self, result ):
         result = result & 255
@@ -411,7 +415,7 @@ def fib():
         state.sc( 0 ),
         state.ret(),
         # Result
-        state.drop( 0 ),
+        state.get( 1 ),
         state.halt()
     ]
     def fib_binary():
@@ -429,6 +433,7 @@ def fib():
         print("\n== No more instructions ==")
     except StopIteration:
         print("\n== Halted ==")
+    assert state.belt[0] == 233
 
 fib()
 
