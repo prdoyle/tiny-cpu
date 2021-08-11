@@ -16,6 +16,8 @@ from typing import *
 # 110 (c,d) - skip (conditional jump forward) (mnemonic: c = "clear")
 # 111 (e,f) - other
 
+FLAG_BITS = "c z x x x t s w".split()
+
 @dataclass
 class Instruction:
     name: str
@@ -31,7 +33,7 @@ class State:
         self.belt = [0] * 4
         self.pc = 0
         self.link = 0
-        self.flags = set()
+        self.flags = { 't', 's', 'w' }
         self.mem = [0] * 32
 
     def __str__( self ):
@@ -99,25 +101,15 @@ class State:
             self.belt = [belt[ n ]] + belt[ 0:n ] + belt[ n+1: ]
         return self._wrap( "get", 0x60 + n, go ) # mnemonic: 6 = g = "get"
 
-    def drop( self, n ):
+    def mode( self, m ):
         """
-        011100nn
+        01110tsw
 
-        n = unsigned belt index
-
-        I don't really like this one. The intent was to offer a way to discard
-        some belt entries so they don't push more desirable entries off the end
-        prematurely. So, for example, you could get a "compare" operation by
-        doing a "subtract" that discards the result that would have gone on the
-        top of the belt; or you could get a destructive add by overwriting the
-        top of the belt instead of pushing. However, this "drop" concept
-        happens after the fact, after the damage is done, so there's no way to
-        recover that lost item, making this rather pointless.
-
-        Shift items from n+1 upward up by one position,
-        leaving item n+1 at n, n+2 at n+1, and so on.
-        Items before n are unaffected. Item n is discarded.
-        The item at the bottom of the belt is set to zero.
+        t = transient: reset to mode 111 for the next instruction.
+                If clear, mode is retained for the next instruction.
+        s = shift: belt will shift.
+        w = write: result will be written to belt[0].
+                If clear, belt[0] is unchanged.
 
         All other instructions starting with 0111 are reserved.
 
@@ -210,22 +202,25 @@ class State:
         Flags all affected.
         """
         def go():
-            self.link = self.belt[0]
-        return self._wrap( "wlink", 0xaf, go ) # mnemonic: af = alter flags
+            self.flags = { FLAG_BITS.index( b ) for b in bits( self.belt[0] ) }
+        return self._wrap( "wflags", 0xaf, go ) # mnemonic: af = alter flags
 
     def flags( self ):
         """
         10111111
 
         Push flags register.
-        C = bit 7
+        C = bit 7 (so "lsr 7" makes it a 1 or 0 value)
         Z = bit 6
+        T = bit 2
+        S = bit 1
+        W = bit 0
 
         Flags unaffected.
         """
         def go():
-            self._push( self.link )
-        return self._wrap( "link", 0xbf, go ) # mnemonic: bf = belt <= flags
+            self._push(sum([ (1 << FLAG_BITS.index( f )) for f in self.flags ]))
+        return self._wrap( "flags", 0xbf, go ) # mnemonic: bf = belt <= flags
 
     def ret( self ):
         """
@@ -376,6 +371,9 @@ class State:
         def wrapped():
             self.pc = ( self.pc + 1 ) & 255
             handler()
+            if 't' in self.flags:
+                self.flags.add( 's' )
+                self.flags.add( 'w' )
         return Instruction( name, encoding, wrapped )
 
     def _alu_sum( self, left, right, carry_in ):
@@ -396,7 +394,20 @@ class State:
         return result
 
     def _push( self, value ):
-        self.belt = [ value ] + self.belt[ :-1 ]
+        if 'w' in self.flags:
+            belt_0 = value
+        else:
+            belt_0 = self.belt[ 0 ]
+        if 's' in self.flags:
+            belt_tail = self.belt[ :-1 ]
+        else:
+            belt_tail = self.belt[ 1: ]
+        self.belt = [ belt_0 ] + belt_tail
+
+def bits( n ):
+    for i in range(0,8):
+        if n & (1<<i):
+            yield i
 
 def address( base, disp ):
     return ( base + disp ) & 255
