@@ -1,0 +1,181 @@
+
+Architected registers:
+- belt
+- pc (program counter)
+- ra (return address)
+- fl (and mode)
+- pa, pb (for load & store)
+Internal registers
+- ir (instruction register)
+- ar (address register) # Set on falling edge so mem can clock on rising edge
+- x1,x2 (ALU inputs)
+- y (ALU output)
+- am (ALU mode)
+- bx (belt index for reads)
+- bz (belt 0 - index of belt[0])
+- bw (belt index for writes)
+
+Before each instruction:
+		# Falling edge
+		ar   := pc
+		# Rising edge
+		ir   := mem
+		pc   ++
+
+Meaning of "belt <= X":
+		# Falling edge
+		bw    := bz - fl.S
+		# Rising edge
+		b[bw] := X  # if mode W
+		bz    := bw
+
+Belt addressing:
+- BELT0 = multiplexor for b[0],b[1],b[2],b[3] selected by bz
+- BELTX = multiplexor for b[0],b[1],b[2],b[3] selected by adder bz+bx
+
+Opcodes:
+0n - push (Push unsigned n)
+		belt <= ir4
+1n
+2n - storea (Store to address pa + n)
+		# Falling edge
+		ar   := pa + ir4
+		# Rising edge
+		mem  := BELT0
+3n - storeb (Store to address pb + n)
+		# Falling edge
+		ar   := pb + ir4
+		# Rising edge
+		mem  := BELT0
+4n - loada (Load from address pa + n)
+		# Falling edge
+		ar   := pa + ir4
+		belt <= mem
+5n - loadb (Load from address pb + n)
+		# Falling edge
+		ar   := pb + ir4
+		belt <= mem
+6n - 
+7n
+8n - Push nth item from belt
+		# Falling edge
+		bx   := ir4
+		# Rising edge # bleh
+		# Falling edge
+		belt <= BELTX
+9n
+an - Opcode-only instructions
+	a0
+	a1 - inc ("add one")
+		# Falling edge
+		# Rising edge
+		am := add
+		x1 := BELT0
+		x2 := imm4
+		# Falling edge
+		belt <= y
+	a2 - add ("add two")
+		# Falling edge
+		bx := 1
+		# Rising edge
+		am := add
+		x1 := BELT0
+		x2 := BELTX
+		# Falling edge
+		belt <= y
+	a3 - adc ("add three" including the carry)
+		# Falling edge
+		bx := 1
+		# Rising edge
+		am := add with carry
+		x1 := BELT0
+		x2 := BELTX
+		# Falling edge
+		belt <= y
+	a4
+	a5
+	a6
+	a7
+	a8
+	a9
+	aa - wpa
+		# Falling edge
+		pa := BELT0
+	ab - wpb
+		# Falling edge
+		pb := BELT0
+	ac - wpc -- jump to register
+		# Falling edge
+		# Rising edge
+		pc := BELT0
+	ad
+	ae - wlink
+		ra := BELT0
+	af - wflags
+		fl := BELT0
+bn - Opcode-only instructions
+	b0
+	b1 - dec ("subtract one")
+		am := sub
+		x1 := BELT0
+		x2 := imm4
+		belt <= y (x1-x2)
+	b2 - sub ("subtract two")
+		am := sub
+		x1 := BELT0
+		x2 := BELTX
+		belt <= y (x1-x2)
+	b3 - sbc ("subtract three")
+		am := subtract with carry
+		x1 := BELT0
+		x2 := BELTX
+		belt <= y (x1-x2)
+	b4 - ret
+		# Falling edge
+		# Rising edge
+		pc := ra
+	b5
+	b6
+	b7
+	b8
+	b9 - nop? ("benign")
+	ba - rpa
+		belt <= pa
+	bb - rpb
+		belt <= pb
+	bc - rpc
+		belt <= pc
+	bd - halt
+		??
+	be - rlink
+		belt <= ra
+	bf - rflags
+		belt <= fl
+cn - Skip if carry clear
+		# Falling edge
+		# Rising edge
+		pc := pc + ir4  # if flags.C clear
+dn - Skip if carry set
+		# Falling edge
+		# Rising edge
+		pc := pc + ir4  # if flags.C set
+en - Shift opcodes
+		# Falling edge
+		# Rising edge
+		am := shift # bit 3 of shift distance gives direction
+		x1 := BELT0
+		x2 := ir4
+		# Falling edge
+		belt <= y
+	11100sss - lsr (logical shift right)
+	11101sss - shl (shift left)
+	- "dup" could be an alias of "shl 0"
+fn - add (Push belt[0] + unsigned n)
+		# Falling edge
+		# Rising edge
+		am := add
+		x1 := BELT0
+		x2 := ir4
+		# Falling edge
+		belt <= y
+
