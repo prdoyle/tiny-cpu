@@ -1,6 +1,8 @@
 #! /usr/bin/python
 from dataclasses import dataclass
 from typing import *
+import unittest
+from itertools import combinations
 
 # Idea: an 8-bit processor just powerful enough to implement
 # an interpreter for itself. 
@@ -64,8 +66,12 @@ class State:
         Flags unaffected.
         """
         def go():
-            mem[address( self.belt[0], disp )] = self.belt[0]
-        return self._wrap( store, 0x20 + disp, go )
+            ea = address( self.belt[0], disp )
+            if ea < len( self.mem ):
+                self.mem[ea] = self.belt[1]
+            else:
+                raise NotImplementedError
+        return self._wrap( "store", 0x20 + disp, go )
 
     def load( self, disp ):
         """
@@ -78,7 +84,11 @@ class State:
         Flags unaffected.
         """
         def go():
-            self._push( mem[address( self.belt[0], disp )] )
+            ea = address( self.belt[0], disp )
+            if ea < len( self.mem ):
+                self._push( mem[ea] )
+            else:
+                raise NotImplementedError
         return self._wrap( "load", 0x40 + disp, go )
 
     def get( self, n ):
@@ -412,6 +422,11 @@ def bits( n ):
 def address( base, disp ):
     return ( base + disp ) & 255
 
+def combos( items ):
+    for L in range(len( items )):
+        for s in combinations( items, L ):
+            yield s
+
 def fib():
     state = State()
     fibonacci = [
@@ -446,5 +461,71 @@ def fib():
         print("\n== Halted ==")
     assert state.belt[0] == 233
 
-fib()
 
+class UnitTest(unittest.TestCase):
+
+    def initialize( self, *, set_flags=set(), clear_flags=set(), belt=[] ):
+        self.failfast = True
+        self.state = State()
+        self.state.belt = [ i for i in range(4) ]
+        self.state.belt[ 0:len(belt) ] = belt
+        self.state.mem = [ i for i in range(32) ]
+        self.state.flags = self.state.flags.union( set_flags ).difference( clear_flags )
+
+    def test_push( self ):
+        for value in range(0,32):
+            with self.subTest(value=value):
+                self.initialize()
+                self.check_push(value, [ value, 0, 1, 2 ] )
+                self.initialize( clear_flags={'w'} )
+                self.check_push(value, [ 0, 0, 1, 2 ] )
+                self.initialize( clear_flags={'s'} )
+                self.check_push(value, [ value, 1, 2, 3 ] )
+                self.initialize( clear_flags={'s', 'w'} )
+                self.check_push(value, [ 0, 1, 2, 3 ] )
+
+    def check_push( self, value, expected_belt ):
+        expected_flags = self._expected_flags()
+        original_mem = self.state.mem.copy()
+        self.state.push( value ).handler()
+        self.assertEqual( expected_belt, self.state.belt )
+        self.assertEqual( 1, self.state.pc )
+        self.assertEqual( 0, self.state.link )
+        self.assertEqual( expected_flags, self.state.flags )
+        self.assertEqual( original_mem, self.state.mem )
+
+    def test_store( self ):
+        for disp in range( 32 ):
+            with self.subTest(disp=disp):
+                for addr in range( 32 ):
+                    with self.subTest(addr=addr):
+                        for value in [ 0, 0x55, 0xaa, 0xff ]:
+                            with self.subTest(value=value):
+                                self.initialize( belt=[addr,value] )
+                                if addr + disp < len( self.state.mem ):
+                                    self.check_store( addr, disp, value )
+
+    def check_store( self, addr, disp, value ):
+        expected_flags = self._expected_flags()
+        original_belt = self.state.belt.copy()
+        expected_mem = self.state.mem.copy()
+        ea = (addr+disp) & 255
+        expected_mem[ ea ] = value
+        self.state.store( disp ).handler()
+        self.assertEqual( original_belt, self.state.belt )
+        self.assertEqual( 1, self.state.pc )
+        self.assertEqual( 0, self.state.link )
+        self.assertEqual( expected_flags, self.state.flags )
+        self.assertEqual( expected_mem, self.state.mem )
+
+    def _expected_flags( self ):
+        if 't' in self.state.flags:
+            result = self.state.flags.copy()
+            result.add('s')
+            result.add('w')
+            return result
+        else:
+            return self.state.flags.copy()
+
+if __name__ == '__main__':
+    fib()
