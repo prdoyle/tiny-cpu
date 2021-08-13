@@ -1,0 +1,88 @@
+
+2021-08-12
+
+Architected registers:
+- belt
+- pc (program counter)
+- link (return address)
+- flags (and mode)
+- pa, pb (for load & store)
+Internal registers
+- Instruction
+- Address
+
+Opcodes:
+0n - push (Push unsigned n) [NO,BI]
+1n
+2n - storea (Store to address pa + n) [PA1,N2,AM,BO,MW]
+3n - storeb (Store to address pb + n) [PB1,N2,AM,BO,MW]
+4n - loada (Load from address pa + n) [PA1,N2,AM,BI,MR]
+5n - loadb (Load from address pb + n) [PA1,N2,AM,BI,MR]
+6n - 
+7n - Set mode bits in flag register to n  [???]
+8n - Push nth item from belt [NB,BO,BI] <-- Can this happen in one cycle?
+9n
+an - Opcode-only instructions
+	a0 - neg ("additive opposite")
+	a1
+	a2 - add ("add two")
+	a3 - adc ("add three" including the carry)
+	a4
+	a5
+	a6
+	a7
+	a8
+	a9
+	aa - wpa [BO,PAI]
+	ab - wpb [BO,PBI]
+	ac - wpc [BO,PCI] -- jump to register
+	ad
+	ae - wlink [BO,LI]
+	af - wflags [BO,FI]
+bn - Opcode-only instructions
+	b0
+	b1
+	b2
+	b3
+	b4 - ret [LO,PCI]
+	b5
+	b6
+	b7
+	b8
+	b9 - nop? ("benign")
+	ba - rpa [BI,PAO]
+	bb - rpb [BI,PBO]
+	bc - rpc [BI,PCO]
+	bd - halt
+	be - rlink [BI,LO]
+	bf - rflags [BI,FO]
+cn - Skip if carry clear [???]
+dn - Skip if carry set [PC1,N2,AO,CPCI]
+en - Shift opcodes
+	11100sss - lsr (logical shift right) [BO,MB1,N2,...?]
+	11101sss - shl (shift left)
+	- "dup" could be an alias of "shl 0"
+fn - inc (Push belt[0] + unsigned n)
+
+Microcode:
+- Main bus:
+  - BI,BO: Belt In, Belt Out
+  - MR,MW: Memory Read, Memory Write
+  - P{ABC}{IO}: PA, PB, PC In and Out
+  - LI, LO: Link In, Link Out
+  - FI, FO: Flags In, Flags Out
+  - A0: ALU out
+  - NO: Low nybble of instruction Out (onto bus)
+  - CPCI: Carry bit to PC In
+- ALU inputs:
+  - MB1: Main bus to ALU input 1
+  - PA1: PA register to ALU input 1
+  - PB1: PB register to ALU input 1
+  - PC1: PC register to ALU input 1
+  - MB2: Main bus to ALU input 2
+  - N2: Low nybble of instruction to ALU input 2
+- Other controls
+  - AM: ALU output to memory address bus
+  - NB: Low nybble of instruction to belt output selector (otherwise select belt[0])
+  - ALUL: ALU shift left mode
+  - ALUR: ALU shift right mode
