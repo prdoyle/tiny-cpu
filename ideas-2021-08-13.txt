@@ -10,11 +10,11 @@ Internal registers
 - ar (address register) # Set on falling edge so mem can clock on rising edge
 - bx (belt index for reads)
 - bz (belt 0 - index of belt[0])
-- bw (belt index for writes)
-ALU signals (not registers)
+Other signals (not registers)
 - x1,x2 (ALU inputs)
 - y (ALU output)
 - am (ALU mode)
+- bw (belt index for writes)
 
 Before each instruction:
 		# Falling edge
@@ -24,15 +24,17 @@ Before each instruction:
 		pc   ++
 
 Meaning of "belt <= X":
-		# Falling edge
-		bw    := bz - fl.S
+		# Clock low
+		bw    = bz - fl.S
 		# Rising edge
-		b[bw] := X  # if mode W
-		bz    := bw
+		bw    = bz - fl.S
+		BELTW := X  # if mode W
+		bz    := bz - fl.S
 
 Belt addressing:
-- BELT0 = multiplexor for b[0],b[1],b[2],b[3] selected by bz
-- BELTX = multiplexor for b[0],b[1],b[2],b[3] selected by adder bz+bx
+- BELT0 = multiplexor for b[n] selected by bz
+- BELTX = multiplexor for b[n] selected by adder bz+bx
+- BELTW = demultiplexor for b[n] selected by bw
 
 Opcodes:
 0n - push (Push unsigned n)
