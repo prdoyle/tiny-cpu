@@ -43,9 +43,9 @@ class State:
 
     def push( self, imm ):
         """
-        000iiiii
+        0000iiii
 
-        i = signed 5-bit immediate
+        i = signed 4-bit immediate
 
         Push i on the belt, shifting all other entries by 1.
 
@@ -152,7 +152,7 @@ class State:
         """
         def go():
             self._push(self._setZ( 256 - self.belt[ 0 ] ))
-        return self._wrap( "neg", 0xaf, go ) # mnemonic: af = arithmetic flip
+        return self._wrap( "neg", 0xa0, go ) # mnemonic: a0 = additive opposite
 
     def adc( self ):
         """
@@ -473,7 +473,7 @@ class UnitTest(unittest.TestCase):
         self.state.flags = self.state.flags.union( set_flags ).difference( clear_flags )
 
     def test_push( self ):
-        for value in range(0,32):
+        for value in range(0,16):
             with self.subTest(value=value):
                 self.initialize()
                 self.check_push(value, [ value, 0, 1, 2 ] )
