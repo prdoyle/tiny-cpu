@@ -8,12 +8,13 @@ Architected registers:
 Internal registers
 - ir (instruction register)
 - ar (address register) # Set on falling edge so mem can clock on rising edge
-- x1,x2 (ALU inputs)
-- y (ALU output)
-- am (ALU mode)
 - bx (belt index for reads)
 - bz (belt 0 - index of belt[0])
 - bw (belt index for writes)
+ALU signals (not registers)
+- x1,x2 (ALU inputs)
+- y (ALU output)
+- am (ALU mode)
 
 Before each instruction:
 		# Falling edge
@@ -69,28 +70,31 @@ an - Opcode-only instructions
 	a1 - inc ("add one")
 		# Falling edge
 		# Rising edge
-		am := add
-		x1 := BELT0
-		x2 := imm4
+		am = add
+		x1 = BELT0
+		x2 = imm4
 		# Falling edge
+		(am,x1,x2 still asserted)
 		belt <= y
 	a2 - add ("add two")
 		# Falling edge
 		bx := 1
 		# Rising edge
-		am := add
-		x1 := BELT0
-		x2 := BELTX
+		am = add
+		x1 = BELT0
+		x2 = BELTX
 		# Falling edge
+		(am,x1,x2 still asserted)
 		belt <= y
 	a3 - adc ("add three" including the carry)
 		# Falling edge
 		bx := 1
 		# Rising edge
-		am := add with carry
-		x1 := BELT0
-		x2 := BELTX
+		am = add with carry
+		x1 = BELT0
+		x2 = BELTX
 		# Falling edge
+		(am,x1,x2 still asserted)
 		belt <= y
 	a4
 	a5
@@ -116,19 +120,31 @@ an - Opcode-only instructions
 bn - Opcode-only instructions
 	b0
 	b1 - dec ("subtract one")
-		am := sub
-		x1 := BELT0
-		x2 := imm4
+		# Falling edge
+		# Rising edge
+		am = sub
+		x1 = BELT0
+		x2 = imm4
+		# Falling edge
+		(am,x1,x2 still asserted)
 		belt <= y (x1-x2)
 	b2 - sub ("subtract two")
-		am := sub
-		x1 := BELT0
-		x2 := BELTX
+		# Falling edge
+		# Rising edge
+		am = sub
+		x1 = BELT0
+		x2 = BELTX
+		# Falling edge
+		(am,x1,x2 still asserted)
 		belt <= y (x1-x2)
 	b3 - sbc ("subtract three")
-		am := subtract with carry
-		x1 := BELT0
-		x2 := BELTX
+		# Falling edge
+		# Rising edge
+		am = subtract with carry
+		x1 = BELT0
+		x2 = BELTX
+		# Falling edge
+		(am,x1,x2 still asserted)
 		belt <= y (x1-x2)
 	b4 - ret
 		# Falling edge
@@ -162,10 +178,11 @@ dn - Skip if carry set
 en - Shift opcodes
 		# Falling edge
 		# Rising edge
-		am := shift # bit 3 of shift distance gives direction
-		x1 := BELT0
-		x2 := ir4
+		am = shift # bit 3 of shift distance gives direction
+		x1 = BELT0
+		x2 = ir4
 		# Falling edge
+		(am,x1,x2 still asserted)
 		belt <= y
 	11100sss - lsr (logical shift right)
 	11101sss - shl (shift left)
@@ -173,9 +190,10 @@ en - Shift opcodes
 fn - add (Push belt[0] + unsigned n)
 		# Falling edge
 		# Rising edge
-		am := add
-		x1 := BELT0
-		x2 := ir4
+		am = add
+		x1 = BELT0
+		x2 = ir4
 		# Falling edge
+		(am,x1,x2 still asserted)
 		belt <= y
 
