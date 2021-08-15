@@ -1,0 +1,206 @@
+
+Everything goes though ALU every cycle.
+
+Architected registers:
+- belt (b0, b1, b2)
+- pa, pb (for load & store)
+- pc (program counter)
+- ra (return address)
+- fl (and mode)
+Internal registers:
+- ar (address register) - used for loads/stores. Instruction fetch doesn't need it.
+- md (mode):
+	- FETCH: addr <= pc; cw <= lookup[mem]
+	- READ:  addr <= ar; cw = [Yb0, sfn=INR, Rmem, md=FETCH]
+	- WRITE: addr <= ar; cw = [Ymem, sfn=INL, Lb0, md=FETCH]
+Other signals (not registers) - asserted during clock edge
+- cw: control word
+- sbs (belt shift): b2 := b1; b1 := b0; b0 from ALU if fl.S is set
+- sfn (ALU function): ADD, ADC, SUB, SBC, LSH, INL, INR
+	- LSH = logical shift by 4-bit signed number of bits
+- spc (increment PC): pc reads from pc+1 adder.
+- sap (address from pc): address bus from PC
+- sca (set carry from ALU)
+- sci (carry override): force ALU carry-in high
+- smd (set mode): set the md register. FETCH unless stated otherwise
+- addr (address): memory bus address lines
+- data: memory bus data lines
+- sin (instruction into control logic): causes other control bits to be set
+- Yb0, Yar, Yra, Yfl, Ypa, Ypb, Ypc, Ymem = Set register/memory from ALU output
+  - Yb0 has no effect unless fl.W is set
+- Lb0, Lpa, Lpb, Lpc = Set ALU left input from register
+- Rbi4, Rb1, Rb2, Rb3, Rra, Rfl, Ri4, Rmem = Set ALR right input from register/mem
+  - Rbi4 means set ALR right input from belt register selected by low 4 bits of instruction
+
+Assuming memory works on rising edge, our registers work on falling edge.
+
+Fetch:
+		# Prior falling edge: [sap]
+		addr <= pc
+		# Rising edge
+		sin  <= data  
+		cw   <= lookup[sin]
+
+Opcodes:
+0n - push (Push unsigned n)
+		[spc, sbs, Yb0, sfn=INR, Ri4]
+		# Falling edge
+		pc   := pc+1
+		belt := ir4
+1n
+2n - storea (Store to address pa + n)
+		# Falling edge
+		ar   := pa + ir4
+		# Rising edge
+		mem  := belt[0]
+3n - storeb (Store to address pb + n)
+		# Falling edge
+		ar   := pb + ir4
+		# Rising edge
+		mem  := BELT0
+4n - loada (Load from address pa + n)
+		[Yar, sfn=ADD, Lpa, Ri4
+		# Falling edge
+		ar   := pa + ir4
+		belt <= mem
+5n - loadb (Load from address pb + n)
+		# Falling edge
+		ar   := pb + ir4
+		belt <= mem
+6n - 
+7n
+8n - Push nth item from belt
+		[spc, sbs, Yb0, sfn=INR, Rbi4]
+		# Falling edge
+		pc   := pc+1
+		belt := belt[n]
+9n
+an - Opcode-only instructions
+	a0
+	a1 - inc ("add one")
+		[spc, sbs, Yb0, sfn=ADD, Lb0, Ri4, sca]
+		# Falling edge
+		pc   := pc+1
+		belt := belt[0] + 1
+	a2 - add ("add two")
+		[spc, sbs, Yb0, sfn=ADD, Lb0, Rb1, sca]
+		# Falling edge
+		pc   := pc+1
+		belt := belt[0] + belt[1]
+	a3 - adc ("add three" including the carry)
+		[spc, sbs, Yb0, sfn=ADC, Lb0, Rb1, sca]
+		# Falling edge
+		pc   := pc+1
+		belt := belt[0] + belt[1] + fl.C
+	a4
+	a5
+	a6
+	a7
+	a8
+	a9
+	aa - wpa
+		[spc, Ypa, sfn=INL, Lb0]
+		# Falling edge
+		pa := belt[0]
+	ab - wpb
+		[spc, Ypb, sfn=INL, Lb0]
+		# Falling edge
+		pb := belt[0]
+	ac - wpc -- jump to register
+		[Ypc, sfn=INL, Lb0]
+		# Falling edge
+		pc := belt[0]
+	ad
+	ae - wra
+		[spc, Yra, sfn=INL, Lb0]
+		# Falling edge
+		ra := belt[0]
+	af - wfl
+		[spc, Yfl, sfn=INL, Lb0]
+		# Falling edge
+		fl := belt[0]
+bn - Opcode-only instructions
+	b0
+	b1 - dec ("subtract one")
+		[spc, sbs, Yb0, sfn=SUB, Lb0, Ri4, sca]
+		# Falling edge
+		pc   := pc+1
+		belt := belt[0] - 1
+	b2 - sub ("subtract two")
+		[spc, sbs, Yb0, sfn=SUB, Lb0, Rb1, sca]
+		# Falling edge
+		pc   := pc+1
+		belt := belt[0] - belt[1]
+	b3 - sbc ("subtract three")
+		[spc, sbs, Yb0, sfn=SBC, Lb0, Rb1, sca]
+		# Falling edge
+		pc   := pc+1
+		belt := belt[0] - belt[1] + fl.C
+	b4 - ret
+		[Ypc, sfn=INR, Rra]
+		# Falling edge
+		pc := ra
+	b5
+	b6
+	b7
+	b8
+	b9 - nop? ("benign")
+		[spc]
+		# Falling edge
+		pc   := pc+1
+	ba - rpa
+		[spc, sbs, Yb0, sfn=INL, Lpa]
+		# Falling edge
+		pc   := pc + 1
+		belt := pa
+	bb - rpb
+		[spc, sbs, Yb0, sfn=INL, Lpb]
+		# Falling edge
+		pc   := pc + 1
+		belt := pb
+	bc - rpc
+		[spc, sbs, Yb0, sfn=INL, Lpc]
+		# Falling edge
+		belt := pc
+		pc   := pc + 1
+	bd - halt
+		[Ypc, sfn=INL, Lpc]
+		# Falling edge
+		pc   := pc
+	be - rra
+		[spc, sbs, Yb0, sfn=INR, Rra]
+		# Falling edge
+		pc   := pc + 1
+		belt := ra
+	bf - rfl
+		[spc, sbs, Yb0, sfn=INR, Rfl]
+		# Falling edge
+		pc   := pc + 1
+		belt := fl
+cn - Skip if carry clear
+		fl.C=0: [Ypc, sfn=ADC, Lpc, Ri4, sci]
+		fl.C=1: [spc]
+		# Falling edge
+		pc := pc + ir4  # if fl.C clear
+dn - Skip if carry set
+		fl.C=0: [spc]
+		fl.C=1: [Ypc, sfn=ADC, Lpc, Ri4, sci]
+		# Falling edge
+		pc := pc + ir4  # if fl.C set
+en - Shift
+		[spc, sbs, Yb0, sfn=LSH, Lb0, Ri4, sca]
+		# Falling edge
+		pc   := pc + 1
+	11100sss - lsr (logical shift right)
+	11101sss - shl (shift left)
+	- "dup" could be an alias of "shl 0"
+fn - add (Push belt[0] + unsigned n)
+		# Falling edge
+		# Rising edge
+		am = add
+		x1 = BELT0
+		x2 = ir4
+		# Falling edge
+		(am,x1,x2 still asserted)
+		belt <= y
+
