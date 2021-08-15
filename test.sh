@@ -1,3 +1,4 @@
 #! /bin/bash
 
-python -m unittest cpu
+python -m unittest -f cpu
+python -m unittest -f dsim
