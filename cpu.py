@@ -7,6 +7,7 @@ AI = "AI"
 AO = "AO"
 BI = "BI"
 BO = "BO"
+CI = "CI" # Carry in
 PCA = "PCA" # Program counter advance
 PCI = "PCI"
 PCO = "PCO"
@@ -22,6 +23,7 @@ ES0 = "ES0"
 ES1 = "ES1"
 ES2 = "ES2"
 ES3 = "ES3"
+EM  = "EM"
 
 # Control ROM
 control = bytearray( 1024 )
@@ -61,6 +63,8 @@ class CPU:
             self._bus( self.ram[ self.ar ] )
         if IR4 in ctrl:
             self._bus( self.ir & 0x0f )
+        if E0 in ctrl:
+            self._bus( _74181( ctrl ) & 0xff )
 
     def _bus( self, value ):
         if self.bus is None:
@@ -83,69 +87,73 @@ class CPU:
             self.pc = self.ar
         if ARI in ctrl:
             self.ar = self.bus
+        if CI in ctrl:
+            self.c = self._74181( ctrl ) >> 8
+        # Do these after carry.  Carry depends on them.
         if AI in ctrl:
             self.a = self.bus
         if BI in ctrl:
             self.b = self.bus
 
-    def _74181( self, s, m, c ):
-        """Active high. Returns 9-bit result with high bit = carry out"""
-        A = self.a
-        B = self.b
-        if m:
-            result = {
-                0:  ~A,
-                1:  ~(A & B),
-                2:  (~A) & B,
-                3:  0,
-                4:  ~(A & B),
-                5:  ~B,
-                6:   A ^ B,
-                7:  A & (~B),
-                8:  (~A) | B,
-                9:  ~(A ^ B),
-                10: B,
-                11: A & B,
-                12: 1,
-                13: A | (~B),
-                14: A | B,
-                15: A,
-            }[s] & 0x1ff
-        else:
-            AB  = A & B
-            AB_ = A & (~B) # Oddly common
-            result = (c + {
-                0:  A,
-                1:  A + B,
-                2:  A + (~B),
-                3:  -1,
-                4:  A + AB_,
-                5:  (A+B) + AB_,
-                6:  A - B - 1,
-                7:  AB_ - 1,
-                8:  A + AB,
-                9:  A + B,
-                10: (A + (~B)) + AB,
-                11: AB - 1,
-                12: A + A,
-                13: (A + B) + A,
-                14: (A + (~B)) + A,
-                15: A - 1,
-            }[s]) & 0x1ff
-        return result
+    def _74181( self, ctrl ):
+        s = ( (ES3 in ctrl) * 8
+            + (ES2 in ctrl) * 4
+            + (ES1 in ctrl) * 2
+            + (ES0 in ctrl) * 1
+        )
+        return self._74181_logic( self.a, self.b, s, (EM in ctrl), self.c )
+
+def _74181_logic( A, B, s, m, c ):
+    """Active high. Returns 9-bit result with high bit = carry out"""
+    if m:
+        result = {
+            0:  ~A,
+            1:  ~(A & B),
+            2:  (~A) & B,
+            3:  0,
+            4:  ~(A & B),
+            5:  ~B,
+            6:   A ^ B,
+            7:  A & (~B),
+            8:  (~A) | B,
+            9:  ~(A ^ B),
+            10: B,
+            11: A & B,
+            12: 1,
+            13: A | (~B),
+            14: A | B,
+            15: A,
+        }[s] & 0x1ff
+    else:
+        AB  = A & B
+        AB_ = A & (~B) # Oddly common
+        result = (c + {
+            0:  A,
+            1:  A + B,
+            2:  A + (~B),
+            3:  -1,
+            4:  A + AB_,
+            5:  (A+B) + AB_,
+            6:  A - B - 1,
+            7:  AB_ - 1,
+            8:  A + AB,
+            9:  A + B,
+            10: (A + (~B)) + AB,
+            11: AB - 1,
+            12: A + A,
+            13: (A + B) + A,
+            14: (A + (~B)) + A,
+            15: A - 1,
+        }[s]) & 0x1ff
+    return result
 
 class Test74181(unittest.TestCase):
-    def setUp( self ):
-        self.cpu = CPU()
-
     def test_stuff( self ):
         self._check( 200,  70, 130, 1, 0, 0 )
         self._check( 201,  70, 130, 1, 0, 1 )
         self._check( 300, 170, 130, 1, 0, 0 )
 
     def _check( self, expected, a, b, s, m, c ):
-        self.cpu.a = a
-        self.cpu.b = b
-        result = self.cpu._74181( s, m, c )
+        result = _74181_logic( a, b, s, m, c )
         self.assertEqual( expected, result )
 
