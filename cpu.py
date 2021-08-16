@@ -1,5 +1,7 @@
 #! /usr/bin/env python3
 
+import unittest
+
 # Control signals
 AI = "AI"
 AO = "AO"
@@ -41,11 +43,11 @@ class CPU:
 
     def step( self ):
         ctrl = control[ self.c * 512 + 2*self.ir ]
-        self._rising_edge( ctrl )
         self._falling_edge( ctrl )
+        self._rising_edge( ctrl )
         ctrl = control[ self.c * 512 + 2*self.ir + 1 ]
-        self._rising_edge( ctrl )
         self._falling_edge( ctrl )
+        self._rising_edge( ctrl )
 
     def _set_bus( self ):
         self.bus = None
@@ -85,4 +87,65 @@ class CPU:
             self.a = self.bus
         if BI in ctrl:
             self.b = self.bus
+
+    def _74181( self, s, m, c ):
+        """Active high. Returns 9-bit result with high bit = carry out"""
+        A = self.a
+        B = self.b
+        if m:
+            result = {
+                0:  ~A,
+                1:  ~(A & B),
+                2:  (~A) & B,
+                3:  0,
+                4:  ~(A & B),
+                5:  ~B,
+                6:   A ^ B,
+                7:  A & (~B),
+                8:  (~A) | B,
+                9:  ~(A ^ B),
+                10: B,
+                11: A & B,
+                12: 1,
+                13: A | (~B),
+                14: A | B,
+                15: A,
+            }[s] & 0x1ff
+        else:
+            AB  = A & B
+            AB_ = A & (~B) # Oddly common
+            result = (c + {
+                0:  A,
+                1:  A + B,
+                2:  A + (~B),
+                3:  -1,
+                4:  A + AB_,
+                5:  (A+B) + AB_,
+                6:  A - B - 1,
+                7:  AB_ - 1,
+                8:  A + AB,
+                9:  A + B,
+                10: (A + (~B)) + AB,
+                11: AB - 1,
+                12: A + A,
+                13: (A + B) + A,
+                14: (A + (~B)) + A,
+                15: A - 1,
+            }[s]) & 0x1ff
+        return result
+
+class Test74181(unittest.TestCase):
+    def setUp( self ):
+        self.cpu = CPU()
+
+    def test_stuff( self ):
+        self._check( 200,  70, 130, 1, 0, 0 )
+        self._check( 201,  70, 130, 1, 0, 1 )
+        self._check( 300, 170, 130, 1, 0, 0 )
+
+    def _check( self, expected, a, b, s, m, c ):
+        self.cpu.a = a
+        self.cpu.b = b
+        result = self.cpu._74181( s, m, c )
+        self.assertEqual( expected, result )
 
