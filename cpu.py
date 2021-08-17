@@ -62,22 +62,32 @@ def init_control():
     # IMM # Load immediate
     for n in range(16):
         encode( 0x00+n, 1, { AI, IR4O })
-    # ST # Store via pointer
+    # SD # Store direct via pointer
+    for n in range(16):
+        encode( 0x10+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR  := DP+ir4
+        encode( 0x10+n, 2, { MW, AO   })                    # mem := A
+    # SI # Store indirect (store A to address loaded via pointer)
     for n in range(16):
         encode( 0x20+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR  := DP+ir4
-        encode( 0x20+n, 2, { MW, AO   })                    # mem := A
-    # JV # Jump virtual (load PC via pointer)
+        encode( 0x20+n, 2, { ARI, MR   })                   # AR := mem
+        encode( 0x20+n, 3, { MW, AO   })                    # mem := A
+    # LD # Load direct via pointer
     for n in range(16):
-        encode( 0x30+n, 1, { LI, PCO })                     # LR := PC
-        encode( 0x30+n, 2, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
-        encode( 0x30+n, 3, { PCI, MR   })                   # PC := mem
-    # LD # Load via pointer
+        encode( 0x30+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
+        encode( 0x30+n, 2, { AI, MR   })                    # A  := mem
+    # LI # Load indirect (load A from address loaded via pointer)
     for n in range(16):
         encode( 0x40+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
-        encode( 0x40+n, 2, { AI, MR   })                    # A  := mem
+        encode( 0x40+n, 2, { ARI, MR   })                   # AR := mem
+        encode( 0x40+n, 3, { AI, MR   })                    # A  := mem
     # SH # Bitwise shift
     for n in range(16):
         encode( 0x50+n, 1, { AI, SO, EI4 })        # A  := shifter output of A and ir4
+    # JV # Jump virtual (load PC via pointer)
+    for n in range(16):
+        encode( 0x60+n, 1, { LI, PCO })                     # LR := PC
+        encode( 0x60+n, 2, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
+        encode( 0x60+n, 3, { PCI, MR   })                   # PC := mem
     # A2DP
     encode( 0x80, 1, { DPI, AO })
     # DP2A
@@ -92,6 +102,9 @@ def init_control():
     encode( 0x84, 1, { AI, LO })
     # A2L
     encode( 0x85, 1, { LI, AO })
+    # SPLIT
+    encode( 0x8F, 1, { BI, EO, EA, EI4, EM,ES3,ES1,ES0 })  # B := A & 0x0F
+    encode( 0x8F, 2, { AI, EO, EA,      EM,ES2,ES1     })  # A := A ^ B
     # ADD
     encode( 0xa2, 1, { AI, EO, EA, ES0, ES3, CI })      # A := A + B; set carry
     # ADC
@@ -140,13 +153,17 @@ class CPU:
         self.halted = False
 
     def step( self ):
+        debug( "Step instruction=%x" % ( self.ram[ self.pc ] ) )
         for cycle in range(4):
             ctrl = control[ self.carry * 1024 + 4*self.ir + cycle ]
             if cycle == 0:
                 ctrl.add( APC )
             elif cycle == 1:
                 ctrl.add( PCA )
-            debug( "| ctrl: %s" % ctrl )
+            debug( "%d: ctrl = %s" % ( cycle, ctrl ) )
+            v = vars( self ).copy()
+            v["ram"] = "..."
+            debug( "| state=%s" % ( v ) )
             self._set_bus( ctrl )
             self._falling_edge( ctrl )
             self._set_bus( ctrl )
@@ -284,17 +301,23 @@ class Assembler():
     def imm( self, v ):
         self._emit( v )
 
-    def st( self, d ):
+    def sd( self, d ):
+        self._emit( 0x10 + d )
+
+    def si( self, d ):
         self._emit( 0x20 + d )
 
-    def jv( self, d ):
+    def ld( self, d ):
         self._emit( 0x30 + d )
 
-    def ld( self, d ):
+    def li( self, d ):
         self._emit( 0x40 + d )
 
     def sh( self, d ):
         self._emit( 0x50 + d )
+
+    def jv( self, d ):
+        self._emit( 0x60 + d )
 
     def a2dp( self ):
         self._emit( 0x80 )
@@ -313,6 +336,9 @@ class Assembler():
 
     def a2l( self ):
         self._emit( 0x85 )
+
+    def split( self ):
+        self._emit( 0x8f )
 
     def add( self ):
         self._emit( 0xa2 )
@@ -353,7 +379,18 @@ class TestMath( TestCase ):
         self.asm = Assembler( self.ram )
         self.asm.loc = 16
 
-    def test_fib( self ):
+    def test_split( self ):
+        for a in [0x00, 0x5a, 0xa5, 0xef, 0xfe]:
+            with self.subTest(a=a):
+                self.cpu.a = a
+                self.cpu.pc = 16
+                self.asm.loc = 16
+                self.asm.split()
+                self.cpu.step()
+                self.assertEqual( a & 0xf0, self.cpu.a )
+                self.assertEqual( a & 0x0f, self.cpu.b )
+
+    def _fib( self ):
         self.asm.imm( 1 )
         self.asm.a2b()
         self.asm.imm( 1 )
@@ -365,16 +402,26 @@ class TestMath( TestCase ):
         self.asm.halt()
         self._execute()
 
+    def test_interpreter( self ):
+        # Registers - addressed from DP=0
+        PC = 0
+        A  = 1
+        B  = 2
+        DP = 3
+        C  = 4
+        # Initial state
+        self.ram[ PC ] = 16
+        # Fetch
+        self.asm.li( PC )
+
     def _execute( self ):
         while not self.cpu.halted:
-            v = vars( self.cpu ).copy()
-            v["ram"] = "..."
-            debug( "state=%s" % ( v ) )
-            debug( "| i=%x" % ( self.cpu.ram[ self.cpu.pc ] ) )
             self.cpu.step()
 
 init_control()
-t = TestMath()
-t.setUp()
-t.test_fib()
+
+def main():
+    t = TestMath()
+    t.setUp()
+    t._fib()
 
