@@ -87,10 +87,31 @@ def init_control():
     for n in range(16):
         encode( 0x60+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
         encode( 0x60+n, 2, { PCI, MR   })                   # PC := mem
-    # JT # Jump table (load PC from [[DP]+B])
+    # JT # Jump table (PC = [DP + n + B])
     for n in range(16):
-        encode( 0x70+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
-        encode( 0x70+n, 2, { PCI, MR   })                   # PC := mem
+        encode( 0xd0+n, 1, { PCI, EO, EDP,      ES0,ES3 })  # PC := DP+B // temp storage
+        encode( 0xd0+n, 2, { ARI, EO, EPC, EI4, ES0,ES3 })  # AR := PC+ir4
+        encode( 0xd0+n, 3, { PCI, MR   })                   # DP := mem
+    # DPE # Dereference pointer to element (DP = [DP + n + B])
+    for n in range(16):
+        encode( 0xe0+n, 1, { DPI, EO, EDP,      ES0,ES3 })  # DP := DP+B
+        encode( 0xe0+n, 2, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
+        encode( 0xe0+n, 3, { DPI, MR   })                   # DP := mem
+    # DPF # Dereference pointer to field (DP = [DP+n])
+    for n in range(16):
+        encode( 0xf0+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
+        encode( 0xf0+n, 2, { DPI, MR   })                   # DP := mem
+    # LINKn
+    for n in range(4):
+        encode( 0xb0+n, 1, { LI, EO, EPC, EI4, ES0, ES3  }) # link := PC + ir4
+    # RET
+    encode( 0xb4, 1, { PCI, LO })  # PC := link
+    # JDP
+    encode( 0xb5, 1, { PCI, DPO }) # PC := dp
+    # ADD
+    encode( 0xb6, 1, { AI, EO, EA, ES0, ES3, CI })      # A := A + B; set carry
+    # ADC
+    encode( 0xb7, 1, { AI, EO, EA, ES0, ES3, CI, EC })  # A := A + B + C; set carry
     # A2DP
     encode( 0xb8, 1, { DPI, AO })
     # DP2A
@@ -101,22 +122,13 @@ def init_control():
     encode( 0xbb, 1, { BI, EO, EA, EM, ES0, ES3 })  # B := A ^ B
     encode( 0xbb, 2, { AI, EO, EA, EM, ES0, ES3 })  # A := A ^ B
     encode( 0xbb, 3, { BI, EO, EA, EM, ES0, ES3 })  # B := A ^ B
+    # SPLIT
+    encode( 0xbc, 1, { BI, EO, EA, EI4, EM,ES3,ES1,ES0 })  # B := A & 0x0F
+    encode( 0xbc, 2, { AI, EO, EA,      EM,ES2,ES1     })  # A := A ^ B
     # L2A
     encode( 0xbe, 1, { AI, LO })
     # A2L
     encode( 0xbf, 1, { LI, AO })
-    # SPLIT
-    encode( 0xBC, 1, { BI, EO, EA, EI4, EM,ES3,ES1,ES0 })  # B := A & 0x0F
-    encode( 0xBC, 2, { AI, EO, EA,      EM,ES2,ES1     })  # A := A ^ B
-    # ADD
-    encode( 0xb6, 1, { AI, EO, EA, ES0, ES3, CI })      # A := A + B; set carry
-    # ADC
-    encode( 0xb7, 1, { AI, EO, EA, ES0, ES3, CI, EC })  # A := A + B + C; set carry
-    # LINKn
-    for n in range(4):
-        encode( 0xb0+n, 1, { LI, EO, EPC, EI4, ES0, ES3  }) # link := PC + ir4
-    # RET
-    encode( 0xb4, 1, { PCI, LO })  # PC := link
     # HALT
     encode( 0xbd, 1, { H } )
     # Skip if carry clear
@@ -387,6 +399,9 @@ class Assembler():
     def ret( self ):
         self._emit( 0xb4 )
 
+    def jdp( self ):
+        self._emit( 0xb5 )
+
     def link( self, n ):
         assert 0 <= n < 4
         self._emit( 0xb0 + n )
@@ -399,6 +414,12 @@ class Assembler():
 
     def scs( self, d ):
         self._emit( 0xd0 + d )
+
+    def dpe( self, d ):
+        self._emit( 0xe0 + d )
+
+    def dpf( self, d ):
+        self._emit( 0xf0 + d )
 
 class Test74181( TestCase ):
     def test_stuff( self ):
@@ -441,21 +462,72 @@ class TestMath( TestCase ):
         self.asm.ret()
         self.asm.halt()
 
-    def test_interpreter( self ):
-        # Registers - addressed from DP=0
-        PC = 0
-        A  = 1
-        B  = 2
-        DP = 3
-        C  = 4
-        # Initial state
-        self.ram[ PC ] = 16
+    def _interpreter( self ):
+        # Data fields from DP=0
+        F_PC = 0
+        F_A  = 1
+        F_B  = 2
+        F_DP = 3
+        F_CARRY  = 4
+        F_HALTED = 5
+        F_MAIN_LOOP = 8
+        F_HANDLERS_MAIN = 9
+        F_HANDLERS_BX = 10
+
+        ### CODE ###
+        self.asm.loc = 0x10
+
+        MAIN_LOOP = self.asm.loc
         # Fetch
         self.asm.li( PC )
+        # Call handler
         self.asm.split()
-        # Compute handler
         self.asm.lsr( 4 )
         self.asm.xchg()
+        self.asm.df( HANDLERS_MAIN )
+        self.asm.link( 1 )
+        self.asm.jt( 0 )
+        # Reset DP and loop
+        self.asm.imm( 0 )
+        self.asm.a2dp()
+        self.asm.jv( MAIN_LOOP )
+        ## Data
+        self.ram[ F_PC ] = MAIN_LOOP
+        self.ram[ F_MAIN_LOOP ] = MAIN_LOOP
+        self.ram[ F_HANDLERS_MAIN ] = 0x20
+        self.ram[ F_HANDLERS_BX ] = 0x30
+
+        H_IMM = self.asm.loc
+        self.asm.sd( F_A )
+        self.asm.ret()
+
+        H_SD = self.asm.loc
+        H_SI = self.asm.loc
+        H_LD = self.asm.loc
+        H_LI = self.asm.loc
+        H_SH = self.asm.loc
+        H_JV = self.asm.loc
+        H_JT = self.asm.loc
+        H_BX = self.asm.loc
+        H_SCC = self.asm.loc
+        H_SCS = self.asm.loc
+        H_DPE = self.asm.loc
+        H_DPF = self.asm.loc
+        H_A2DP = self.asm.loc
+        H_DP2A = self.asm.loc
+        H_A2B = self.asm.loc
+        H_XCHG = self.asm.loc
+        H_L2A = self.asm.loc
+        H_A2L = self.asm.loc
+        H_SPLIT = self.asm.loc
+        H_ADD = self.asm.loc
+        H_ADC = self.asm.loc
+        H_LINK = self.asm.loc
+        H_RET = self.asm.loc
+        H_JDP = self.asm.loc
+        H_HALT = self.asm.loc
+        # Not yet implemented
+        self.asm.halt()
 
     def _execute( self ):
         while not self.cpu.halted:
@@ -485,8 +557,8 @@ class Interpreter(ArchitectedRegisters):
 
             self._scc,
             self._scs,
-            self._UNDEF,
-            self._UNDEF,
+            self._dpe,
+            self._dpf,
         ]
         self._handlers_bx = [
             self._link,
@@ -495,7 +567,7 @@ class Interpreter(ArchitectedRegisters):
             self._link,
 
             self._ret,
-            self._UNDEF,
+            self._jdp,
             self._add,
             self._adc,
 
@@ -546,11 +618,11 @@ class Interpreter(ArchitectedRegisters):
 
     def _jv( self, lo4 ):
         addr = self.ram[ self.dp + lo4 ]
-        self.pc = ram[ addr ]
+        self.pc = self.ram[ addr ]
 
     def _jt( self, lo4 ):
         addr = self.ram[ self.dp + self.b ]
-        self.pc = ram[ addr ]
+        self.pc = self.ram[ addr ]
 
     def _bx( self, lo4 ):
         dp = self._handlers_bx
@@ -563,6 +635,12 @@ class Interpreter(ArchitectedRegisters):
     def _scs( self, lo4 ):
         if self.carry:
             self.pc += lo4
+
+    def _dpe( self, lo4 ):
+        self.dp = self.ram[ self.dp + self.b + lo4 ]
+
+    def _dpf( self, lo4 ):
+        self.dp = self.ram[ self.dp + lo4 ]
 
     def _a2dp( self, lo4 ):
         self.dp = self.a
@@ -603,6 +681,9 @@ class Interpreter(ArchitectedRegisters):
 
     def _ret( self, lo4 ):
         self.pc = self.lr
+
+    def _jdp( self, lo4 ):
+        self.pc = self.dp
 
     def _halt( self, lo4 ):
         self.halted = True
