@@ -92,22 +92,22 @@ def init_control():
         encode( 0x70+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
         encode( 0x70+n, 2, { PCI, MR   })                   # PC := mem
     # A2DP
-    encode( 0x80, 1, { DPI, AO })
+    encode( 0xb8, 1, { DPI, AO })
     # DP2A
-    encode( 0x81, 1, { AI, DPO })
+    encode( 0xb9, 1, { AI, DPO })
     # A2B
-    encode( 0x82, 1, { BI, AO })
+    encode( 0xba, 1, { BI, AO })
     # XCHG
-    encode( 0x83, 1, { BI, EO, EA, EM, ES0, ES3 })  # B := A ^ B
-    encode( 0x83, 2, { AI, EO, EA, EM, ES0, ES3 })  # A := A ^ B
-    encode( 0x83, 3, { BI, EO, EA, EM, ES0, ES3 })  # B := A ^ B
+    encode( 0xbb, 1, { BI, EO, EA, EM, ES0, ES3 })  # B := A ^ B
+    encode( 0xbb, 2, { AI, EO, EA, EM, ES0, ES3 })  # A := A ^ B
+    encode( 0xbb, 3, { BI, EO, EA, EM, ES0, ES3 })  # B := A ^ B
     # L2A
-    encode( 0x84, 1, { AI, LO })
+    encode( 0xbe, 1, { AI, LO })
     # A2L
-    encode( 0x85, 1, { LI, AO })
+    encode( 0xbf, 1, { LI, AO })
     # SPLIT
-    encode( 0x8F, 1, { BI, EO, EA, EI4, EM,ES3,ES1,ES0 })  # B := A & 0x0F
-    encode( 0x8F, 2, { AI, EO, EA,      EM,ES2,ES1     })  # A := A ^ B
+    encode( 0xBC, 1, { BI, EO, EA, EI4, EM,ES3,ES1,ES0 })  # B := A & 0x0F
+    encode( 0xBC, 2, { AI, EO, EA,      EM,ES2,ES1     })  # A := A ^ B
     # ADD
     encode( 0xa2, 1, { AI, EO, EA, ES0, ES3, CI })      # A := A + B; set carry
     # ADC
@@ -358,25 +358,25 @@ class Assembler():
         self._emit( 0x60 + d )
 
     def a2dp( self ):
-        self._emit( 0x80 )
+        self._emit( 0xb8 )
 
     def dp2a( self ):
-        self._emit( 0x81 )
+        self._emit( 0xb9 )
 
     def a2b( self ):
-        self._emit( 0x82 )
+        self._emit( 0xba )
 
     def xchg( self ):
-        self._emit( 0x83 )
+        self._emit( 0xbb )
 
     def l2a( self ):
-        self._emit( 0x84 )
+        self._emit( 0xbe )
 
     def a2l( self ):
-        self._emit( 0x85 )
+        self._emit( 0xbf )
 
     def split( self ):
-        self._emit( 0x8f )
+        self._emit( 0xbc )
 
     def add( self ):
         self._emit( 0xa2 )
@@ -478,7 +478,7 @@ class Interpreter(ArchitectedRegisters):
             self._jv,
             self._jt,
 
-            self._8x,
+            self._UNDEF,
             self._UNDEF,
             self._ax,
             self._bx,
@@ -487,27 +487,6 @@ class Interpreter(ArchitectedRegisters):
             self._scs,
             self._UNDEF,
             self._UNDEF,
-        ]
-        self._handlers_8x = [
-            self._a2dp,
-            self._dp2a,
-            self._a2b,
-            self._xchg,
-
-            self._l2a,
-            self._a2l,
-            self._UNDEF,
-            self._UNDEF,
-
-            self._UNDEF,
-            self._UNDEF,
-            self._UNDEF,
-            self._UNDEF,
-
-            self._UNDEF,
-            self._UNDEF,
-            self._UNDEF,
-            self._split,
         ]
         self._handlers_ax = [
             self._UNDEF,
@@ -541,15 +520,15 @@ class Interpreter(ArchitectedRegisters):
             self._UNDEF,
             self._UNDEF,
 
-            self._UNDEF,
-            self._UNDEF,
-            self._UNDEF,
-            self._UNDEF,
+            self._a2dp,
+            self._dp2a,
+            self._a2b,
+            self._xchg,
 
-            self._UNDEF,
+            self._split,
             self._halt,
-            self._UNDEF,
-            self._UNDEF,
+            self._l2a,
+            self._a2l,
         ]
 
     def step( self ):
@@ -593,10 +572,6 @@ class Interpreter(ArchitectedRegisters):
     def _jt( self, lo4 ):
         addr = self.ram[ self.dp + self.b ]
         self.pc = ram[ addr ]
-
-    def _8x( self, lo4 ):
-        dp = self._handlers_8x
-        dp[ lo4 ]( lo4 )
 
     def _ax( self, lo4 ):
         dp = self._handlers_ax
