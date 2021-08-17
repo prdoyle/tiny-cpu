@@ -10,7 +10,7 @@ def debug(*args, **kwargs):
 ### Control signals
 # Out to bus - 74238?
 AO = "AO"
-PO = "PO"
+DPO = "DPO"
 PCO = "PCO"
 MR = "MR"
 EO = "EO" # ALU out
@@ -20,7 +20,7 @@ LO = "LO" # Link register out
 # In from bus - 74238?
 AI = "AI"
 BI = "BI"
-PI = "PI"
+DPI = "DPI"
 PCI = "PCI"
 MW = "MW"
 ARI = "ARI"
@@ -37,7 +37,7 @@ EM  = "EM"
 CI  = "CI" # ALU writes carry to C register
 # ALU input selector
 EA  = "EA" # First input is accumulator
-EP  = "EP" # First input is pointer
+EDP = "EDP" # First input is data pointer
 EPC = "EPC" # First input is program counter
 EI4 = "EI4" # ALU (and shifter) reads second operand from low 4 bits of instruction register; otherwise b
 EC  = "EC" # ALU reads carry from C register; otherwise zero
@@ -64,24 +64,24 @@ def init_control():
         encode( 0x00+n, 1, { AI, IR4O })
     # ST # Store via pointer
     for n in range(16):
-        encode( 0x20+n, 1, { ARI, EO, EP, EI4, ES0,ES3 })  # AR  := P+ir4
-        encode( 0x20+n, 2, { MW, AO   })                   # mem := A
+        encode( 0x20+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR  := DP+ir4
+        encode( 0x20+n, 2, { MW, AO   })                    # mem := A
     # JV # Jump virtual (load PC via pointer)
     for n in range(16):
         encode( 0x30+n, 1, { LI, PCO })                     # LR := PC
-        encode( 0x30+n, 2, { ARI, EO, EP, EI4, ES0,ES3  })  # AR := P+ir4
+        encode( 0x30+n, 2, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
         encode( 0x30+n, 3, { PCI, MR   })                   # PC := mem
     # LD # Load via pointer
     for n in range(16):
-        encode( 0x40+n, 1, { ARI, EO, EP, EI4, ES0,ES3  })  # AR := P+ir4
+        encode( 0x40+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
         encode( 0x40+n, 2, { AI, MR   })                    # A  := mem
     # SH # Bitwise shift
     for n in range(16):
         encode( 0x50+n, 1, { AI, SO, EI4 })        # A  := shifter output of A and ir4
-    # A2P
-    encode( 0x80, 1, { PI, AO })
-    # P2A
-    encode( 0x81, 1, { AI, PO })
+    # A2DP
+    encode( 0x80, 1, { DPI, AO })
+    # DP2A
+    encode( 0x81, 1, { AI, DPO })
     # A2B
     encode( 0x82, 1, { BI, AO })
     # XCHG
@@ -104,10 +104,10 @@ def init_control():
     encode( 0xbd, 1, { H } )
     # Skip if carry clear
     for n in range(16):
-        encode( 0xc0+n, 1, { PCI, EO, EPC, EI4, ES0, ES3  }) # AR := P+ir4
+        encode( 0xc0+n, 1, { PCI, EO, EPC, EI4, ES0, ES3  }) # PC := PC + ir4
     # Skip if carry set
     for n in range(16):
-        encode( 0xd0+n, 1, { PCI, EO, EPC, EI4, ES0, ES3  }) # AR := P+ir4
+        encode( 0xd0+n, 1, { PCI, EO, EPC, EI4, ES0, ES3  }) # PC := PC + ir4
 
     # Now copy everything for carry set
     half = len( control ) // 2
@@ -128,7 +128,7 @@ class CPU:
         self.pc = 0x10  # Program counter
         self.a = 0      # Accumulator reg
         self.b = 0      # B reg
-        self.p = 0      # Pointer reg
+        self.dp = 0     # Data pointer
         self.carry = 0
         # Internal regs
         self.ar = 0     # Address reg
@@ -197,8 +197,8 @@ class CPU:
             self.a = self.bus
         if BI in ctrl:
             self.b = self.bus
-        if PI in ctrl:
-            self.p = self.bus
+        if DPI in ctrl:
+            self.dp = self.bus
         if PCI in ctrl:
             self.pc = self.bus
         if MW in ctrl:
@@ -213,8 +213,8 @@ class CPU:
         a = None
         if EA in ctrl:
             a = self.a
-        if EP in ctrl:
-            a = self.p
+        if EDP in ctrl:
+            a = self.dp
         if EPC in ctrl:
             a = self.pc
         if EI4 in ctrl:
@@ -296,10 +296,10 @@ class Assembler():
     def sh( self, d ):
         self._emit( 0x50 + d )
 
-    def a2p( self ):
+    def a2dp( self ):
         self._emit( 0x80 )
 
-    def p2a( self ):
+    def dp2a( self ):
         self._emit( 0x81 )
 
     def a2b( self ):
@@ -363,7 +363,9 @@ class TestMath( TestCase ):
         self.asm.scs( 1 )
         self.asm.ret()
         self.asm.halt()
-        
+        self._execute()
+
+    def _execute( self ):
         while not self.cpu.halted:
             v = vars( self.cpu ).copy()
             v["ram"] = "..."
