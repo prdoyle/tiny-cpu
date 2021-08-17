@@ -83,11 +83,14 @@ def init_control():
     # SH # Bitwise shift
     for n in range(16):
         encode( 0x50+n, 1, { AI, SO, EI4 })        # A  := shifter output of A and ir4
-    # JV # Jump virtual (load PC via pointer)
+    # JV # Jump virtual (load PC from [DP+n] save return address)
     for n in range(16):
-        encode( 0x60+n, 1, { LI, PCO })                     # LR := PC
-        encode( 0x60+n, 2, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
-        encode( 0x60+n, 3, { PCI, MR   })                   # PC := mem
+        encode( 0x60+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
+        encode( 0x60+n, 2, { PCI, MR   })                   # PC := mem
+    # JT # Jump table (load PC from [[DP]+B])
+    for n in range(16):
+        encode( 0x70+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
+        encode( 0x70+n, 2, { PCI, MR   })                   # PC := mem
     # A2DP
     encode( 0x80, 1, { DPI, AO })
     # DP2A
@@ -109,8 +112,9 @@ def init_control():
     encode( 0xa2, 1, { AI, EO, EA, ES0, ES3, CI })      # A := A + B; set carry
     # ADC
     encode( 0xa3, 1, { AI, EO, EA, ES0, ES3, CI, EC })  # A := A + B + C; set carry
-    # LINK
-    encode( 0xb3, 1, { LI, PCO })  # link := PC
+    # LINKn
+    for n in range(4):
+        encode( 0xb0+n, 1, { LI, EO, EPC, EI4, ES0, ES3  }) # link := PC + ir4
     # RET
     encode( 0xb4, 1, { PCI, LO })  # PC := link
     # HALT
@@ -131,10 +135,12 @@ def init_control():
         put_control( 0xd0+n, 1, set() )
         put_control( 0x1c0+n, 1, set() )
 
+init_control()
+
 # Machine state outside CPU
 ram = bytearray( 256 )
 
-class CPU:
+class ArchitectedRegisters:
 
     def __init__( self ):
         # Architected regs
@@ -143,14 +149,28 @@ class CPU:
         self.b = 0      # B reg
         self.dp = 0     # Data pointer
         self.carry = 0
+        self.lr = 0
+        # Just so we can tell when we're done
+        self.halted = False
+
+    def _debug( self ):
+        v = vars( self ).copy()
+        v["ram"] = "..."
+        for k in list( v.keys() ):
+            if k[0] == "_":
+                del v[k]
+        debug( "| state=%s" % ( v ) )
+
+class CPU(ArchitectedRegisters):
+
+    def __init__( self ):
+        super().__init__()
         # Internal regs
         self.ar = 0     # Address reg
         self.ir = 0     # Instruction reg
         self.lr = 9     # Link reg
         # Not a register. We put this here for error checking
         self.bus = None
-        # Just so we can tell when we're done
-        self.halted = False
 
     def step( self ):
         debug( "Step instruction=%x" % ( self.ram[ self.pc ] ) )
@@ -161,9 +181,7 @@ class CPU:
             elif cycle == 1:
                 ctrl.add( PCA )
             debug( "%d: ctrl = %s" % ( cycle, ctrl ) )
-            v = vars( self ).copy()
-            v["ram"] = "..."
-            debug( "| state=%s" % ( v ) )
+            self._debug()
             self._set_bus( ctrl )
             self._falling_edge( ctrl )
             self._set_bus( ctrl )
@@ -183,6 +201,8 @@ class CPU:
             self._bus( self.lr )
         if EO in ctrl:
             self._bus( self._74181( ctrl ) & 0xff )
+        if SO in ctrl:
+            self._bus( self._shifter( ctrl ) )
 
     def _bus( self, value ):
         if self.bus is None:
@@ -221,24 +241,39 @@ class CPU:
         if MW in ctrl:
             self.mem[ self.ar ] = self.bus
 
+    def _alu_first_operand( self, ctrl ):
+        if EA in ctrl:
+            return self.a
+        if EDP in ctrl:
+            return self.dp
+        if EPC in ctrl:
+            return self.pc
+        raise ValueError
+
+    def _alu_second_operand( self, ctrl ):
+        if EI4 in ctrl:
+            return self.ir & 0x0f
+        else:
+            return self.b
+
     def _74181( self, ctrl ):
         s = ( (ES3 in ctrl) * 8
             + (ES2 in ctrl) * 4
             + (ES1 in ctrl) * 2
             + (ES0 in ctrl) * 1
         )
-        a = None
-        if EA in ctrl:
-            a = self.a
-        if EDP in ctrl:
-            a = self.dp
-        if EPC in ctrl:
-            a = self.pc
-        if EI4 in ctrl:
-            b = self.ir & 0x0f
-        else:
-            b = self.b
+        a = self._alu_first_operand( ctrl )
+        b = self._alu_second_operand( ctrl )
         return _74181_logic( a, b, s, (EM in ctrl), (EC in ctrl) and self.carry )
+
+    def _shifter( self, ctrl ):
+        a = self._alu_first_operand( ctrl )
+        b = self._alu_second_operand( ctrl )
+        if b & 0x80: # Left
+            result = a << (b & 0x07)
+        else: # Right
+            result = a >> (b & 0x07)
+        return result & 0xff
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
@@ -313,8 +348,11 @@ class Assembler():
     def li( self, d ):
         self._emit( 0x40 + d )
 
-    def sh( self, d ):
+    def lsl( self, d ):
         self._emit( 0x50 + d )
+
+    def lsr( self, d ):
+        self._emit( 0x58 + d )
 
     def jv( self, d ):
         self._emit( 0x60 + d )
@@ -346,11 +384,12 @@ class Assembler():
     def adc( self ):
         self._emit( 0xa3 )
 
-    def link( self ):
-        self._emit( 0xb3 )
-
     def ret( self ):
         self._emit( 0xb4 )
+
+    def link( self, n ):
+        assert 0 <= n < 4
+        self._emit( 0xb0 + n )
 
     def halt( self ):
         self._emit( 0xbd )
@@ -373,7 +412,8 @@ class Test74181( TestCase ):
 
 class TestMath( TestCase ):
     def setUp( self ):
-        self.cpu = CPU()
+        #self.cpu = CPU()
+        self.cpu = Interpreter()
         self.ram = bytearray( 256 )
         self.cpu.ram = self.ram
         self.asm = Assembler( self.ram )
@@ -394,13 +434,12 @@ class TestMath( TestCase ):
         self.asm.imm( 1 )
         self.asm.a2b()
         self.asm.imm( 1 )
-        self.asm.link()
+        self.asm.link( 0 )
         self.asm.xchg()
         self.asm.add()
         self.asm.scs( 1 )
         self.asm.ret()
         self.asm.halt()
-        self._execute()
 
     def test_interpreter( self ):
         # Registers - addressed from DP=0
@@ -413,15 +452,218 @@ class TestMath( TestCase ):
         self.ram[ PC ] = 16
         # Fetch
         self.asm.li( PC )
+        self.asm.split()
+        # Compute handler
+        self.asm.lsr( 4 )
+        self.asm.xchg()
 
     def _execute( self ):
         while not self.cpu.halted:
             self.cpu.step()
 
-init_control()
+class Interpreter(ArchitectedRegisters):
+    """Like CPU but closer to what the software will look like, rather than the hardware"""
+
+    def __init__( self ):
+        super().__init__()
+        # TODO: Virtualize memory
+        self._handlers_main = [
+            self._imm,
+            self._sd,
+            self._si,
+            self._ld,
+
+            self._li,
+            self._sh,
+            self._jv,
+            self._jt,
+
+            self._8x,
+            self._UNDEF,
+            self._ax,
+            self._bx,
+
+            self._scc,
+            self._scs,
+            self._UNDEF,
+            self._UNDEF,
+        ]
+        self._handlers_8x = [
+            self._a2dp,
+            self._dp2a,
+            self._a2b,
+            self._xchg,
+
+            self._l2a,
+            self._a2l,
+            self._UNDEF,
+            self._UNDEF,
+
+            self._UNDEF,
+            self._UNDEF,
+            self._UNDEF,
+            self._UNDEF,
+
+            self._UNDEF,
+            self._UNDEF,
+            self._UNDEF,
+            self._split,
+        ]
+        self._handlers_ax = [
+            self._UNDEF,
+            self._UNDEF,
+            self._add,
+            self._adc,
+
+            self._UNDEF,
+            self._UNDEF,
+            self._UNDEF,
+            self._UNDEF,
+
+            self._UNDEF,
+            self._UNDEF,
+            self._UNDEF,
+            self._UNDEF,
+
+            self._UNDEF,
+            self._UNDEF,
+            self._UNDEF,
+            self._UNDEF,
+        ]
+        self._handlers_bx = [
+            self._link,
+            self._link,
+            self._link,
+            self._link,
+
+            self._ret,
+            self._UNDEF,
+            self._UNDEF,
+            self._UNDEF,
+
+            self._UNDEF,
+            self._UNDEF,
+            self._UNDEF,
+            self._UNDEF,
+
+            self._UNDEF,
+            self._halt,
+            self._UNDEF,
+            self._UNDEF,
+        ]
+
+    def step( self ):
+        debug( "Step instruction=%x" % ( self.ram[ self.pc ] ) )
+        self._debug()
+        dp = self._handlers_main
+        instr = self.ram[ self.pc ]
+        self.pc += 1
+        hi4 = instr >> 4
+        lo4 = instr & 0x0f
+        dp[ hi4 ]( lo4 )
+
+    def _imm( self, lo4 ):
+        self.a = lo4
+
+    def _sd( self, lo4 ):
+        self.ram[ self.dp + lo4 ] = self.a
+
+    def _si( self, lo4 ):
+        addr = self.ram[ self.dp + lo4 ]
+        ram[ addr ] = self.a
+
+    def _ld( self, lo4 ):
+        self.a = self.ram[ self.dp + lo4 ]
+
+    def _li( self, lo4 ):
+        addr = self.ram[ self.dp + lo4 ]
+        self.a = ram[ addr ]
+
+    def _sh( self, lo4 ):
+        distance = lo4 - 8
+        if distance < 0:
+            self.a = self.a << (-distance)
+        else:
+            self.a = self.a >> distance
+
+    def _jv( self, lo4 ):
+        addr = self.ram[ self.dp + lo4 ]
+        self.pc = ram[ addr ]
+
+    def _jt( self, lo4 ):
+        addr = self.ram[ self.dp + self.b ]
+        self.pc = ram[ addr ]
+
+    def _8x( self, lo4 ):
+        dp = self._handlers_8x
+        dp[ lo4 ]( lo4 )
+
+    def _ax( self, lo4 ):
+        dp = self._handlers_ax
+        dp[ lo4 ]( lo4 )
+
+    def _bx( self, lo4 ):
+        dp = self._handlers_bx
+        dp[ lo4 ]( lo4 )
+
+    def _scc( self, lo4 ):
+        if not self.c:
+            self.pc += lo4
+
+    def _scs( self, lo4 ):
+        if self.carry:
+            self.pc += lo4
+
+    def _a2dp( self, lo4 ):
+        self.dp = self.a
+
+    def _dp2a( self, lo4 ):
+        self.a = self.dp
+
+    def _a2b( self, lo4 ):
+        self.b = self.a
+
+    def _xchg( self, lo4 ):
+        temp = self.a
+        self.a = self.b
+        self.b = temp
+
+    def _l2a( self, lo4 ):
+        self.a = self.lr
+
+    def _a2l( self, lo4 ):
+        self.lr = self.a
+
+    def _split( self, lo4 ):
+        self.b = self.a & 0x0f
+        self.a = self.a ^ self.b
+
+    def _add( self, lo4 ):
+        result = self.a + self.b
+        self.a = result & 0xff
+        self.carry = result >> 8
+
+    def _adc( self, lo4 ):
+        result = self.a + self.b + c
+        self.a = result & 0xff
+        self.carry = result >> 8
+
+    def _link( self, lo4 ):
+        self.lr = self.pc + lo4
+
+    def _ret( self, lo4 ):
+        self.pc = self.lr
+
+    def _halt( self, lo4 ):
+        self.halted = True
+
+    def _UNDEF( self, lo4 ):
+        raise ValueError( "No handler for %x" % lo4 )
 
 def main():
     t = TestMath()
     t.setUp()
     t._fib()
+    t._execute()
 
+main()
