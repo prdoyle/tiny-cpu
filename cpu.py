@@ -109,9 +109,9 @@ def init_control():
     encode( 0xBC, 1, { BI, EO, EA, EI4, EM,ES3,ES1,ES0 })  # B := A & 0x0F
     encode( 0xBC, 2, { AI, EO, EA,      EM,ES2,ES1     })  # A := A ^ B
     # ADD
-    encode( 0xa2, 1, { AI, EO, EA, ES0, ES3, CI })      # A := A + B; set carry
+    encode( 0xb6, 1, { AI, EO, EA, ES0, ES3, CI })      # A := A + B; set carry
     # ADC
-    encode( 0xa3, 1, { AI, EO, EA, ES0, ES3, CI, EC })  # A := A + B + C; set carry
+    encode( 0xb7, 1, { AI, EO, EA, ES0, ES3, CI, EC })  # A := A + B + C; set carry
     # LINKn
     for n in range(4):
         encode( 0xb0+n, 1, { LI, EO, EPC, EI4, ES0, ES3  }) # link := PC + ir4
@@ -379,10 +379,10 @@ class Assembler():
         self._emit( 0xbc )
 
     def add( self ):
-        self._emit( 0xa2 )
+        self._emit( 0xb6 )
 
     def adc( self ):
-        self._emit( 0xa3 )
+        self._emit( 0xb7 )
 
     def ret( self ):
         self._emit( 0xb4 )
@@ -480,32 +480,11 @@ class Interpreter(ArchitectedRegisters):
 
             self._UNDEF,
             self._UNDEF,
-            self._ax,
+            self._UNDEF,
             self._bx,
 
             self._scc,
             self._scs,
-            self._UNDEF,
-            self._UNDEF,
-        ]
-        self._handlers_ax = [
-            self._UNDEF,
-            self._UNDEF,
-            self._add,
-            self._adc,
-
-            self._UNDEF,
-            self._UNDEF,
-            self._UNDEF,
-            self._UNDEF,
-
-            self._UNDEF,
-            self._UNDEF,
-            self._UNDEF,
-            self._UNDEF,
-
-            self._UNDEF,
-            self._UNDEF,
             self._UNDEF,
             self._UNDEF,
         ]
@@ -517,8 +496,8 @@ class Interpreter(ArchitectedRegisters):
 
             self._ret,
             self._UNDEF,
-            self._UNDEF,
-            self._UNDEF,
+            self._add,
+            self._adc,
 
             self._a2dp,
             self._dp2a,
@@ -572,10 +551,6 @@ class Interpreter(ArchitectedRegisters):
     def _jt( self, lo4 ):
         addr = self.ram[ self.dp + self.b ]
         self.pc = ram[ addr ]
-
-    def _ax( self, lo4 ):
-        dp = self._handlers_ax
-        dp[ lo4 ]( lo4 )
 
     def _bx( self, lo4 ):
         dp = self._handlers_bx
