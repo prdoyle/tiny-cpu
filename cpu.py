@@ -83,7 +83,7 @@ def init_control():
         encode( 0x40+n, 3, { AI, MR   })                    # A  := mem
     # SH # Bitwise shift
     for n in range(16):
-        encode( 0x50+n, 1, { AI, SO, EI4 })        # A  := shifter output of A and ir4
+        encode( 0x50+n, 1, { AI, SO, EA, EI4 })        # A  := shifter output of A and ir4
     # JV # Jump virtual (load PC from [DP+n] save return address)
     for n in range(16):
         encode( 0x60+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
@@ -532,6 +532,7 @@ class Test74181( TestCase ):
 
 corners = [ 0, 1, 2, 126, 127, 128, 129, 130, 253, 254, 255 ]
 dps = [ 0x1f, 0x20, 0x21, 0x7f, 0x80, 0x81, 0xef, 0xf0 ] # Not yet testing wrap-around at 256. Also avoid 0x10 because that's where the instruction goes
+arbitrary_nybbles = [ 13, 3, 2, 15, 10, 14, 1, 5, 16, 4, 7, 12, 8, 6, 11, 9 ] # whatever
 
 class TestCPU( TestCase ):
     def setUp( self ):
@@ -643,7 +644,7 @@ class TestCPU( TestCase ):
                         self.assertEqual( 1 * ( a <= b - carry ), self.cpu.carry )
 
     def test_ld( self ):
-        table_contents = [ 13, 3, 2, 15, 10, 14, 1, 5, 16, 4, 7, 12, 8, 6, 11, 9 ] # Whatever
+        table_contents = arbitrary_nybbles # Whatever
         for dp in dps:
             for n in range(16):
                 with self.subTest(dp=dp,n=n):
@@ -657,7 +658,7 @@ class TestCPU( TestCase ):
                     self.assertEqual( table_contents[n], self.cpu.a )
 
     def test_sd( self ):
-        table_contents = [ 13, 3, 2, 15, 10, 14, 1, 5, 16, 4, 7, 12, 8, 6, 11, 9 ] # Whatever
+        table_contents = arbitrary_nybbles # Whatever
         for dp in dps:
             for value in corners:
                 for n in range(16):
@@ -676,7 +677,7 @@ class TestCPU( TestCase ):
                         self.assertEqual( expected.hex(' '), self.ram.hex(' ') )
 
     def test_li( self ):
-        mem_contents = [ 13, 3, 2, 15, 10, 14, 1, 5, 16, 4, 7, 12, 8, 6, 11, 9 ] # Whatever
+        mem_contents = arbitrary_nybbles # Whatever
         table_contents = [ 0x60 + n for n in [ 2, 8, 12, 13, 7, 11, 14, 16, 15, 9, 10, 6, 3, 4, 1, 5 ] ]
         for dp in dps:
             for n in range(16):
@@ -710,6 +711,34 @@ class TestCPU( TestCase ):
                         expected[ address ] = value
                         self.assertEqual( expected.hex(' '), self.ram.hex(' ') )
 
+    def test_jv( self ):
+        for dp in dps:
+            for n in range(16):
+                with self.subTest(dp=dp,n=n):
+                    self.cpu.dp = dp
+                    self.ram[ 0:256 ] = [88] * 256 # A value that doesn't appear in "corners"
+                    self.ram[ dp:dp+16 ] = arbitrary_nybbles
+                    self.cpu.pc = 16
+                    self.asm.loc = 16
+                    self.asm.jv( n )
+                    self.cpu.step()
+                    self.assertEqual( arbitrary_nybbles[ n ], self.cpu.pc )
+
+    def test_jt( self ):
+        for dp in dps:
+            for d in range(16):
+                for b in range(16):
+                    with self.subTest(dp=dp,d=d,b=b):
+                        self.cpu.b = b
+                        self.cpu.dp = dp
+                        self.ram[ 0:256 ] = [88] * 256 # A value that doesn't appear in "corners"
+                        self.ram[ dp:dp+16 ] = arbitrary_nybbles
+                        self.cpu.pc = 16
+                        self.asm.loc = 16
+                        self.asm.jt( d )
+                        self.cpu.step()
+                        addr = dp + b + d
+                        self.assertEqual( self.ram[ addr&0xff ], self.cpu.pc )
 
     def _fib( self ):
         self.asm.imm( 1 )
@@ -942,15 +971,18 @@ class TestCPU( TestCase ):
         self.asm.imm( H_DPF )
 
         ## Data
-        self.ram[ F_PC ] = MAIN_LOOP
+        self.ram[ F_PC ] = 0x10 # Program being executed
         self.ram[ F_MAIN_LOOP ] = MAIN_LOOP
         self.ram[ F_HANDLERS_MAIN ] = MAIN_TABLE
         self.ram[ F_HANDLERS_AX ] = AX_TABLE
         self.ram[ F_HANDLERS_BX ] = BX_TABLE
 
     def _execute( self ):
-        while not self.cpu.halted:
-            self.cpu.step()
+        for _ in range(1000):
+            if self.cpu.halted:
+                return
+            else:
+                self.cpu.step()
 
 class Interpreter(ArchitectedRegisters):
     """Like CPU but closer to what the software will look like, rather than the hardware"""
@@ -1024,13 +1056,13 @@ class Interpreter(ArchitectedRegisters):
 
     def step( self ):
         debug( "Step instruction=%x" % ( self.ram[ self.pc ] ) )
-        self._debug()
         dp = self._handlers_main
         instr = self.ram[ self.pc ]
         self.pc += 1
         hi4 = instr >> 4
         lo4 = instr & 0x0f
         dp[ hi4 ]( lo4 )
+        self._debug()
 
     def _imm( self, lo4 ):
         self.a = lo4
@@ -1059,12 +1091,13 @@ class Interpreter(ArchitectedRegisters):
             self.a = self.a >> distance
 
     def _jv( self, lo4 ):
+        index = self.dp + lo4
         addr = self.ram[ self.dp + lo4 ]
-        self.pc = self.ram[ addr ]
+        debug( "** jv: dp=%s lo4=%s ram=%s addr=%s ram=%s" % ( self.dp, lo4, self.ram[ index-1:index+2 ].hex(' '), addr, self.ram[ addr-1:addr+2 ].hex(' ') ) )
+        self.pc = addr
 
     def _jt( self, lo4 ):
-        addr = self.ram[ self.dp + self.b ]
-        self.pc = self.ram[ addr ]
+        self.pc = self.ram[( self.dp + self.b + lo4 )&0xff]
 
     def _ax( self, lo4 ):
         dp = self._handlers_ax
@@ -1167,7 +1200,7 @@ def main():
     t = TestCPU()
     t.setUp()
     t._fib()
-    t._execute()
+    #t._execute()
     t._meta_interpreter()
     print("".join([ "%02x" % n for n in range(16) ]))
     print( t.cpu.ram.hex("\n", 16) )
