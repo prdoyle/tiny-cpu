@@ -40,7 +40,8 @@ EA  = "EA" # First input is accumulator
 EDP = "EDP" # First input is data pointer
 EPC = "EPC" # First input is program counter
 EI4 = "EI4" # ALU (and shifter) reads second operand from low 4 bits of instruction register; otherwise b
-EC  = "EC" # ALU reads carry from C register; otherwise zero
+ECR  = "ECR" # ALU reads carry from C register
+EC1  = "EC1" # ALU reads carry one
 # Misc
 H   = "H" # Halted
 
@@ -101,12 +102,23 @@ def init_control():
     for n in range(16):
         encode( 0xf0+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
         encode( 0xf0+n, 2, { DPI, MR   })                   # DP := mem
-    # ADD
-    encode( 0xa0, 1, { AI, EO, EA, ES0, ES3, CI })      # A := A + B; set carry
-    # ADC
-    encode( 0xa1, 1, { AI, EO, EA, ES0, ES3, CI, EC })  # A := A + B + C; set carry
+    for n in range(3):
+        # CL # Carry if less than n
+        encode( 0xa0+n, 1, { EA, EI4, ES2,ES1, CI })  # compute A - n - 1; set carry if A < n
+    # CLEB # Carry if less or equal to B
+    encode( 0xa4, 1, { EA, ES2,ES1, CI, EC1 })
+    # CLBC # Carry if less then B+carry (for multi-precision compares)
+    encode( 0xa5, 1, { EA, ES2,ES1, CI, ECR })
+    # CLB  # Carry if less than B
+    encode( 0xa6, 1, { EA, ES2,ES1, CI      })
+    # SUB
+    encode( 0xaa, 1, { AI, EO, EA, ES2,ES1, CI, EC1 })  # A := A - B; set carry (0 = borrow)
     # SBC
-    encode( 0xa3, 1, { AI, EO, EA, ES2,ES1, CI, EC })  # A := A + C - B; set carry (0 = borrow)
+    encode( 0xab, 1, { AI, EO, EA, ES2,ES1, CI, ECR })  # A := A + ~C - B; set carry (0 = borrow)
+    # ADC
+    encode( 0xac, 1, { AI, EO, EA, ES0, ES3, CI, ECR })  # A := A + B + C; set carry
+    # ADD
+    encode( 0xad, 1, { AI, EO, EA, ES0, ES3, CI })      # A := A + B; set carry
     # LINKn
     for n in range(4):
         encode( 0xb0+n, 1, { LI, EO, EPC, EI4, ES0, ES3  }) # link := PC + ir4
@@ -270,6 +282,14 @@ class CPU(ArchitectedRegisters):
         else:
             return self.b
 
+    def _alu_carry( self, ctrl ):
+        if ECR in ctrl:
+            return self.carry
+        elif EC1 in ctrl:
+            return 1
+        else:
+            return 0
+
     def _74181( self, ctrl ):
         s = ( (ES3 in ctrl) * 8
             + (ES2 in ctrl) * 4
@@ -278,7 +298,8 @@ class CPU(ArchitectedRegisters):
         )
         a = self._alu_first_operand( ctrl )
         b = self._alu_second_operand( ctrl )
-        return _74181_logic( a, b, s, (EM in ctrl), (EC in ctrl) and self.carry )
+        carry = self._alu_carry( ctrl )
+        return _74181_logic( a, b, s, (EM in ctrl), carry )
 
     def _shifter( self, ctrl ):
         a = self._alu_first_operand( ctrl )
@@ -374,14 +395,29 @@ class Assembler():
     def jt( self, d ):
         self._emit( 0x70 + d )
 
-    def add( self ):
-        self._emit( 0xa0 )
+    def cl( self, n ):
+        self._emit( 0xa0 + n )
 
-    def adc( self ):
-        self._emit( 0xa1 )
+    def cleb( self ):
+        self._emit( 0xa4 )
+
+    def clbc( self ):
+        self._emit( 0xa5 )
+
+    def clb( self ):
+        self._emit( 0xa6 )
+
+    def sub( self ):
+        self._emit( 0xaa )
 
     def sbc( self ):
-        self._emit( 0xa3 )
+        self._emit( 0xab )
+
+    def adc( self ):
+        self._emit( 0xac )
+
+    def add( self ):
+        self._emit( 0xad )
 
     def a2dp( self ):
         self._emit( 0xb8 )
@@ -441,8 +477,8 @@ class Test74181( TestCase ):
 
 class TestMath( TestCase ):
     def setUp( self ):
-        #self.cpu = CPU()
-        self.cpu = Interpreter()
+        self.cpu = CPU()
+        #self.cpu = Interpreter()
         self.ram = bytearray( 256 )
         self.cpu.ram = self.ram
         self.asm = Assembler( self.ram )
@@ -459,6 +495,22 @@ class TestMath( TestCase ):
                 self.assertEqual( a & 0xf0, self.cpu.a )
                 self.assertEqual( a & 0x0f, self.cpu.b )
 
+    def test_sub( self ):
+        for a in [0, 1, 2, 253, 254, 255]:
+            for b in [0, 1, 2, 253, 254, 255]:
+                for carry in [0,1]:
+                    with self.subTest(a=a,b=b,carry=carry):
+                        self.cpu.a = a
+                        self.cpu.b = b
+                        self.cpu.carry = carry
+                        self.cpu.pc = 16
+                        self.asm.loc = 16
+                        self.asm.sub()
+                        self.cpu.step()
+                        expected = (a - b) & 0x1ff
+                        self.assertEqual( expected & 0xff, self.cpu.a )
+                        self.assertEqual( expected >> 8, self.cpu.carry )
+
     def test_sbc( self ):
         for a in [0, 1, 2, 253, 254, 255]:
             for b in [0, 1, 2, 253, 254, 255]:
@@ -474,6 +526,20 @@ class TestMath( TestCase ):
                         expected = (a - b - 1 + carry) & 0x1ff
                         self.assertEqual( expected & 0xff, self.cpu.a )
                         self.assertEqual( expected >> 8, self.cpu.carry )
+
+    def test_cl( self ):
+        for a in [0, 1, 2, 253, 254, 255]:
+            for n in range(4):
+                for carry in [0,1]:
+                    with self.subTest(a=a,n=n,carry=carry):
+                        self.cpu.a = a
+                        self.cpu.b = 0x55
+                        self.cpu.carry = carry
+                        self.cpu.pc = 16
+                        self.asm.loc = 16
+                        self.asm.cl( n )
+                        self.cpu.step()
+                        self.assertEqual( 1 * ( a < n ), self.cpu.carry )
 
     def _fib( self ):
         self.asm.imm( 1 )
@@ -609,6 +675,7 @@ class TestMath( TestCase ):
         H_SPLIT = self.asm.loc
         H_RET = self.asm.loc
         H_JDP = self.asm.loc
+        H_SUB = self.asm.loc
         H_SBC = self.asm.loc
         H_HALT = self.asm.loc
         # Not yet implemented
@@ -617,7 +684,7 @@ class TestMath( TestCase ):
         AX_TABLE = self.asm.loc
         self.asm.imm( H_ADD )
         self.asm.imm( H_ADC )
-        self.asm.halt()
+        self.asm.imm( H_SUB )
         self.asm.imm( H_SBC )
         self.asm.halt()
         self.asm.halt()
@@ -696,23 +763,23 @@ class Interpreter(ArchitectedRegisters):
             self._dpf,
         ]
         self._handlers_ax = [
-            self._add,
-            self._adc,
+            self._cl,
+            self._cl,
+            self._cl,
+            self._cl,
+
+            self._cleb,
+            self._clbc,
+            self._clb,
             self._UNDEF,
+
+            self._UNDEF,
+            self._UNDEF,
+            self._sub,
             self._sbc,
 
-            self._UNDEF,
-            self._UNDEF,
-            self._UNDEF,
-            self._UNDEF,
-
-            self._UNDEF,
-            self._UNDEF,
-            self._UNDEF,
-            self._UNDEF,
-
-            self._UNDEF,
-            self._UNDEF,
+            self._adc,
+            self._add,
             self._UNDEF,
             self._UNDEF,
         ]
@@ -826,8 +893,29 @@ class Interpreter(ArchitectedRegisters):
         self.b = self.a & 0x0f
         self.a = self.a ^ self.b
 
-    def _add( self, lo4 ):
-        result = self.a + self.b
+    def _cl( self, lo4 ):
+        result = (self.a - lo4 - 1) & 0x1ff
+        self.carry = result >> 8
+
+    def _cleb( self, lo4 ):
+        result = (self.a - self.b) & 0x1ff
+        self.carry = result >> 8
+
+    def _clbc( self, lo4 ):
+        result = (self.a - self.b - 1 + self.carry) & 0x1ff
+        self.carry = result >> 8
+
+    def _clb( self, lo4 ):
+        result = (self.a - self.b - 1) & 0x1ff
+        self.carry = result >> 8
+
+    def _sub( self, lo4 ):
+        result = (self.a - self.b) & 0x1ff
+        self.a = result & 0xff
+        self.carry = result >> 8
+
+    def _sbc( self, lo4 ):
+        result = (self.a - self.b - 1 + self.carry) & 0x1ff
         self.a = result & 0xff
         self.carry = result >> 8
 
@@ -836,8 +924,8 @@ class Interpreter(ArchitectedRegisters):
         self.a = result & 0xff
         self.carry = result >> 8
 
-    def _sbc( self, lo4 ):
-        result = (self.a - self.b - 1 + self.carry) & 0x1ff
+    def _add( self, lo4 ):
+        result = self.a + self.b
         self.a = result & 0xff
         self.carry = result >> 8
 
