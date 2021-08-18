@@ -145,10 +145,10 @@ def init_control():
     encode( 0xbc, 1, { LI, AO })
     # HALT
     encode( 0xbd, 1, { H } )
-    # Skip if carry clear
+    # SCC Skip if carry clear
     for n in range(16):
         encode( 0xc0+n, 1, { PCI, EO, EPC, EI4, ES0, ES3  }) # PC := PC + ir4
-    # Skip if carry set
+    # SCS Skip if carry set
     for n in range(16):
         encode( 0xd0+n, 1, { PCI, EO, EPC, EI4, ES0, ES3  }) # PC := PC + ir4
 
@@ -669,8 +669,12 @@ class TestMath( TestCase ):
         F_HANDLERS_AX = 10
         F_HANDLERS_BX = 11
 
+        ### Program to run ###
+        #self.asm.loc = 0x10
+        #self._fib()
+
         ### CODE ###
-        self.asm.loc = 0x10
+        self.asm.loc = 0x20
 
         MAIN_LOOP = self.asm.loc
         # Fetch
@@ -686,12 +690,8 @@ class TestMath( TestCase ):
         self.asm.imm( 0 )
         self.asm.a2dp()
         self.asm.jv( MAIN_LOOP )
-        ## Data
-        self.ram[ F_PC ] = MAIN_LOOP
-        self.ram[ F_MAIN_LOOP ] = MAIN_LOOP
-        self.ram[ F_HANDLERS_MAIN ] = 0x20
-        self.ram[ F_HANDLERS_AX ] = 0x30
-        self.ram[ F_HANDLERS_BX ] = 0x40
+
+        self.asm.loc = 0x30
 
         H_IMM = self.asm.loc
         self.asm.sd( F_A )
@@ -759,6 +759,13 @@ class TestMath( TestCase ):
         self.asm.adc()
         self.asm.ret()
 
+        H_RET = self.asm.loc
+        self.asm.imm( 0 )
+        self.asm.a2dp()
+        self.asm.ld( F_LR )
+        self.asm.sd( F_PC )
+        self.asm.ret()
+
         H_HALT = self.asm.loc
         self.asm.halt()
 
@@ -780,7 +787,6 @@ class TestMath( TestCase ):
         H_A2L = self.asm.loc
         H_C2A = self.asm.loc
         H_SPLIT = self.asm.loc
-        H_RET = self.asm.loc
         H_JDP = self.asm.loc
         H_SUB = self.asm.loc
         H_SBC = self.asm.loc
@@ -788,24 +794,7 @@ class TestMath( TestCase ):
         H_CLEB = self.asm.loc
         H_CLEBC = self.asm.loc
         H_CLB = self.asm.loc
-        self.asm.halt()
-
-        AX_TABLE = self.asm.loc
-        self.asm.imm( H_CL )
-        self.asm.imm( H_CL )
-        self.asm.imm( H_CL )
-        self.asm.imm( H_CL )
-        self.asm.imm( H_CLEB )
-        self.asm.imm( H_CLEBC )
-        self.asm.imm( H_CLB )
-        self.asm.halt()
-        self.asm.halt()
-        self.asm.halt()
-        self.asm.imm( H_SUB )
-        self.asm.imm( H_SBC )
-        self.asm.imm( H_ADC )
-        self.asm.imm( H_ADD )
-        self.asm.halt()
+        H_not_yet_implemented = self.asm.loc
         self.asm.halt()
 
         H_OPCODES_AX = self.asm.loc
@@ -815,6 +804,33 @@ class TestMath( TestCase ):
         self.asm.dpf( F_HANDLERS_AX )
         self.asm.jt( 0 )
 
+        H_OPCODES_BX = self.asm.loc
+        self.asm.imm( 0 )
+        self.asm.a2dp()
+        self.asm.xchg()   # B = lo4
+        self.asm.dpf( F_HANDLERS_BX )
+        self.asm.jt( 0 )
+
+        self.asm.loc = 0xa0
+
+        AX_TABLE = self.asm.loc
+        self.asm.imm( H_CL )
+        self.asm.imm( H_CL )
+        self.asm.imm( H_CL )
+        self.asm.imm( H_CL )
+        self.asm.imm( H_CLEB )
+        self.asm.imm( H_CLEBC )
+        self.asm.imm( H_CLB )
+        self.asm.imm( H_not_yet_implemented )
+        self.asm.imm( H_not_yet_implemented )
+        self.asm.imm( H_not_yet_implemented )
+        self.asm.imm( H_SUB )
+        self.asm.imm( H_SBC )
+        self.asm.imm( H_ADC )
+        self.asm.imm( H_ADD )
+        self.asm.imm( H_not_yet_implemented )
+        self.asm.imm( H_not_yet_implemented )
+
         BX_TABLE = self.asm.loc
         self.asm.imm( H_LINK )
         self.asm.imm( H_LINK )
@@ -822,8 +838,8 @@ class TestMath( TestCase ):
         self.asm.imm( H_LINK )
         self.asm.imm( H_RET )
         self.asm.imm( H_C2A )
-        self.asm.halt()
-        self.asm.halt()
+        self.asm.imm( H_not_yet_implemented )
+        self.asm.imm( H_not_yet_implemented )
         self.asm.imm( H_A2DP )
         self.asm.imm( H_DP2A )
         self.asm.imm( H_A2B )
@@ -833,12 +849,30 @@ class TestMath( TestCase ):
         self.asm.imm( H_L2A )
         self.asm.imm( H_SPLIT )
 
-        H_OPCODES_BX = self.asm.loc
-        self.asm.imm( 0 )
-        self.asm.a2dp()
-        self.asm.xchg()   # B = lo4
-        self.asm.dpf( F_HANDLERS_BX )
-        self.asm.jt( 0 )
+        MAIN_TABLE = self.asm.loc
+        self.asm.imm( H_IMM )
+        self.asm.imm( H_SD )
+        self.asm.imm( H_SI )
+        self.asm.imm( H_LD )
+        self.asm.imm( H_LI )
+        self.asm.imm( H_SH )
+        self.asm.imm( H_JV )
+        self.asm.imm( H_JT )
+        self.asm.imm( H_not_yet_implemented )
+        self.asm.imm( H_not_yet_implemented )
+        self.asm.imm( H_OPCODES_AX )
+        self.asm.imm( H_OPCODES_BX )
+        self.asm.imm( H_SCC )
+        self.asm.imm( H_SCS )
+        self.asm.imm( H_DPE )
+        self.asm.imm( H_DPF )
+
+        ## Data
+        self.ram[ F_PC ] = MAIN_LOOP
+        self.ram[ F_MAIN_LOOP ] = MAIN_LOOP
+        self.ram[ F_HANDLERS_MAIN ] = MAIN_TABLE
+        self.ram[ F_HANDLERS_AX ] = AX_TABLE
+        self.ram[ F_HANDLERS_BX ] = BX_TABLE
 
     def _execute( self ):
         while not self.cpu.halted:
@@ -1059,5 +1093,7 @@ def main():
     t._fib()
     t._execute()
     t._meta_interpreter()
+    print("".join([ "%02x" % n for n in range(16) ]))
+    print( t.cpu.ram.hex("\n", 16) )
 
 main()
