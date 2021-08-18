@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
 from unittest import TestCase
-import sys
+import sys, csv
 
 def debug(*args, **kwargs):
     if True:
@@ -102,15 +102,15 @@ def init_control():
     for n in range(16):
         encode( 0xf0+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
         encode( 0xf0+n, 2, { DPI, MR   })                   # DP := mem
-    for n in range(3):
+    for n in range(4):
         # CL # Carry if less than n
-        encode( 0xa0+n, 1, { EA, EI4, ES2,ES1, CI })  # compute A - n - 1; set carry if A < n
+        encode( 0xa0+n, 1, { EA, EI4, ES2,ES1, CI, EC1 })  # set carry if A < n (aka A <= n-1)
     # CLEB # Carry if less or equal to B
-    encode( 0xa4, 1, { EA, ES2,ES1, CI, EC1 })
-    # CLBC # Carry if less then B+carry (for multi-precision compares)
-    encode( 0xa5, 1, { EA, ES2,ES1, CI, ECR })
+    encode( 0xa4, 1, { EA, ES2,ES1, CI      })  # set carry if A <= b
+    # CLEBC # Carry if less or equal to B - carry (for multi-precision CLEB)
+    encode( 0xa5, 1, { EA, ES2,ES1, CI, ECR })  # set carry if A <= b-c
     # CLB  # Carry if less than B
-    encode( 0xa6, 1, { EA, ES2,ES1, CI      })
+    encode( 0xa6, 1, { EA, ES2,ES1, CI, EC1 })  # set carry if A < b (aka A <= b-1)
     # SUB
     encode( 0xaa, 1, { AI, EO, EA, ES2,ES1, CI, EC1 })  # A := A - B; set carry (0 = borrow)
     # SBC
@@ -299,7 +299,7 @@ class CPU(ArchitectedRegisters):
         a = self._alu_first_operand( ctrl )
         b = self._alu_second_operand( ctrl )
         carry = self._alu_carry( ctrl )
-        return _74181_logic( a, b, s, (EM in ctrl), carry )
+        return _dual_74181_logic( a, b, s, (EM in ctrl), carry )
 
     def _shifter( self, ctrl ):
         a = self._alu_first_operand( ctrl )
@@ -314,6 +314,51 @@ def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 def _74181_logic( A, B, s, m, carry ):
+    """Active high. Returns 5-bit result with high bit = carry out"""
+    if m:
+        result = {
+            0:  ~A,
+            1:  ~(A & B),
+            2:  (~A) & B,
+            3:  0,
+            4:  ~(A & B),
+            5:  ~B,
+            6:   A ^ B,
+            7:  A & (~B),
+            8:  (~A) | B,
+            9:  ~(A ^ B),
+            10: B,
+            11: A & B,
+            12: 1,
+            13: A | (~B),
+            14: A | B,
+            15: A,
+        }[s] & 0x1f
+    else:
+        AB  = A & B
+        AB_ = A & (~B) # Oddly common
+        result = (carry + {
+            0:  A,
+            1:  A + B,
+            2:  A + (~B),
+            3:  -1,
+            4:  A + AB_,
+            5:  (A+B) + AB_,
+            6:  A - B - 1,
+            7:  AB_ - 1,
+            8:  A + AB,
+            9:  A + B,
+            10: (A + (~B)) + AB,
+            11: AB - 1,
+            12: A + A,
+            13: (A + B) + A,
+            14: (A + (~B)) + A,
+            15: A - 1,
+        }[s]) & 0x1f
+    debug( "| 74181( %02x, %02x, %1x, %s, %s ) = %03x" % ( A, B, s, m, carry, result ) )
+    return result
+
+def _dual_74181_logic( A, B, s, m, carry ):
     """Active high. Returns 9-bit result with high bit = carry out"""
     if m:
         result = {
@@ -401,7 +446,7 @@ class Assembler():
     def cleb( self ):
         self._emit( 0xa4 )
 
-    def clbc( self ):
+    def clebc( self ):
         self._emit( 0xa5 )
 
     def clb( self ):
@@ -466,26 +511,41 @@ class Assembler():
         self._emit( 0xf0 + d )
 
 class Test74181( TestCase ):
-    def test_stuff( self ):
-        self._check( 200,  70, 130, 1, 0, 0 )
-        self._check( 201,  70, 130, 1, 0, 1 )
-        self._check( 300, 170, 130, 1, 0, 0 )
+    def test_vectors( self ):
+        with open("test-74181-A6.csv", newline='') as csvfile:
+            reader = csv.reader( csvfile )
+            next( reader, None ) # Skip header
+            for row in reader:
+                #debug( ">row: " + str(row) )
+                # Active-high interpretation
+                [step, s3, s2, s1, s0, m, _cin, a3, a2, a1, a0, b3, b2, b1, b0, f3, f2, f1, f0, cout] = [int(n) for n in row]
+                cin = 1 - _cin
+                #cout = 1 - cout
+                result = (cout<<4) + (f3<<3) + (f2<<2) + (f1<<1) + (f0)
+                #debug( "> cout=%s, f3=%s, f2=%s, f1=%s, f0=%s, result=%s" % ( cout, f3, f2, f1, f0, result ) )
+                a = (a3<<3) + (a2<<2) + (a1<<1) + (a0)
+                b = (b3<<3) + (b2<<2) + (b1<<1) + (b0)
+                s = (s3<<3) + (s2<<2) + (s1<<1) + (s0)
+                with self.subTest(step=step,s=s,m=m,a=a,b=b,cin=cin,result=result):
+                    self._check( result, a, b, s, m, cin )
 
     def _check( self, expected, a, b, s, m, carry ):
         result = _74181_logic( a, b, s, m, carry )
         self.assertEqual( expected, result )
 
+corners = [ 0, 1, 2, 126, 127, 128, 129, 130, 253, 254, 255 ]
+
 class TestMath( TestCase ):
     def setUp( self ):
-        self.cpu = CPU()
-        #self.cpu = Interpreter()
+        #self.cpu = CPU()
+        self.cpu = Interpreter()
         self.ram = bytearray( 256 )
         self.cpu.ram = self.ram
         self.asm = Assembler( self.ram )
         self.asm.loc = 16
 
     def test_split( self ):
-        for a in [0x00, 0x5a, 0xa5, 0xef, 0xfe]:
+        for a in corners:
             with self.subTest(a=a):
                 self.cpu.a = a
                 self.cpu.pc = 16
@@ -496,8 +556,8 @@ class TestMath( TestCase ):
                 self.assertEqual( a & 0x0f, self.cpu.b )
 
     def test_sub( self ):
-        for a in [0, 1, 2, 253, 254, 255]:
-            for b in [0, 1, 2, 253, 254, 255]:
+        for a in corners:
+            for b in corners:
                 for carry in [0,1]:
                     with self.subTest(a=a,b=b,carry=carry):
                         self.cpu.a = a
@@ -512,8 +572,8 @@ class TestMath( TestCase ):
                         self.assertEqual( expected >> 8, self.cpu.carry )
 
     def test_sbc( self ):
-        for a in [0, 1, 2, 253, 254, 255]:
-            for b in [0, 1, 2, 253, 254, 255]:
+        for a in corners:
+            for b in corners:
                 for carry in [0,1]:
                     with self.subTest(a=a,b=b,carry=carry):
                         self.cpu.a = a
@@ -528,7 +588,7 @@ class TestMath( TestCase ):
                         self.assertEqual( expected >> 8, self.cpu.carry )
 
     def test_cl( self ):
-        for a in [0, 1, 2, 253, 254, 255]:
+        for a in corners:
             for n in range(4):
                 for carry in [0,1]:
                     with self.subTest(a=a,n=n,carry=carry):
@@ -540,6 +600,49 @@ class TestMath( TestCase ):
                         self.asm.cl( n )
                         self.cpu.step()
                         self.assertEqual( 1 * ( a < n ), self.cpu.carry )
+                        self.assertEqual( 1 * ( a <= n-1 ), self.cpu.carry )
+
+    def test_cleb( self ):
+        for a in corners:
+            for b in corners:
+                for carry in [0,1]:
+                    with self.subTest(a=a,b=b,carry=carry):
+                        self.cpu.a = a
+                        self.cpu.b = b
+                        self.cpu.carry = carry
+                        self.cpu.pc = 16
+                        self.asm.loc = 16
+                        self.asm.cleb()
+                        self.cpu.step()
+                        self.assertEqual( 1 * ( a <= b ), self.cpu.carry )
+
+    def test_clb( self ):
+        for a in corners:
+            for b in corners:
+                for carry in [0,1]:
+                    with self.subTest(a=a,b=b,carry=carry):
+                        self.cpu.a = a
+                        self.cpu.b = b
+                        self.cpu.carry = carry
+                        self.cpu.pc = 16
+                        self.asm.loc = 16
+                        self.asm.clb()
+                        self.cpu.step()
+                        self.assertEqual( 1 * ( a < b ), self.cpu.carry )
+
+    def test_clebc( self ):
+        for a in corners:
+            for b in corners:
+                for carry in [0,1]:
+                    with self.subTest(a=a,b=b,carry=carry):
+                        self.cpu.a = a
+                        self.cpu.b = b
+                        self.cpu.carry = carry
+                        self.cpu.pc = 16
+                        self.asm.loc = 16
+                        self.asm.clebc()
+                        self.cpu.step()
+                        self.assertEqual( 1 * ( a <= b - carry ), self.cpu.carry )
 
     def _fib( self ):
         self.asm.imm( 1 )
@@ -656,6 +759,10 @@ class TestMath( TestCase ):
         self.asm.adc()
         self.asm.ret()
 
+        H_HALT = self.asm.loc
+        self.asm.halt()
+
+        # Not yet implemented
         H_SD = self.asm.loc
         H_SI = self.asm.loc
         H_LD = self.asm.loc
@@ -677,25 +784,27 @@ class TestMath( TestCase ):
         H_JDP = self.asm.loc
         H_SUB = self.asm.loc
         H_SBC = self.asm.loc
-        H_HALT = self.asm.loc
-        # Not yet implemented
+        H_CL = self.asm.loc
+        H_CLEB = self.asm.loc
+        H_CLEBC = self.asm.loc
+        H_CLB = self.asm.loc
         self.asm.halt()
 
         AX_TABLE = self.asm.loc
-        self.asm.imm( H_ADD )
-        self.asm.imm( H_ADC )
+        self.asm.imm( H_CL )
+        self.asm.imm( H_CL )
+        self.asm.imm( H_CL )
+        self.asm.imm( H_CL )
+        self.asm.imm( H_CLEB )
+        self.asm.imm( H_CLEBC )
+        self.asm.imm( H_CLB )
+        self.asm.halt()
+        self.asm.halt()
+        self.asm.halt()
         self.asm.imm( H_SUB )
         self.asm.imm( H_SBC )
-        self.asm.halt()
-        self.asm.halt()
-        self.asm.halt()
-        self.asm.halt()
-        self.asm.halt()
-        self.asm.halt()
-        self.asm.halt()
-        self.asm.halt()
-        self.asm.halt()
-        self.asm.halt()
+        self.asm.imm( H_ADC )
+        self.asm.imm( H_ADD )
         self.asm.halt()
         self.asm.halt()
 
@@ -769,7 +878,7 @@ class Interpreter(ArchitectedRegisters):
             self._cl,
 
             self._cleb,
-            self._clbc,
+            self._clebc,
             self._clb,
             self._UNDEF,
 
@@ -894,19 +1003,19 @@ class Interpreter(ArchitectedRegisters):
         self.a = self.a ^ self.b
 
     def _cl( self, lo4 ):
-        result = (self.a - lo4 - 1) & 0x1ff
+        result = (self.a - lo4) & 0x1ff
         self.carry = result >> 8
 
     def _cleb( self, lo4 ):
-        result = (self.a - self.b) & 0x1ff
+        result = (self.a - self.b - 1) & 0x1ff
         self.carry = result >> 8
 
-    def _clbc( self, lo4 ):
+    def _clebc( self, lo4 ):
         result = (self.a - self.b - 1 + self.carry) & 0x1ff
         self.carry = result >> 8
 
     def _clb( self, lo4 ):
-        result = (self.a - self.b - 1) & 0x1ff
+        result = (self.a - self.b) & 0x1ff
         self.carry = result >> 8
 
     def _sub( self, lo4 ):
