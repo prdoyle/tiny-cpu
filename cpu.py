@@ -812,11 +812,14 @@ class TestCPU( TestCase ):
         self.asm.loc = 0x20
 
         MAIN_LOOP = self.asm.loc
-        # Fetch and advance
+        # Fetch
         self.asm.li( F_PC )
+        # Advance PC (ew)
         self.asm.xchg()
         self.asm.ld( F_PC )
-        self.asm.add
+        self.asm.inc()
+        self.asm.sd( F_PC )
+        self.asm.xchg()
         # Call handler
         self.asm.split()
         self.asm.lsr( 4 )
@@ -947,16 +950,16 @@ class TestCPU( TestCase ):
         self.asm.halt()
 
         H_OPCODES_AX = self.asm.loc
+        self.asm.xchg()   # B = lo4
         self.asm.imm( 0 )
         self.asm.a2dp()
-        self.asm.xchg()   # B = lo4
         self.asm.dpf( F_HANDLERS_AX )
         self.asm.jt( 0 )
 
         H_OPCODES_BX = self.asm.loc
+        self.asm.xchg()   # B = lo4
         self.asm.imm( 0 )
         self.asm.a2dp()
-        self.asm.xchg()   # B = lo4
         self.asm.dpf( F_HANDLERS_BX )
         self.asm.jt( 0 )
 
@@ -1219,7 +1222,7 @@ class Interpreter(ArchitectedRegisters):
         self.carry = result >> 8
 
     def _adc( self, lo4 ):
-        result = self.a + self.b + c
+        result = self.a + self.b + self.carry
         self.a = result & 0xff
         self.carry = result >> 8
 

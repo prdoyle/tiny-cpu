@@ -1,12 +1,12 @@
 000102030405060708090a0b0c0d0e0f
 100000000000000020c0a0b000000000
 01ba01b0bbadd1b4bd00000000000000
-40bb30bf5cbbf9b17000b86800000000
+40bb30ae10bbbf5cbbf9b17000b86800
 bb00b8bb11b400b83112b4bb00b830ad
 14b400b831bb3211bb12b400b831bb32
 ad11b515b400b831bb35ad32ac11b515
-b400b835bb30acb400b83410b4bdbd00
-b8bbfa7000b8bbfb7000000000000000
+b400b835bb30acb400b83410b4bdbdbb
+00b8fa70bb00b8fb7000000000000000
 00000000000000000000000000000000
 00000000000000000000000000000000
 6e6e6e6e6e6e6e6e6e6e6e6e554b6e6e
@@ -25,24 +25,3068 @@ Step instruction=bb
 Step instruction=30
 | state={'pc': 35, 'a': 16, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
 | ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
-Step instruction=bf
-| state={'pc': 36, 'a': 16, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
+Step instruction=ae
+| state={'pc': 36, 'a': 17, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
 | ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
-Step instruction=5c
-| state={'pc': 37, 'a': 1, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
-| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 17, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
+| ram: 11 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
 Step instruction=bb
-| state={'pc': 38, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
-| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+| state={'pc': 38, 'a': 1, 'b': 17, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
+| ram: 11 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
+| ram: 11 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
+| ram: 11 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 1, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
+| ram: 11 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
 Step instruction=f9
-| state={'pc': 39, 'a': 0, 'b': 1, 'dp': 192, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
-| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+| state={'pc': 42, 'a': 1, 'b': 0, 'dp': 192, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
+| ram: 11 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
 Step instruction=b1
-| state={'pc': 40, 'a': 0, 'b': 1, 'dp': 192, 'carry': 0, 'lr': 41, 'halted': False, 'ram': '...'}
-| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+| state={'pc': 43, 'a': 1, 'b': 0, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 11 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
 Step instruction=70
-| state={'pc': 110, 'a': 0, 'b': 1, 'dp': 192, 'carry': 0, 'lr': 41, 'halted': False, 'ram': '...'}
-| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
-Step instruction=bd
-| state={'pc': 111, 'a': 0, 'b': 1, 'dp': 192, 'carry': 0, 'lr': 41, 'halted': True, 'ram': '...'}
-| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+| state={'pc': 48, 'a': 1, 'b': 0, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 11 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 49, 'a': 0, 'b': 1, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 11 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 50, 'a': 0, 'b': 1, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 11 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 51, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 11 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 52, 'a': 1, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 11 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 53, 'a': 1, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 11 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 1, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 11 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 11 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 11 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 11 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=17 ram=01 ba 01
+| state={'pc': 33, 'a': 186, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 11 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 0, 'b': 186, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 11 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 17, 'b': 186, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 11 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 18, 'b': 186, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 11 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 18, 'b': 186, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 186, 'b': 18, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 10, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 10, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 10, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 10, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 10, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 54, 'a': 0, 'b': 10, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 55, 'a': 0, 'b': 10, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 56, 'a': 0, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 57, 'a': 1, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=12
+| state={'pc': 58, 'a': 1, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 1, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=18 ram=ba 01 b0
+| state={'pc': 33, 'a': 1, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 10, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 18, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 19, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 12 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 19, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 1, 'b': 19, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 1, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 1, 'b': 0, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 1, 'b': 0, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 48, 'a': 1, 'b': 0, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 49, 'a': 0, 'b': 1, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 50, 'a': 0, 'b': 1, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 51, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 52, 'a': 1, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 53, 'a': 1, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 1, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=19 ram=01 b0 bb
+| state={'pc': 33, 'a': 176, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 0, 'b': 176, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 19, 'b': 176, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 20, 'b': 176, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 13 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 20, 'b': 176, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 176, 'b': 20, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 0, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 0, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 0, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 0, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 0, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 0, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 59, 'a': 0, 'b': 0, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 60, 'a': 0, 'b': 0, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 61, 'a': 0, 'b': 0, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 62, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 63, 'a': 20, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ad
+| state={'pc': 64, 'a': 20, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=14
+| state={'pc': 65, 'a': 20, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 20, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=20 ram=b0 bb ad
+| state={'pc': 33, 'a': 187, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 0, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 20, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 187, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 66, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 67, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 68, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 69, 'a': 1, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 70, 'a': 11, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 71, 'a': 1, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 72, 'a': 1, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 73, 'a': 1, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=12
+| state={'pc': 74, 'a': 1, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 1, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=21 ram=bb ad d1
+| state={'pc': 33, 'a': 173, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 1, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 21, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 173, 'b': 22, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 160, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 10, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 13, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 111, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 112, 'a': 10, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 113, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 114, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fa
+| state={'pc': 115, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 75, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 76, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 77, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 78, 'a': 1, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 79, 'a': 13, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 80, 'a': 1, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ad
+| state={'pc': 81, 'a': 2, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 82, 'a': 2, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b5
+| state={'pc': 83, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=15
+| state={'pc': 84, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=22 ram=ad d1 b4
+| state={'pc': 33, 'a': 209, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 1, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 22, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 209, 'b': 23, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 208, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 13, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 1, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 97, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 98, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 99, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=35
+| state={'pc': 100, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 101, 'a': 13, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 102, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ac
+| state={'pc': 103, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=23 ram=d1 b4 bd
+| state={'pc': 33, 'a': 180, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 0, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 23, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 180, 'b': 24, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 4, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 104, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 105, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 106, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=34
+| state={'pc': 107, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 108, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=20 ram=b0 bb ad
+| state={'pc': 33, 'a': 187, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 4, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 20, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 187, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 66, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 67, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 68, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 69, 'a': 2, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 70, 'a': 11, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 71, 'a': 1, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 72, 'a': 1, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 73, 'a': 2, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 01 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=12
+| state={'pc': 74, 'a': 2, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 2, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=21 ram=bb ad d1
+| state={'pc': 33, 'a': 173, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 1, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 21, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 173, 'b': 22, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 160, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 10, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 13, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 111, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 112, 'a': 10, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 113, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 114, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fa
+| state={'pc': 115, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 75, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 76, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 77, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 78, 'a': 1, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 79, 'a': 13, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 80, 'a': 2, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ad
+| state={'pc': 81, 'a': 3, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 01 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 82, 'a': 3, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b5
+| state={'pc': 83, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=15
+| state={'pc': 84, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=22 ram=ad d1 b4
+| state={'pc': 33, 'a': 209, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 1, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 22, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 209, 'b': 23, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 208, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 13, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 1, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 97, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 98, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 99, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=35
+| state={'pc': 100, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 101, 'a': 13, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 102, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ac
+| state={'pc': 103, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=23 ram=d1 b4 bd
+| state={'pc': 33, 'a': 180, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 0, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 23, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 180, 'b': 24, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 4, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 104, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 105, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 106, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=34
+| state={'pc': 107, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 108, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=20 ram=b0 bb ad
+| state={'pc': 33, 'a': 187, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 4, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 20, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 187, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 66, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 67, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 68, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 69, 'a': 3, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 70, 'a': 11, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 71, 'a': 2, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 72, 'a': 2, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 73, 'a': 3, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 02 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=12
+| state={'pc': 74, 'a': 3, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 3, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=21 ram=bb ad d1
+| state={'pc': 33, 'a': 173, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 2, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 21, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 173, 'b': 22, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 160, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 10, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 13, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 111, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 112, 'a': 10, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 113, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 114, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fa
+| state={'pc': 115, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 75, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 76, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 77, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 78, 'a': 2, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 79, 'a': 13, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 80, 'a': 3, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ad
+| state={'pc': 81, 'a': 5, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 02 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 82, 'a': 5, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b5
+| state={'pc': 83, 'a': 0, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=15
+| state={'pc': 84, 'a': 0, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 0, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=22 ram=ad d1 b4
+| state={'pc': 33, 'a': 209, 'b': 2, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 2, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 22, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 209, 'b': 23, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 208, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 13, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 1, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 97, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 98, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 99, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=35
+| state={'pc': 100, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 101, 'a': 13, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 102, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ac
+| state={'pc': 103, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=23 ram=d1 b4 bd
+| state={'pc': 33, 'a': 180, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 0, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 23, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 180, 'b': 24, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 4, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 104, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 105, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 106, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=34
+| state={'pc': 107, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 108, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=20 ram=b0 bb ad
+| state={'pc': 33, 'a': 187, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 4, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 20, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 187, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 66, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 67, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 68, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 69, 'a': 5, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 70, 'a': 11, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 71, 'a': 3, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 72, 'a': 3, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 73, 'a': 5, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 03 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=12
+| state={'pc': 74, 'a': 5, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 5, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=21 ram=bb ad d1
+| state={'pc': 33, 'a': 173, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 3, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 21, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 173, 'b': 22, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 160, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 10, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 13, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 111, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 112, 'a': 10, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 113, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 114, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fa
+| state={'pc': 115, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 75, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 76, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 77, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 78, 'a': 3, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 79, 'a': 13, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 80, 'a': 5, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ad
+| state={'pc': 81, 'a': 8, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 03 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 82, 'a': 8, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b5
+| state={'pc': 83, 'a': 0, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=15
+| state={'pc': 84, 'a': 0, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 0, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=22 ram=ad d1 b4
+| state={'pc': 33, 'a': 209, 'b': 3, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 3, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 22, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 209, 'b': 23, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 208, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 13, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 1, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 97, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 98, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 99, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=35
+| state={'pc': 100, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 101, 'a': 13, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 102, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ac
+| state={'pc': 103, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=23 ram=d1 b4 bd
+| state={'pc': 33, 'a': 180, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 0, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 23, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 180, 'b': 24, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 4, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 104, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 105, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 106, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=34
+| state={'pc': 107, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 108, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=20 ram=b0 bb ad
+| state={'pc': 33, 'a': 187, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 4, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 20, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 187, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 66, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 67, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 68, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 69, 'a': 8, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 70, 'a': 11, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 71, 'a': 5, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 72, 'a': 5, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 73, 'a': 8, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 05 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=12
+| state={'pc': 74, 'a': 8, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 8, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=21 ram=bb ad d1
+| state={'pc': 33, 'a': 173, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 5, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 21, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 173, 'b': 22, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 160, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 10, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 13, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 111, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 112, 'a': 10, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 113, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 114, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fa
+| state={'pc': 115, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 75, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 76, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 77, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 78, 'a': 5, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 79, 'a': 13, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 80, 'a': 8, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ad
+| state={'pc': 81, 'a': 13, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 05 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 82, 'a': 13, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b5
+| state={'pc': 83, 'a': 0, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=15
+| state={'pc': 84, 'a': 0, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 0, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=22 ram=ad d1 b4
+| state={'pc': 33, 'a': 209, 'b': 5, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 5, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 22, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 209, 'b': 23, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 208, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 13, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 1, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 97, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 98, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 99, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=35
+| state={'pc': 100, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 101, 'a': 13, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 102, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ac
+| state={'pc': 103, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=23 ram=d1 b4 bd
+| state={'pc': 33, 'a': 180, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 0, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 23, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 180, 'b': 24, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 4, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 104, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 105, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 106, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=34
+| state={'pc': 107, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 108, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=20 ram=b0 bb ad
+| state={'pc': 33, 'a': 187, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 4, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 20, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 187, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 66, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 67, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 68, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 69, 'a': 13, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 70, 'a': 11, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 71, 'a': 8, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 72, 'a': 8, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 73, 'a': 13, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 08 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=12
+| state={'pc': 74, 'a': 13, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 13, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=21 ram=bb ad d1
+| state={'pc': 33, 'a': 173, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 8, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 21, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 173, 'b': 22, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 160, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 10, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 13, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 111, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 112, 'a': 10, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 113, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 114, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fa
+| state={'pc': 115, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 75, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 76, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 77, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 78, 'a': 8, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 79, 'a': 13, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 80, 'a': 13, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ad
+| state={'pc': 81, 'a': 21, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 08 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 82, 'a': 21, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b5
+| state={'pc': 83, 'a': 0, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=15
+| state={'pc': 84, 'a': 0, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 0, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=22 ram=ad d1 b4
+| state={'pc': 33, 'a': 209, 'b': 8, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 8, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 22, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 209, 'b': 23, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 208, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 13, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 1, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 97, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 98, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 99, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=35
+| state={'pc': 100, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 101, 'a': 13, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 102, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ac
+| state={'pc': 103, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=23 ram=d1 b4 bd
+| state={'pc': 33, 'a': 180, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 0, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 23, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 180, 'b': 24, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 4, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 104, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 105, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 106, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=34
+| state={'pc': 107, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 108, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=20 ram=b0 bb ad
+| state={'pc': 33, 'a': 187, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 4, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 20, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 187, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 66, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 67, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 68, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 69, 'a': 21, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 70, 'a': 11, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 71, 'a': 13, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 72, 'a': 13, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 73, 'a': 21, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 0d 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=12
+| state={'pc': 74, 'a': 21, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 21, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=21 ram=bb ad d1
+| state={'pc': 33, 'a': 173, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 13, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 21, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 173, 'b': 22, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 160, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 10, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 13, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 111, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 112, 'a': 10, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 113, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 114, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fa
+| state={'pc': 115, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 75, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 76, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 77, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 78, 'a': 13, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 79, 'a': 13, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 80, 'a': 21, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ad
+| state={'pc': 81, 'a': 34, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 0d 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 82, 'a': 34, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b5
+| state={'pc': 83, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=15
+| state={'pc': 84, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=22 ram=ad d1 b4
+| state={'pc': 33, 'a': 209, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 13, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 22, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 209, 'b': 23, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 208, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 13, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 1, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 97, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 98, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 99, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=35
+| state={'pc': 100, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 101, 'a': 13, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 102, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ac
+| state={'pc': 103, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=23 ram=d1 b4 bd
+| state={'pc': 33, 'a': 180, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 0, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 23, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 180, 'b': 24, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 4, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 104, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 105, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 106, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=34
+| state={'pc': 107, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 108, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=20 ram=b0 bb ad
+| state={'pc': 33, 'a': 187, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 4, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 20, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 187, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 66, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 67, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 68, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 69, 'a': 34, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 70, 'a': 11, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 71, 'a': 21, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 72, 'a': 21, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 73, 'a': 34, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 15 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=12
+| state={'pc': 74, 'a': 34, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 34, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=21 ram=bb ad d1
+| state={'pc': 33, 'a': 173, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 21, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 21, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 173, 'b': 22, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 160, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 10, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 13, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 111, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 112, 'a': 10, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 113, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 114, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fa
+| state={'pc': 115, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 75, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 76, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 77, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 78, 'a': 21, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 79, 'a': 13, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 80, 'a': 34, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ad
+| state={'pc': 81, 'a': 55, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 15 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 82, 'a': 55, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b5
+| state={'pc': 83, 'a': 0, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=15
+| state={'pc': 84, 'a': 0, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 0, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=22 ram=ad d1 b4
+| state={'pc': 33, 'a': 209, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 21, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 22, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 23, 'b': 209, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 209, 'b': 23, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 208, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 13, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 1, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 97, 'a': 1, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 98, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 99, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=35
+| state={'pc': 100, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 101, 'a': 13, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 102, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ac
+| state={'pc': 103, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 23, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=23 ram=d1 b4 bd
+| state={'pc': 33, 'a': 180, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 0, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 23, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 17 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 24, 'b': 180, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 180, 'b': 24, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 4, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 4, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 4, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 104, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 105, 'a': 0, 'b': 4, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 106, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=34
+| state={'pc': 107, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 18 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 108, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 20, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=20 ram=b0 bb ad
+| state={'pc': 33, 'a': 187, 'b': 4, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 4, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 20, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 14 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 21, 'b': 187, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 187, 'b': 21, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 176, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 11, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 116, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 117, 'a': 11, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 118, 'a': 0, 'b': 11, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 119, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fb
+| state={'pc': 120, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 66, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 67, 'a': 0, 'b': 11, 'dp': 176, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 68, 'a': 0, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 69, 'a': 55, 'b': 11, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 70, 'a': 11, 'b': 55, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 71, 'a': 34, 'b': 55, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 37 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 72, 'a': 34, 'b': 55, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 73, 'a': 55, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 22 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=12
+| state={'pc': 74, 'a': 55, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 55, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=68
+** jv: dp=0 lo4=8 ram=00 20 c0 addr=32 ram=00 40 bb
+| state={'pc': 32, 'a': 0, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=21 ram=bb ad d1
+| state={'pc': 33, 'a': 173, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 34, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 21, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ae
+| state={'pc': 36, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 15 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=10
+| state={'pc': 37, 'a': 22, 'b': 173, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 173, 'b': 22, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 39, 'a': 160, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 40, 'a': 10, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 41, 'a': 13, 'b': 10, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 42, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 43, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 111, 'a': 13, 'b': 10, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 112, 'a': 10, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 113, 'a': 0, 'b': 13, 'dp': 192, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 114, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=fa
+| state={'pc': 115, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 75, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 76, 'a': 0, 'b': 13, 'dp': 160, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 77, 'a': 0, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=31
+| state={'pc': 78, 'a': 34, 'b': 13, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 79, 'a': 13, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=32
+| state={'pc': 80, 'a': 55, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=ad
+| state={'pc': 81, 'a': 89, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 22 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=11
+| state={'pc': 82, 'a': 89, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 59 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b5
+| state={'pc': 83, 'a': 0, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 59 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=15
+| state={'pc': 84, 'a': 0, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 59 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b4
+| state={'pc': 44, 'a': 0, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 59 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=0
+| state={'pc': 45, 'a': 0, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 59 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b8
+| state={'pc': 46, 'a': 0, 'b': 34, 'dp': 0, 'carry': 0, 'lr': 44, 'halted': False, 'ram': '...'}
+| ram: 16 59 37 00 14 00 00 00 20 c0 a0 b0 00 00 00 00
