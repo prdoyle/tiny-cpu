@@ -93,17 +93,8 @@ def init_control():
         encode( 0x70+n, 1, { PCI, EO, EDP,      ES0,ES3 })  # PC := DP+B // temp storage
         encode( 0x70+n, 2, { ARI, EO, EPC, EI4, ES0,ES3 })  # AR := PC+ir4
         encode( 0x70+n, 3, { PCI, MR   })                   # DP := mem
-    # DPE # Dereference pointer to element (DP = [DP + n + B])
-    for n in range(16):
-        encode( 0xe0+n, 1, { DPI, EO, EDP,      ES0,ES3 })  # DP := DP+B
-        encode( 0xe0+n, 2, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
-        encode( 0xe0+n, 3, { DPI, MR   })                   # DP := mem
-    # DPF # Dereference pointer to field (DP = [DP+n])
-    for n in range(16):
-        encode( 0xf0+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
-        encode( 0xf0+n, 2, { DPI, MR   })                   # DP := mem
+    # CL # Carry if less than n
     for n in range(4):
-        # CL # Carry if less than n
         encode( 0xa0+n, 1, { EA, EI4, ES2,ES1, CI, EC1 })  # set carry if A < n (aka A <= n-1)
     # CLEB # Carry if less or equal to B
     encode( 0xa4, 1, { EA, ES2,ES1, CI      })  # set carry if A <= b
@@ -119,6 +110,10 @@ def init_control():
     encode( 0xac, 1, { AI, EO, EA, ES0, ES3, CI, ECR })  # A := A + B + C; set carry
     # ADD
     encode( 0xad, 1, { AI, EO, EA, ES0, ES3, CI })      # A := A + B; set carry
+    # INC # Add 1 to a
+    encode( 0xae, 1, { AI, EO, EA, EI4, EC1, CI } ) # A := A+n, set carry, ignore second operand
+    # DEC # Subtract 1 from a
+    encode( 0xaf, 1, { AI, EO, EA, EI4, ES3,ES2,ES1,ES0, CI } ) # A := A-1, set carry, ignore second operand
     # LINKn
     for n in range(4):
         encode( 0xb0+n, 1, { LI, EO, EPC, EI4, ES0, ES3  }) # link := PC + ir4
@@ -151,6 +146,15 @@ def init_control():
     # SCS Skip if carry set
     for n in range(16):
         encode( 0xd0+n, 1, { PCI, EO, EPC, EI4, ES0, ES3  }) # PC := PC + ir4
+    # DPE # Dereference pointer to element (DP = [DP + n + B])
+    for n in range(16):
+        encode( 0xe0+n, 1, { DPI, EO, EDP,      ES0,ES3 })  # DP := DP+B
+        encode( 0xe0+n, 2, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
+        encode( 0xe0+n, 3, { DPI, MR   })                   # DP := mem
+    # DPF # Dereference pointer to field (DP = [DP+n])
+    for n in range(16):
+        encode( 0xf0+n, 1, { ARI, EO, EDP, EI4, ES0,ES3 })  # AR := DP+ir4
+        encode( 0xf0+n, 2, { DPI, MR   })                   # DP := mem
 
     # Now copy everything for carry set
     half = len( control ) // 2
@@ -461,6 +465,12 @@ class Assembler():
     def add( self ):
         self._emit( 0xad )
 
+    def inc( self ):
+        self._emit( 0xae )
+
+    def dec( self ):
+        self._emit( 0xaf )
+
     def a2dp( self ):
         self._emit( 0xb8 )
 
@@ -509,22 +519,23 @@ class Assembler():
 
 class Test74181( TestCase ):
     def test_vectors( self ):
-        with open("test-74181-A6.csv", newline='') as csvfile:
-            reader = csv.reader( csvfile )
-            next( reader, None ) # Skip header
-            for row in reader:
-                #debug( ">row: " + str(row) )
-                # Active-high interpretation
-                [step, s3, s2, s1, s0, m, _cin, a3, a2, a1, a0, b3, b2, b1, b0, f3, f2, f1, f0, cout] = [int(n) for n in row]
-                cin = 1 - _cin
-                #cout = 1 - cout
-                result = (cout<<4) + (f3<<3) + (f2<<2) + (f1<<1) + (f0)
-                #debug( "> cout=%s, f3=%s, f2=%s, f1=%s, f0=%s, result=%s" % ( cout, f3, f2, f1, f0, result ) )
-                a = (a3<<3) + (a2<<2) + (a1<<1) + (a0)
-                b = (b3<<3) + (b2<<2) + (b1<<1) + (b0)
-                s = (s3<<3) + (s2<<2) + (s1<<1) + (s0)
-                with self.subTest(step=step,s=s,m=m,a=a,b=b,cin=cin,result=result):
-                    self._check( result, a, b, s, m, cin )
+        for mode in ["A6","AF"]:
+            with open("test-74181-%s.csv" % mode, newline='') as csvfile:
+                reader = csv.reader( csvfile )
+                next( reader, None ) # Skip header
+                for row in reader:
+                    #debug( ">row: " + str(row) )
+                    # Active-high interpretation
+                    [step, s3, s2, s1, s0, m, _cin, a3, a2, a1, a0, b3, b2, b1, b0, f3, f2, f1, f0, cout] = [int(n) for n in row]
+                    cin = 1 - _cin
+                    #cout = 1 - cout
+                    result = (cout<<4) + (f3<<3) + (f2<<2) + (f1<<1) + (f0)
+                    #debug( "> cout=%s, f3=%s, f2=%s, f1=%s, f0=%s, result=%s" % ( cout, f3, f2, f1, f0, result ) )
+                    a = (a3<<3) + (a2<<2) + (a1<<1) + (a0)
+                    b = (b3<<3) + (b2<<2) + (b1<<1) + (b0)
+                    s = (s3<<3) + (s2<<2) + (s1<<1) + (s0)
+                    with self.subTest(step=step,s=s,m=m,a=a,b=b,cin=cin,result=result):
+                        self._check( result, a, b, s, m, cin )
 
     def _check( self, expected, a, b, s, m, carry ):
         result = _74181_logic( a, b, s, m, carry )
@@ -740,6 +751,34 @@ class TestCPU( TestCase ):
                         addr = dp + b + d
                         self.assertEqual( self.ram[ addr&0xff ], self.cpu.pc )
 
+    def test_inc( self ):
+        for a in corners:
+            for carry in [0,1]:
+                with self.subTest(a=a,carry=carry):
+                    self.cpu.a = a
+                    self.cpu.carry = carry
+                    self.cpu.pc = 16
+                    self.asm.loc = 16
+                    self.asm.inc()
+                    self.cpu.step()
+                    expected = (a+1) & 0x1ff
+                    self.assertEqual( expected & 0xff, self.cpu.a )
+                    self.assertEqual( expected >> 8, self.cpu.carry )
+
+    def test_dec( self ):
+        for a in corners:
+            for carry in [0,1]:
+                with self.subTest(a=a,carry=carry):
+                    self.cpu.a = a
+                    self.cpu.carry = carry
+                    self.cpu.pc = 16
+                    self.asm.loc = 16
+                    self.asm.dec()
+                    self.cpu.step()
+                    expected = (a-1) & 0x1ff
+                    self.assertEqual( expected & 0xff, self.cpu.a )
+                    self.assertEqual( expected >> 8, self.cpu.carry )
+
     def _fib( self ):
         self.asm.imm( 1 )
         self.asm.a2b()
@@ -773,8 +812,11 @@ class TestCPU( TestCase ):
         self.asm.loc = 0x20
 
         MAIN_LOOP = self.asm.loc
-        # Fetch
+        # Fetch and advance
         self.asm.li( F_PC )
+        self.asm.xchg()
+        self.asm.ld( F_PC )
+        self.asm.add
         # Call handler
         self.asm.split()
         self.asm.lsr( 4 )
@@ -785,7 +827,7 @@ class TestCPU( TestCase ):
         # Reset DP and loop
         self.asm.imm( 0 )
         self.asm.a2dp()
-        self.asm.jv( MAIN_LOOP )
+        self.asm.jv( F_MAIN_LOOP )
 
         self.asm.loc = 0x30
 
@@ -795,6 +837,10 @@ class TestCPU( TestCase ):
         # - dp undefined
 
         H_IMM = self.asm.loc
+        self.asm.xchg()
+        self.asm.imm( 0 )
+        self.asm.a2dp()
+        self.asm.xchg()
         self.asm.sd( F_A )
         self.asm.ret()
 
@@ -983,6 +1029,7 @@ class TestCPU( TestCase ):
                 return
             else:
                 self.cpu.step()
+                debug( "| ram: %s" % self.ram[0:16].hex(' ') )
 
 class Interpreter(ArchitectedRegisters):
     """Like CPU but closer to what the software will look like, rather than the hardware"""
@@ -1029,8 +1076,8 @@ class Interpreter(ArchitectedRegisters):
 
             self._adc,
             self._add,
-            self._UNDEF,
-            self._UNDEF,
+            self._inc,
+            self._dec,
         ]
         self._handlers_bx = [
             self._link,
@@ -1181,6 +1228,16 @@ class Interpreter(ArchitectedRegisters):
         self.a = result & 0xff
         self.carry = result >> 8
 
+    def _inc( self, lo4 ):
+        result = self.a + 1
+        self.a = result & 0xff
+        self.carry = result >> 8
+
+    def _dec( self, lo4 ):
+        result = (self.a - 1) & 0x1ff
+        self.a = result & 0xff
+        self.carry = result >> 8
+
     def _link( self, lo4 ):
         self.lr = self.pc + lo4
 
@@ -1205,6 +1262,6 @@ def main():
     print("".join([ "%02x" % n for n in range(16) ]))
     print( t.cpu.ram.hex("\n", 16) )
     t.cpu.pc = 0x20
-    #t._execute()
+    t._execute()
 
 main()

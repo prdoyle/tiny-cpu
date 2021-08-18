@@ -1,0 +1,48 @@
+000102030405060708090a0b0c0d0e0f
+100000000000000020c0a0b000000000
+01ba01b0bbadd1b4bd00000000000000
+40bb30bf5cbbf9b17000b86800000000
+bb00b8bb11b400b83112b4bb00b830ad
+14b400b831bb3211bb12b400b831bb32
+ad11b515b400b831bb35ad32ac11b515
+b400b835bb30acb400b83410b4bdbd00
+b8bbfa7000b8bbfb7000000000000000
+00000000000000000000000000000000
+00000000000000000000000000000000
+6e6e6e6e6e6e6e6e6e6e6e6e554b6e6e
+3b3b3b3b686e6e6e6e6e36426e6d6e6e
+306e6e6e6e6e6e6e6e6e6f746e616e6e
+00000000000000000000000000000000
+00000000000000000000000000000000
+00000000000000000000000000000000
+Step instruction=40
+** ld: dp=0 lo4=0 ram= addr=16 ram=00 01 ba
+| state={'pc': 33, 'a': 1, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
+| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 34, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
+| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=30
+| state={'pc': 35, 'a': 16, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
+| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bf
+| state={'pc': 36, 'a': 16, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
+| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=5c
+| state={'pc': 37, 'a': 1, 'b': 0, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
+| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bb
+| state={'pc': 38, 'a': 0, 'b': 1, 'dp': 0, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
+| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=f9
+| state={'pc': 39, 'a': 0, 'b': 1, 'dp': 192, 'carry': 0, 'lr': 0, 'halted': False, 'ram': '...'}
+| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=b1
+| state={'pc': 40, 'a': 0, 'b': 1, 'dp': 192, 'carry': 0, 'lr': 41, 'halted': False, 'ram': '...'}
+| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=70
+| state={'pc': 110, 'a': 0, 'b': 1, 'dp': 192, 'carry': 0, 'lr': 41, 'halted': False, 'ram': '...'}
+| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
+Step instruction=bd
+| state={'pc': 111, 'a': 0, 'b': 1, 'dp': 192, 'carry': 0, 'lr': 41, 'halted': True, 'ram': '...'}
+| ram: 10 00 00 00 00 00 00 00 20 c0 a0 b0 00 00 00 00
