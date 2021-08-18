@@ -163,9 +163,6 @@ def init_control():
 
 init_control()
 
-# Machine state outside CPU
-ram = bytearray( 256 )
-
 class ArchitectedRegisters:
 
     def __init__( self ):
@@ -265,7 +262,7 @@ class CPU(ArchitectedRegisters):
         if PCI in ctrl:
             self.pc = self.bus
         if MW in ctrl:
-            self.mem[ self.ar ] = self.bus
+            self.ram[ self.ar ] = self.bus
 
     def _alu_first_operand( self, ctrl ):
         if EA in ctrl:
@@ -534,8 +531,9 @@ class Test74181( TestCase ):
         self.assertEqual( expected, result )
 
 corners = [ 0, 1, 2, 126, 127, 128, 129, 130, 253, 254, 255 ]
+dps = [ 0x1f, 0x20, 0x21, 0x7f, 0x80, 0x81, 0xef, 0xf0 ] # Not yet testing wrap-around at 256. Also avoid 0x10 because that's where the instruction goes
 
-class TestMath( TestCase ):
+class TestCPU( TestCase ):
     def setUp( self ):
         #self.cpu = CPU()
         self.cpu = Interpreter()
@@ -644,6 +642,75 @@ class TestMath( TestCase ):
                         self.cpu.step()
                         self.assertEqual( 1 * ( a <= b - carry ), self.cpu.carry )
 
+    def test_ld( self ):
+        table_contents = [ 13, 3, 2, 15, 10, 14, 1, 5, 16, 4, 7, 12, 8, 6, 11, 9 ] # Whatever
+        for dp in dps:
+            for n in range(16):
+                with self.subTest(dp=dp,n=n):
+                    self.cpu.dp = dp
+                    self.ram[ 0:256 ] = [88] * 256 # A value that doesn't appear in "corners"
+                    self.ram[ dp:dp+16 ] = table_contents
+                    self.cpu.pc = 16
+                    self.asm.loc = 16
+                    self.asm.ld( n )
+                    self.cpu.step()
+                    self.assertEqual( table_contents[n], self.cpu.a )
+
+    def test_sd( self ):
+        table_contents = [ 13, 3, 2, 15, 10, 14, 1, 5, 16, 4, 7, 12, 8, 6, 11, 9 ] # Whatever
+        for dp in dps:
+            for value in corners:
+                for n in range(16):
+                    with self.subTest(dp=dp,value=value,n=n):
+                        self.cpu.dp = dp
+                        self.ram[ 0:256 ] = [88] * 256 # A value that doesn't appear in "corners"
+                        self.ram[ dp:dp+16 ] = table_contents
+                        self.cpu.a = value
+                        self.cpu.pc = 16
+                        self.asm.loc = 16
+                        self.asm.sd( n )
+                        self.cpu.step()
+                        index = (dp+n) & 0xff
+                        expected = self.ram.copy()
+                        expected[ index ] = value
+                        self.assertEqual( expected.hex(' '), self.ram.hex(' ') )
+
+    def test_li( self ):
+        mem_contents = [ 13, 3, 2, 15, 10, 14, 1, 5, 16, 4, 7, 12, 8, 6, 11, 9 ] # Whatever
+        table_contents = [ 0x60 + n for n in [ 2, 8, 12, 13, 7, 11, 14, 16, 15, 9, 10, 6, 3, 4, 1, 5 ] ]
+        for dp in dps:
+            for n in range(16):
+                with self.subTest(dp=dp,n=n):
+                    self.cpu.dp = dp
+                    self.ram[ 0:256 ] = [88] * 256 # A value that doesn't appear in "corners"
+                    self.ram[ 0x60:0x70 ] = mem_contents
+                    self.ram[ dp:dp+16 ] = table_contents
+                    self.cpu.pc = 16
+                    self.asm.loc = 16
+                    self.asm.li( n )
+                    self.cpu.step()
+                    addr = table_contents[n]
+                    self.assertEqual( self.ram[addr], self.cpu.a )
+
+    def test_si( self ):
+        for dp in dps:
+            for value in corners:
+                for n in range(16):
+                    with self.subTest(dp=dp,value=value,n=n):
+                        self.cpu.dp = dp
+                        self.ram[ 0:256 ] = [88] * 256 # A value that doesn't appear in "corners"
+                        self.cpu.a = value
+                        self.cpu.pc = 16
+                        self.asm.loc = 16
+                        self.asm.si( n )
+                        self.cpu.step()
+                        index = (dp+n) & 0xff
+                        address = self.ram[ index ]
+                        expected = self.ram.copy()
+                        expected[ address ] = value
+                        self.assertEqual( expected.hex(' '), self.ram.hex(' ') )
+
+
     def _fib( self ):
         self.asm.imm( 1 )
         self.asm.a2b()
@@ -693,6 +760,11 @@ class TestMath( TestCase ):
 
         self.asm.loc = 0x30
 
+        # Handler calling convention:
+        # - A contains low 4 bits of instruction word
+        # - lr is return address
+        # - dp undefined
+
         H_IMM = self.asm.loc
         self.asm.sd( F_A )
         self.asm.ret()
@@ -729,6 +801,7 @@ class TestMath( TestCase ):
         self.asm.a2dp()
         self.asm.ld( F_A )
         self.asm.xchg()
+        L_ADD_TAIL = self.asm.loc
         self.asm.ld( F_B )
         self.asm.add()
         self.asm.sd( F_A )
@@ -741,9 +814,10 @@ class TestMath( TestCase ):
         self.asm.a2dp()
         self.asm.ld( F_A )
         self.asm.xchg()
-        self.asm.ld( F_B )
-        self.asm.add()
         self.asm.ld( F_CARRY )
+        self.asm.add()
+        # In theory: self.asm.jmp( L_ADD_TAIL )
+        self.asm.ld( F_B )
         self.asm.adc()
         self.asm.sd( F_A )
         self.asm.c2a()
@@ -966,14 +1040,16 @@ class Interpreter(ArchitectedRegisters):
 
     def _si( self, lo4 ):
         addr = self.ram[ self.dp + lo4 ]
-        ram[ addr ] = self.a
+        self.ram[ addr ] = self.a
 
     def _ld( self, lo4 ):
         self.a = self.ram[ self.dp + lo4 ]
 
     def _li( self, lo4 ):
+        index = self.dp + lo4
         addr = self.ram[ self.dp + lo4 ]
-        self.a = ram[ addr ]
+        debug( "** ld: dp=%s lo4=%s ram=%s addr=%s ram=%s" % ( self.dp, lo4, self.ram[ index-1:index+2 ].hex(' '), addr, self.ram[ addr-1:addr+2 ].hex(' ') ) )
+        self.a = self.ram[ addr ]
 
     def _sh( self, lo4 ):
         distance = lo4 - 8
@@ -1088,12 +1164,14 @@ class Interpreter(ArchitectedRegisters):
         raise ValueError( "No handler for %x" % lo4 )
 
 def main():
-    t = TestMath()
+    t = TestCPU()
     t.setUp()
     t._fib()
     t._execute()
     t._meta_interpreter()
     print("".join([ "%02x" % n for n in range(16) ]))
     print( t.cpu.ram.hex("\n", 16) )
+    t.cpu.pc = 0x20
+    #t._execute()
 
 main()
