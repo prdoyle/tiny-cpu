@@ -492,8 +492,9 @@ class TestMath( TestCase ):
         F_A  = 1
         F_B  = 2
         F_DP = 3
-        F_CARRY  = 4
-        F_HALTED = 5
+        F_LR = 4
+        F_CARRY  = 5
+        F_HALTED = 6
         F_MAIN_LOOP = 8
         F_HANDLERS_MAIN = 9
         F_HANDLERS_AX = 10
@@ -504,12 +505,12 @@ class TestMath( TestCase ):
 
         MAIN_LOOP = self.asm.loc
         # Fetch
-        self.asm.li( PC )
+        self.asm.li( F_PC )
         # Call handler
         self.asm.split()
         self.asm.lsr( 4 )
         self.asm.xchg()   # A = lo4, B = hi4
-        self.asm.df( F_HANDLERS_MAIN )
+        self.asm.dpf( F_HANDLERS_MAIN )
         self.asm.link( 1 )
         self.asm.jt( 0 )
         # Reset DP and loop
@@ -549,9 +550,9 @@ class TestMath( TestCase ):
         self.asm.ld( F_A )
         self.asm.xchg()
         self.asm.ld( F_B )
-        self.asm.st( F_A )
+        self.asm.sd( F_A )
         self.asm.xchg()
-        self.asm.st( F_B )
+        self.asm.sd( F_B )
         self.asm.ret()
 
         H_ADD = self.asm.loc
@@ -561,9 +562,9 @@ class TestMath( TestCase ):
         self.asm.xchg()
         self.asm.ld( F_B )
         self.asm.add()
-        self.asm.st( F_A )
+        self.asm.sd( F_A )
         self.asm.c2a()
-        self.asm.st( F_CARRY )
+        self.asm.sd( F_CARRY )
         self.asm.ret()
 
         H_ADC = self.asm.loc
@@ -573,17 +574,17 @@ class TestMath( TestCase ):
         self.asm.xchg()
         self.asm.ld( F_B )
         self.asm.add()
-        self.asm.ld( F_C )
+        self.asm.ld( F_CARRY )
         self.asm.adc()
-        self.asm.st( F_A )
+        self.asm.sd( F_A )
         self.asm.c2a()
-        self.asm.st( F_CARRY )
+        self.asm.sd( F_CARRY )
         self.asm.ret()
 
         H_SCS = self.asm.loc
         self.asm.imm( 0 )
         self.asm.a2dp()
-        self.asm.ld( F_C )
+        self.asm.ld( F_CARRY )
         self.asm.xchg()
         self.asm.ld( F_PC )
         self.asm.adc()
@@ -604,18 +605,20 @@ class TestMath( TestCase ):
         H_DP2A = self.asm.loc
         H_L2A = self.asm.loc
         H_A2L = self.asm.loc
+        H_C2A = self.asm.loc
         H_SPLIT = self.asm.loc
         H_RET = self.asm.loc
         H_JDP = self.asm.loc
+        H_SBC = self.asm.loc
         H_HALT = self.asm.loc
         # Not yet implemented
         self.asm.halt()
 
         AX_TABLE = self.asm.loc
+        self.asm.imm( H_ADD )
+        self.asm.imm( H_ADC )
         self.asm.halt()
-        self.asm.halt()
-        self.asm.halt()
-        self.asm.halt()
+        self.asm.imm( H_SBC )
         self.asm.halt()
         self.asm.halt()
         self.asm.halt()
@@ -633,7 +636,7 @@ class TestMath( TestCase ):
         self.asm.imm( 0 )
         self.asm.a2dp()
         self.asm.xchg()   # B = lo4
-        self.asm.df( F_HANDLERS_AX )
+        self.asm.dpf( F_HANDLERS_AX )
         self.asm.jt( 0 )
 
         BX_TABLE = self.asm.loc
@@ -643,8 +646,8 @@ class TestMath( TestCase ):
         self.asm.imm( H_LINK )
         self.asm.imm( H_RET )
         self.asm.imm( H_C2A )
-        self.asm.imm( H_ADD )
-        self.asm.imm( H_ADC )
+        self.asm.halt()
+        self.asm.halt()
         self.asm.imm( H_A2DP )
         self.asm.imm( H_DP2A )
         self.asm.imm( H_A2B )
@@ -658,7 +661,7 @@ class TestMath( TestCase ):
         self.asm.imm( 0 )
         self.asm.a2dp()
         self.asm.xchg()   # B = lo4
-        self.asm.df( F_HANDLERS_BX )
+        self.asm.dpf( F_HANDLERS_BX )
         self.asm.jt( 0 )
 
     def _execute( self ):
@@ -858,5 +861,6 @@ def main():
     t.setUp()
     t._fib()
     t._execute()
+    t._meta_interpreter()
 
 main()
