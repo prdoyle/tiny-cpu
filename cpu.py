@@ -63,6 +63,57 @@ class Assembler:
     def split( self ): self.emit( 0xbf )
     def data( self, n ): self.emit( n )
 
+class Disassembler:
+
+    def __init__( self ):
+        pass
+
+    def _format( self, opcode, operand=None ):
+        if operand == None:
+            result = f"{ opcode.upper() }"
+        else:
+            result = f"{ opcode.upper() } { operand }"
+        return result
+
+    def imm( self, n ): return self._format( "imm", n )
+    def lbf( self, n ): return self._format( "lbf", n )
+    def lae( self, n ): return self._format( "lae", n )
+    def laf( self, n ): return self._format( "laf", n )
+    def spbf( self, n ): return self._format( "spbf", n )
+    def sbf( self, n ): return self._format( "sbf", n )
+    def sae( self, n ): return self._format( "sae", n )
+    def saf( self, n ): return self._format( "saf", n )
+    def scc( self, n ): return self._format( "scc", n )
+    def scs( self, n ): return self._format( "scs", n )
+    def ap( self, n ): return self._format( "ap", n )
+    def pbf( self, n ): return self._format( "pbf", n )
+    def pae( self, n ): return self._format( "pae", n )
+    def call( self, n ): return self._format( "call", n )
+
+    def link( self, n ): return self._format( "link", n )
+    def sbc( self ): return self._format( "sbc" )
+    def sub( self ): return self._format( "sub" )
+    def c2a( self ): return self._format( "c2a" )
+    def rx( self ): return self._format( "rx" )
+    def ax( self ): return self._format( "ax" )
+    def ra2b( self ): return self._format( "ra2b" )
+    def adc( self ): return self._format( "adc" )
+    def add( self ): return self._format( "add" )
+    def padd( self ): return self._format( "padd" )
+
+    def cl( self, n ): return self._format( "cl", n )
+    def ret( self ): return self._format( "ret" )
+    def cleb( self ): return self._format( "cleb" )
+    def clebc( self ): return self._format( "clebc" )
+    def clb( self ): return self._format( "clb" )
+    def p2r( self ): return self._format( "p2r" )
+    def pb2a( self ): return self._format( "pb2a" )
+    def jp( self ): return self._format( "jp" )
+    def halt( self ): return self._format( "halt" )
+    def lsr( self ): return self._format( "lsr" )
+    def split( self ): return self._format( "split" )
+    def data( self, n ): return self._format( "data", n )
+
 def decode( instr, consumer ):
     main_handlers = [
         lambda n: consumer.imm( n ),
@@ -129,7 +180,7 @@ def decode( instr, consumer ):
     ]
     hi4 = ff( instr ) >> 4
     lo4 = instr & 0x0F
-    main_handlers[ hi4 ]( lo4 )
+    return main_handlers[ hi4 ]( lo4 )
 
 class Interpreter:
 
@@ -143,12 +194,13 @@ class Interpreter:
         self.lr = 0
         self.cf = 0
         self.halted = False
+        self._disassembler = Disassembler()
 
     def step( self ):
         if not self.halted:
             instr = self.ram[ self.pc ]
             self.debug()
-            debug( "Execute opcode %02x" % instr )
+            debug( "Execute opcode %02x: %s" % ( instr, decode( instr, self._disassembler ) ) )
             decode( instr, self )
         return not self.halted
 
@@ -185,6 +237,7 @@ class Interpreter:
         self.ra = self.ram[ self._bf(n) ]
 
     def lae( self, n ):
+        raise ValueError("LAE is not implemented!")
         self._next()
         self.ra = self.ram[ self._ae(n) ]
 
@@ -441,13 +494,16 @@ def generate_meta_interpreter( asm ):
     debug( "%s\t%02x\t%d bytes" % ( "O_LBF", O_LBF, asm.loc - O_LBF ) )
 
     O_LAE = asm.loc
-    asm.lbf( R_PA )
-    asm.add()
-    asm.rx()             # RB is PA+imm4
-    asm.pbf( R_RB )      # PA is RB
-    asm.pae( 0 )         # PA is [PA+RB+imm4]
-    asm.spbf( R_RA )
-    asm.ret()
+    if True:
+        asm.halt()
+    else:
+        asm.lbf( R_PA )
+        asm.add()
+        asm.rx()             # RB is PA+imm4
+        asm.pbf( R_RB )      # PA is RB
+        asm.pae( 0 )         # PA is [PA+RB+imm4]
+        asm.spbf( R_RA )
+        asm.ret()
     debug( "%s\t%02x\t%d bytes" % ( "O_LAE", O_LAE, asm.loc - O_LAE ) )
 
     O_LAF = asm.loc
@@ -491,7 +547,7 @@ def generate_meta_interpreter( asm ):
     O_SCC = asm.loc
     asm.lbf( R_CF )
     asm.cl( 1 )          # CF is ~CF
-    asm.scs( 3 )
+    asm.scc( 3 )         # So confusing
     asm.pbf( R_PC )
     asm.padd()
     asm.spbf( R_PC )
@@ -501,7 +557,7 @@ def generate_meta_interpreter( asm ):
     O_SCS = asm.loc
     asm.lbf( R_CF )
     asm.cl( 1 )          # CF is ~CF
-    asm.scc( 3 )
+    asm.scs( 3 )         # So confusing
     asm.pbf( R_PC )
     asm.padd()
     asm.spbf( R_PC )
@@ -820,7 +876,7 @@ def assemble_meta_interpreter():
 def main():
     asm = assemble_meta_interpreter()
     interpreter = Interpreter( asm.ram, 0x18 )
-    for step in range(1,1000):
+    for step in range(1,1200):
         debug( f'--## Step {step} ##--' )
         dump_ram( asm.ram )
         if not interpreter.step():
