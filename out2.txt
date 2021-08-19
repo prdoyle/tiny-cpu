@@ -17,26 +17,26 @@ O_PAF	84	4 bytes
 O_LINK	88	4 bytes
 O_PX	8d	5 bytes
 O_PLX	92	5 bytes
-O_SBC	99	7 bytes
-O_SUB	a0	7 bytes
-O_C2A	a3	3 bytes
-O_RX	a8	5 bytes
-O_AX	ad	5 bytes
-O_RA2B	b0	3 bytes
-O_ADC	b7	7 bytes
-O_ADD	be	7 bytes
-O_PADD	c4	6 bytes
-O_CL	c8	4 bytes
-O_RET	cb	3 bytes
-O_CLEB	d1	6 bytes
-O_CLEBC	d7	6 bytes
-O_CLB	dd	6 bytes
-O_P2R	e0	3 bytes
-O_PB2A	e3	3 bytes
-O_JP	e6	3 bytes
-O_HALT	e7	1 bytes
-O_LSR	ed	6 bytes
-O_SPLIT	f5	8 bytes
+O_SBC	98	6 bytes
+O_SUB	9e	6 bytes
+O_C2A	a1	3 bytes
+O_RX	a6	5 bytes
+O_AX	ab	5 bytes
+O_RA2B	ae	3 bytes
+O_ADC	b4	6 bytes
+O_ADD	ba	6 bytes
+O_PADD	c0	6 bytes
+O_CL	c4	4 bytes
+O_RET	c7	3 bytes
+O_CLEB	cc	5 bytes
+O_CLEBC	d1	5 bytes
+O_CLB	d6	5 bytes
+O_P2R	d9	3 bytes
+O_PB2A	dc	3 bytes
+O_JP	df	3 bytes
+O_HALT	e0	1 bytes
+O_LSR	e5	5 bytes
+O_SPLIT	ec	7 bytes
 000102030405060708090a0b0c0d0e0f
 00000000000000000000000000000000
 00000000000000000000000000000000
@@ -47,10 +47,10 @@ ada9d2e041b4d3e041b4d41360b4d411
 d0ae40b416b183d0ae40b4dae0bcdbe0
 bcd3ae43b4d4e043b413ada9d2e043b4
 d3e043b410ad55b413d44354b413d543
-55b4dea1bca651dfbcdea1bca751dfbc
-1651b411d24152b413d14351b41152b4
-dea1bcac51dfbcdea1bcad51dfbc12a9
-13ad53b411b7dfbc1550b4dea1bcb5df
-bcdea1bcb6dfbcdea1bcb7dfbc1351b4
-1453b41350b4bddea1bcbe51b4dea1bc
-bf51a952b40000000000000000000000
+55b4debba651dfbcdebba751dfbc1651
+b411d24152b413d14351b41152b4debb
+ac51dfbcdebbad51dfbc12a913ad53b4
+11b7dfbc1550b4debbb5dfbcdebbb6df
+bcdebbb7dfbc1351b41453b41350b4bd
+debbbe51b4debbbf51a952b400000000
+00000000000000000000000000000000
