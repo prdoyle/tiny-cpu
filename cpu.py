@@ -132,10 +132,10 @@ class Interpreter:
     def __init__( self, ram ):
         self.ram = ram
         self.pc = 0x10
-        self.pa = 0
-        self.pb = 0
         self.ra = 0
         self.rb = 0
+        self.pa = 0
+        self.pb = 0
         self.lr = 0
         self.cf = 0
         self.halted = False
@@ -353,6 +353,114 @@ def generate_fib( asm ):
 def generate_all( asm ):
     for b in range(256):
         asm.data( b )
+
+def generate_meta_interpreter( asm ):
+    R_PC = 0
+    R_RA = 1
+    R_RB = 2
+    R_PA = 3
+    R_PB = 4
+    R_LR = 5
+    R_CF = 6
+
+    H_MAIN = 9
+    H_AX   = 0xA
+    H_BX   = 0xB
+
+    V_MAIN  = 12
+    V_RET   = 13
+    V ALU   = 14
+    V_CARRY = 15
+
+    asm.loc = 0x20
+
+    MAIN_LOOP = asm.loc
+    asm.pbf( R_PC )
+    asm.laf( 0 )         # Load instruction
+    asm.ap( 1 )
+    asm.spbf( R_PC )     # Advance PC
+
+    asm.split()
+    asm.rx()             # RA = lo4, RB = hi4
+    asm.pbf( H_MAIN )
+    asm.pae( 0 )         # PA = handler
+    asm.rx()             # RA = hi4, RB = lo4
+    asm.link( 1 )
+    asm.jp()
+    MAIN_RETURN = asm.loc
+    asm.pbf( V_MAIN )
+    asm.jp()
+
+    PREP_ALU_REGS = asm.loc
+    asm.lbf( R_CF )
+    asm.rx()
+    asm.imm( 0 )
+    asm.clb()            # CF loaded
+    asm.lbf( R_RB )
+    asm.rx()
+    asm.lbf( R_RA )      # RA and RB loaded
+    asm.ret()
+
+    SET_CARRY_AND_RETURN = asm.loc
+    asm.c2a()
+    asm.sbf( R_CF )
+    asm.pbf( V_RET )
+    asm.jp()
+
+    ## Opcode implementations
+
+    O_IMM = asm.loc
+    asm.sbf( R_RA )
+    asm.ret()
+
+    O_LBF = asm.loc
+    asm.pbf( R_PB )
+    asm.pae( 0 )
+    asm.spbf( R_RA )
+    asm.ret()
+
+    O_LAE = asm.loc
+    asm.lbf( R_PA )
+    asm.add()
+    asm.rx()             # RB is PA+imm4
+    asm.pbf( R_RB )      # PA is RB
+    asm.pae( 0 )         # PA is [PA+RB+imm4]
+    asm.spbf( R_RA )
+    asm.ret()
+
+    O_LAF = asm.loc
+    asm.pbf( R_PA )
+    asm.pae( 0 )
+    asm.spbf( R_RA )
+    asm.ret()
+
+    O_SPBF = asm.loc
+    asm.pbf( R_PB )
+    asm.lbf( R_PA )      # RA is PA
+    asm.sae( 0 )         # Store to [PB + imm4]
+    asm.ret()
+
+    O_SBF = asm.loc
+    asm.pbf( R_PB )
+    asm.lbf( R_RA )      # RA is RA
+    asm.sae( 0 )         # Store to [PB + imm4]
+    asm.ret()
+
+    O_SAE = asm.loc
+    asm.lbf( R_PA )
+    asm.add()
+    asm.rx()             # RB is PA+imm4
+    asm.pbf( R_RB )      # PA is RB
+    asm.lbf( R_RA )
+    asm.sae( 0 )         # Store to [PA+RB+imm4]
+    asm.ret()
+
+    O_SAF = asm.loc
+    asm.pbf( R_PA )
+    asm.lbf( R_RA )      # RA is RA
+    asm.sae( 0 )         # Store to [PA + imm4]
+    asm.ret()
+
 
 class RoundTripTest( TestCase ):
     

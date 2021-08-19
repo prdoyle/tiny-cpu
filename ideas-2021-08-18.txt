@@ -53,10 +53,10 @@ LSR:   Logical shift right RA by signed # bits in RB: 0-7 = right, 8-15 = left
 
 	# Simulated registers
 	R_PC	equ 0
-	R_PA	equ 1
-	R_PB	equ 2
-	R_RA	equ 3
-	R_RB	equ 4
+	R_RA	equ 1
+	R_RB	equ 2
+	R_PA	equ 3
+	R_PB	equ 4
 	R_LR	equ 5
 	R_CF	equ 6
 
@@ -80,9 +80,9 @@ MAIN_LOOP:
 	SPBF	R_PC	# Advance PC
 	SPLIT
 	RX		# RA = lo4, RB = hi4
-	PAF	H_MAIN
+	PBF	H_MAIN
 	PAE	0	# PA = handler address
-	XCHG		# RA = hi4, RB = lo4
+	RX		# RA = hi4, RB = lo4
 	LINK	1
 	JP
 MAIN_RETURN:
@@ -91,92 +91,91 @@ MAIN_RETURN:
 	JP
 
 PREP_ALU_REGS: # Subroutine to load interpreter RA, RB, CF into actual cpu registers
-	LBF	F_CF
+	LBF	R_CF
 	RX
 	IMM	0
 	CLB		# CF is loaded
-	LBF	F_RB
+	LBF	R_RB
 	RX
-	LBF	F_RA	# RA and RB loaded
+	LBF	R_RA	# RA and RB loaded
 	RET
 
 SET_CARRY_AND_RETURN:
 	C2A
-	SBF	F_CF
+	SBF	R_CF
 	PBF	V_RET
 	JP
 
 	## Opcode implementations ##
 
 O_IMM:
-	PB2A
-	SAF	F_RA
+	SBF	R_RA
 	RET
 
 O_LBF:
-	PBF	F_PB
-	PAE		# PA is [PB+imm4]
-	SPBF	F_RA
+	PBF	R_PB
+	PAE	0	# PA is [PB+imm4]
+	SPBF	R_RA
 	RET
 
 O_LAE: # UNUSED
-	LBF	F_PA
+	LBF	R_PA
 	ADD
 	RX		# RB is PA+imm4
-	PBF	F_RB	# PA is RB
-	PAE		# PA is [PA+RB+imm4]
-	SPBF	F_RA
+	PBF	R_RB	# PA is RB
+	PAE	0	# PA is [PA+RB+imm4]
+	SPBF	R_RA
 	RET
 
 O_LAF: # USED ONCE
-	PBF	F_PA
-	PAE		# PA is [PA+imm4]
-	SPBF	F_RA
+	PBF	R_PA
+	PAE	0	# PA is [PA+imm4]
+	SPBF	R_RA
 	RET
 
 O_SPBF:
-	PBF	F_PB
-	LBF	F_PA	# RA is PA
+	PBF	R_PB
+	LBF	R_PA	# RA is PA
 	SAE	0	# Store to [PB+imm4]
 	RET
 
 O_SBF:
-	PBF	F_PB
-	LBF	F_RA	# RA is RA
+	PBF	R_PB
+	LBF	R_RA	# RA is RA
 	SAE	0	# Store to [PB+imm4]
 	RET
 
 O_SAE:
-	LBF	F_PA
+	LBF	R_PA
 	ADD		# RA is PA+imm4
 	RX		# RB is PA+imm4
-	PBF	F_RB	# PA is RB
-	LBF	F_RA
+	PBF	R_RB	# PA is RB
+	LBF	R_RA
 	SAE	0	# Store to [PA+RB+imm4]
 	RET
 
 O_SAF:
-	PBF	F_PA
-	LBF	F_RA
+	PBF	R_PA
+	LBF	R_RA
 	SAE	0	# Store to [PA+imm4]
 	RET
 
 O_SCC:
-	LBF	F_CF
+	LBF	R_CF
 	CL	1
 	SCS	3	# Ironic
-	PBF	F_PC
+	PBF	R_PC
 	PADD
-	SPBF	F_PC
+	SPBF	R_PC
 	RET
 
 O_SCS:
-	LBF	F_CF
+	LBF	R_CF
 	CL	1
 	SCC	3	# Ironic
-	PBF	F_PC
+	PBF	R_PC
 	PADD
-	SPBF	F_PC
+	SPBF	R_PC
 	RET
 
 AX_TRAMPOLINE:
@@ -190,57 +189,57 @@ BX_TRAMPOLINE:
 	JP
 
 O_AP:
-	PBF	F_PA
+	PBF	R_PA
 	PADD
-	SPBF	F_PA
+	SPBF	R_PA
 	RET
 
 O_PBF:
-	PBF	F_PB
+	PBF	R_PB
 	PAE		# PA is [PB+imm4]
-	SPBF	F_PA
+	SPBF	R_PA
 	RET
 
 O_PAE:
-	LBF	F_PA
+	LBF	R_PA
 	ADD		# RA is PA+imm4
 	RX		# RB is PA+imm4
-	PBF	F_RB	# PA is RB
-	LBF	F_PA
+	PBF	R_RB	# PA is RB
+	LBF	R_PA
 	SAE	0	# Store to [PA+RB+imm4]
 	RET
 
 O_PAF:
-	PBF	F_PA
-	LBF	F_PA
+	PBF	R_PA
+	LBF	R_PA
 	SAE	0	# Store to [PA+imm4]
 	RET
 
 O_LINK:
-	LBF	F_PC
+	LBF	R_PC
 	ADD
-	SBF	F_LR
+	SBF	R_LR
 	RET
 
 O_PX:
-	LBF	F_PA
-	PBF	F_PB
-	SPBF	F_PA
-	SBF	F_PB
+	LBF	R_PA
+	PBF	R_PB
+	SPBF	R_PA
+	SBF	R_PB
 	RET
 
 O_PLX:
-	LBF	F_PA
-	PBF	F_LR
-	SPBF	F_PA
-	SBF	F_LR
+	LBF	R_PA
+	PBF	R_LR
+	SPBF	R_PA
+	SBF	R_LR
 	RET
 
 O_SBC:
 	PBF	V_ALU
 	JP
 	SBC
-	SBF	F_RA
+	SBF	R_RA
 	PBF	V_CARRY
 	JP
 
@@ -248,39 +247,39 @@ O_SUB:
 	PBF	V_ALU
 	JP
 	SUB
-	SBF	F_RA
+	SBF	R_RA
 	PBF	V_CARRY
 	JP
 
 O_C2A:
-	LBF	F_CF
-	SBF	F_RA
+	LBF	R_CF
+	SBF	R_RA
 	RET
 
 O_RX:
-	LBF	F_RA
-	PBF	F_RB
-	SPBF	F_RA
-	SBF	F_RB
+	LBF	R_RA
+	PBF	R_RB
+	SPBF	R_RA
+	SBF	R_RB
 	RET
 
 O_AX: # UNUSED
-	LBF	F_PA
-	PBF	F_RA
-	SPBF	F_PA
-	SBF	F_RA
+	LBF	R_PA
+	PBF	R_RA
+	SPBF	R_PA
+	SBF	R_RA
 	RET
 
 O_RA2B:
-	LBF	F_RA
-	SBF	F_RB
+	LBF	R_RA
+	SBF	R_RB
 	RET
 
 O_ADC:
 	PBF	V_ALU
 	JP
 	ADC
-	SBF	F_RA
+	SBF	R_RA
 	PBF	V_CARRY
 	JP
 
@@ -288,27 +287,27 @@ O_ADD:
 	PBF	V_ALU
 	JP
 	ADD
-	SBF	F_RA
+	SBF	R_RA
 	PBF	V_CARRY
 	JP
 
 O_PADD:
-	LBF	F_RB
+	LBF	R_RB
 	RX
-	LBF	F_PA
+	LBF	R_PA
 	ADD
-	SBF	F_PA
+	SBF	R_PA
 	RET
 
 O_CL:
-	LBF	F_RA
+	LBF	R_RA
 	CLB		# B contains the imm4
 	PBF	V_CARRY
 	JP
 
 O_RET:
-	LBF	F_LR
-	SBF	F_PC
+	LBF	R_LR
+	SBF	R_PC
 	RET
 
 O_CLEB:
@@ -333,18 +332,18 @@ O_CLB:
 	JP
 
 O_P2R:
-	LBF	F_PA
-	SBF	F_RA
+	LBF	R_PA
+	SBF	R_RA
 	RET
 
 O_PB2A:
-	LBF	F_PB
-	SBF	F_PA
+	LBF	R_PB
+	SBF	R_PA
 	RET
 
 O_JP:
-	LBF	F_PA
-	SBF	F_PC
+	LBF	R_PA
+	SBF	R_PC
 	RET
 
 O_HALT:
@@ -354,16 +353,16 @@ O_LSR:
 	PBF	V_ALU
 	JP
 	LSR
-	SBF	F_RA
+	SBF	R_RA
 	RET
 
 O_SPLIT:
 	PBF	V_ALU
 	JP
 	SPLIT
-	SBF	F_RA
+	SBF	R_RA
 	RX
-	SBF	F_RB
+	SBF	R_RB
 	RET
 
 MAIN_HANDLERS:
