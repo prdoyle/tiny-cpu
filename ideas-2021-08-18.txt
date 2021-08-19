@@ -17,7 +17,6 @@ SAF:  [PA+imm4] <- RA        # Store A field
 PAF:  PA <- [PA+imm4]        # Pointer A field
 PBE:  PA <- [PB+RB+imm4]     # Pointer B element
 PBF:  PA <- [PB+imm4]        # Pointer B field
-JV:   PC <- [PA+imm4]        # Jump virtual
 AP:   PA <- PA + imm4        # Advance pointer
 SPBF: [PB+imm4] <- PA        # Store pointer
 SCC:  PC <- PC + imm4        # Skip if carry clear
@@ -84,14 +83,15 @@ MAIN_LOOP:
 	LSR	4
 	RX		# RA = lo4, RB = hi4
 	PBF	H_MAIN
-	PADD            # PA = handler
+	PADD
+	PAF	0	# PA = handler address
 	XCHG		# RA = hi4, RB = lo4
 	LINK	1
-	JV	0
+	JP
 MAIN_RETURN:
 	# Return from handler
-	PB2A
-	JV	V_MAIN
+	PBF	V_MAIN
+	JP
 
 PREP_ALU_REGS: # Subroutine to load interpreter RA, RB, CF into actual cpu registers
 	PBF	F_CF
@@ -118,7 +118,7 @@ O_IMM:
 	SAF	F_RA
 	RET
 
-O_LAE:
+O_LAE: # UNUSED
 	PBF	F_PA
 	PADD		# PA is PA+imm4
 	AX
@@ -129,14 +129,14 @@ O_LAE:
 	SPBF	F_RA
 	RET
 	
-O_LAF:
+O_LAF: # USED ONCE
 	PBF	F_PA
 	PADD		# PA is PA+imm4
 	PAF		# PA is value from memory
 	SPBF	F_RA
 	RET
 	
-O_SAE:
+O_SAE: # UNUSED
 	PBF	F_PA
 	PADD		# PA is PA+imm4
 	AX
@@ -161,7 +161,7 @@ O_PAF:
 	SPBF	F_PA
 	RET
 
-O_PBE:
+O_PBE: # UNUSED
 	PBF	F_PB
 	PADD		# PA is PB+imm4
 	AX
@@ -172,19 +172,13 @@ O_PBE:
 	SPBF	F_PA
 	RET
 	
-O_PBF:
+O_PBF: # (USED CONSTANTLY)
 	PBF	F_PB
 	PADD		# PA is PB+imm4
 	PAF		# PA is value from memory
 	SPBF	F_PA
 	RET
 	
-O_JV:
-	PBF	F_PA
-	PADD		# PA is PA+imm4
-	PAF		# PA is value from memory
-	SPBF	F_PC
-	RET
 O_AP:
 	PBF	F_PA
 	PADD
