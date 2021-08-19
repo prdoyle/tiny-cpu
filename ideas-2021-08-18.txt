@@ -1,0 +1,381 @@
+
+Registers:
+RA - Accumulator
+RB - Register B
+PA - Pointer accumulator - generally transient addresses
+PB - Pointer B           - generally a longer-lived context structure
+PC - Program counter
+LR - Link register
+CF - Carry flag
+
+# Imm4 instructions
+IMM:  RA <- imm4             # Immediate
+LAE:  RA <- [PA+RB+imm4]     # Load A element
+LAF:  RA <- [PA+imm4]        # Load A field
+SAE:  [PA+RB+imm4] <- RA     # Store A element
+SAF:  [PA+imm4] <- RA        # Store A field
+PAF:  PA <- [PA+imm4]        # Pointer A field
+PBE:  PA <- [PB+RB+imm4]     # Pointer B element
+PBF:  PA <- [PB+imm4]        # Pointer B field
+JV:   PC <- [PA+imm4]        # Jump virtual
+AP:   PA <- PA + imm4        # Advance pointer
+SPBF: [PB+imm4] <- PA        # Store pointer
+SCC:  PC <- PC + imm4        # Skip if carry clear
+SCS:  PC <- PC + imm4        # Skip if carry set
+
+# Opcode-only instructions
+RX:   RA <-> RB             # Register exchange
+PX:   PA <-> PB             # Pointer exchange
+AX:   RA <-> PA             # Register-pointer accumulator exchange
+LPX:  PA <-> LR
+RA2B: RB <- RA
+PB2A: PA <- PB
+P2R:  RA <- PA
+C2A:  RA <- CF
+CLn:  (0-3)                 # Carry if RA < n
+CLEB:                       # Carry if RA <= RB
+CLEBC:                      # Carry if RA <= RB - carry
+CLB:                        # Carry if RA < RB
+SUB
+SBC
+ADC
+ADD
+LINKn: LR := PC+n
+SPLIT
+PADD:  PA <- PA + RB
+JP:    PC <- PA
+RET:   PC <- LR
+LSR:   Logical shift right RA by signed # bits in RB: 0-7 = right, 8-15 = left
+
+
+### Meta interpreter ###
+
+	R_PC	equ 0
+	R_PA	equ 1
+	R_PB	equ 2
+	R_RA	equ 3
+	R_RB	equ 4
+	R_LR	equ 5
+	R_CF	equ 6
+
+	H_MAIN	equ 9	# Main handlers
+	H_AX	equ 10	# Ax handlers
+	H_BX	equ 11	# Bx handlers
+
+	V_MAIN	equ 12  # MAIN_LOOP
+	V_RET	equ 13  # MAIN_RETURN
+	V_ALU	equ 14	# PREP_ALU_REGS
+	V_CARRY	equ 15	# SET_CARRY_AND_RETURN
+	
+	# Initialization
+	.org	0x00
+	IMM	0x10	# Initial PC
+	IMM	0x00	# Initial PA
+	IMM	0x00	# Initial PB
+
+	.org 0x20
+MAIN_LOOP:
+	# PB points to context
+	PBF	R_PC
+	LAF	0	# Load instruction
+	AP	1
+	SPBF	R_PC	# Advance PC
+	SPLIT
+	LSR	4
+	RX		# RA = lo4, RB = hi4
+	PBF	H_MAIN
+	PADD            # PA = handler
+	XCHG		# RA = hi4, RB = lo4
+	LINK	1
+	JV	0
+MAIN_RETURN:
+	# Return from handler
+	PB2A
+	JV	V_MAIN
+
+PREP_ALU_REGS: # Subroutine to load interpreter RA, RB, CF into actual cpu registers
+	PBF	F_CF
+	AX
+	RX
+	IMM	0
+	CLB		# CF is loaded
+	PBF	F_RB
+	AX
+	RX
+	PBF	F_RA
+	AX		# RA and RB loaded
+	RET
+
+SET_CARRY_AND_RETURN:
+	C2A
+	AX
+	SPBF	F_CF
+	PBF	V_RET
+	JP
+
+O_IMM:
+	PB2A
+	SAF	F_RA
+	RET
+
+O_LAE:
+	PBF	F_PA
+	PADD		# PA is PA+imm4
+	AX
+	RX		# RB is PA+imm4
+	PBF	F_RB
+	PADD		# PA is PA+RB+IMM4
+	PAF		# PA is value from memory
+	SPBF	F_RA
+	RET
+	
+O_LAF:
+	PBF	F_PA
+	PADD		# PA is PA+imm4
+	PAF		# PA is value from memory
+	SPBF	F_RA
+	RET
+	
+O_SAE:
+	PBF	F_PA
+	PADD		# PA is PA+imm4
+	AX
+	RX		# RB is PA+imm4
+	PBF	F_RB
+	PADD		# PA is PA+RB+IMM4
+	PBF	F_RA
+	SAF	0
+	RET
+
+O_SAF:
+	PBF	F_PA
+	PADD		# PA is PA+imm4
+	PBF	F_RA
+	SAF	0
+	RET
+
+O_PAF:
+	PBF	F_PA
+	PADD		# PA is PA+imm4
+	PAF		# PA is value from memory
+	SPBF	F_PA
+	RET
+
+O_PBE:
+	PBF	F_PB
+	PADD		# PA is PB+imm4
+	AX
+	RX		# RB is PB+imm4
+	PBF	F_RB
+	PADD		# PA is PB+RB+IMM4
+	PAF		# PA is value from memory
+	SPBF	F_PA
+	RET
+	
+O_PBF:
+	PBF	F_PB
+	PADD		# PA is PB+imm4
+	PAF		# PA is value from memory
+	SPBF	F_PA
+	RET
+	
+O_JV:
+	PBF	F_PA
+	PADD		# PA is PA+imm4
+	PAF		# PA is value from memory
+	SPBF	F_PC
+	RET
+O_AP:
+	PBF	F_PA
+	PADD
+	SPBF	F_PA
+	RET
+
+O_SPBF:
+	PBF	F_PB
+	PADD
+	AX		# RA is PB+imm4
+	PBF	F_PA
+	AX		# RA is PA; PA is PB+imm4
+	SAF	0
+	RET
+
+O_SCC:
+	PBF	F_CF
+	AX
+	CL	1
+	SCS	3	# Ironic
+	PBF	F_PC
+	PADD
+	SPBF	F_PC
+	RET
+
+O_SCS:
+	PBF	F_CF
+	AX
+	CL	1
+	SCC	3	# Ironic
+	PBF	F_PC
+	PADD
+	SPBF	F_PC
+	RET
+
+O_RX:
+	PBF	F_RA
+	AX
+	PBF	F_RB
+	SPBF	F_RA
+	AX
+	SPBF	F_RB
+	RET
+
+O_PX:
+	PBF	F_PA
+	AX
+	PBF	F_PB
+	SPBF	F_PA
+	AX
+	SPBF	F_PB
+	RET
+
+O_AX:
+	PBF	F_PA
+	AX
+	PBF	F_RA
+	SPBF	F_PA
+	AX
+	SPBF	F_RA
+	RET
+
+O_LPX:
+	PBF	F_PA
+	AX
+	PBF	F_LR
+	SPBF	F_PA
+	AX
+	SPBF	F_LR
+	RET
+
+O_RA2B:
+	PBF	F_RA
+	SPBF	F_RB
+	RET
+
+O_PB2A:
+	PBF	F_PB
+	SPBF	F_PA
+	RET
+
+O_P2R:
+	PBF	F_PA
+	SPBF	F_RA
+	RET
+
+O_CL:
+	PBF	F_RA
+	AX
+	CLB		# B contains the imm4
+	PBF	V_CARRY
+	JP
+
+O_CLEB:
+	PBF	V_ALU
+	JP
+	CLEB
+	PBF	V_CARRY
+	JP
+
+O_CLEBC:
+	PBF	V_ALU
+	JP
+	CLEBC
+	PBF	V_CARRY
+	JP
+
+O_CLB:
+	PBF	V_ALU
+	JP
+	CLB
+	PBF	V_CARRY
+	JP
+
+O_SUB:
+	PBF	V_ALU
+	JP
+	SUB
+	AX
+	SPBF	F_RA
+	PBF	V_CARRY
+	JP
+
+O_SBC:
+	PBF	V_ALU
+	JP
+	SBC
+	AX
+	SPBF	F_RA
+	PBF	V_CARRY
+	JP
+
+O_ADC:
+	PBF	V_ALU
+	JP
+	ADC
+	AX
+	SPBF	F_RA
+	PBF	V_CARRY
+	JP
+
+O_ADD:
+	PBF	V_ALU
+	JP
+	ADD
+	AX
+	SPBF	F_RA
+	PBF	V_CARRY
+	JP
+
+O_LINK:
+	PBF	F_PC
+	PADD
+	SPBF	F_LR
+	RET
+
+O_SPLIT:
+	PBF	V_ALU
+	JP
+	SPLIT
+	AX
+	SPBF	F_RA
+	RX
+	AX
+	SPBF	F_RB
+	RET
+
+O_PADD:
+	PBF	F_RB
+	AX
+	RX
+	PBF	F_PA
+	PADD
+	SPBF	F_PA
+	RET
+
+O_JP:
+	PBF	F_PA
+	SPBF	F_PC
+	RET
+
+O_RET:
+	PBF	F_LR
+	SPBF	F_PC
+	RET
+
+O_LSR:
+	PBF	V_ALU
+	JP
+	LSR
+	AX		# PA is shifted value
+	SPBF	F_RA
+	RET
+
