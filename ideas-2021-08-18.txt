@@ -42,7 +42,7 @@ SBC
 ADC
 ADD
 LINKn: LR := PC+n
-SPLIT
+SPLIT  RB := RA & 0x0F; RA := RA >> 4
 PADD:  PA <- PA + RB
 JP:    PC <- PA
 RET:   PC <- LR
@@ -79,7 +79,6 @@ MAIN_LOOP:
 	AP	1
 	SPBF	R_PC	# Advance PC
 	SPLIT
-	LSR	4
 	RX		# RA = lo4, RB = hi4
 	PAF	H_MAIN
 	PAE	0	# PA = handler address
@@ -348,6 +347,9 @@ O_JP:
 	SBF	F_PC
 	RET
 
+O_HALT:
+	HALT
+
 O_LSR:
 	PBF	V_ALU
 	JP
@@ -423,8 +425,8 @@ BX_HANDLERS:
 	IMM	0xFF
 
 	IMM	O_JP
+	IMM	O_HALT	# bd - "be dormant / be done"
 	IMM	O_LSR
-	IMM	0XFF
 	IMM	O_SPLIT	# bf - needs to end in an f
 
 
