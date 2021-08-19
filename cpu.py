@@ -361,18 +361,19 @@ def generate_meta_interpreter( asm ):
     R_LR = 5
     R_CF = 6
 
-    H_MAIN = 9
-    H_AX   = 0xA
-    H_BX   = 0xB
+    H_MAIN = 8
+    H_AX   = 9
+    H_BX   = 10
 
-    V_MAIN  = 12
-    V_RET   = 13
-    V_ALU   = 14
+    V_MAIN  = 11
+    V_RET   = 12
+    V_ALU   = 13
+    V_CFRA  = 14
     V_CARRY = 15
 
     ## Entry point
 
-    asm.loc = 0x20
+    asm.loc = 0x18 # CHEESE
 
     MAIN_LOOP = asm.loc
     asm.pbf( R_PC )
@@ -401,7 +402,9 @@ def generate_meta_interpreter( asm ):
     asm.lbf( R_RA )      # RA and RB loaded
     asm.ret()
 
-    SET_CARRY_AND_RETURN = asm.loc
+    SET_CARRY_AND_RA_THEN_RETURN = asm.loc
+    asm.sbf( R_RA )
+    SET_CARRY_THEN_RETURN = asm.loc
     asm.c2a()
     asm.sbf( R_CF )
     asm.pbf( V_RET )
@@ -559,16 +562,14 @@ def generate_meta_interpreter( asm ):
     O_SBC = asm.loc
     PREP_ALU()
     asm.sbc()
-    asm.sbf( R_RA )
-    asm.pbf( V_CARRY )
+    asm.pbf( V_CFRA )
     asm.jp()
     debug( "%s\t%02x\t%d bytes" % ( "O_SBC", asm.loc, asm.loc - O_SBC ) )
 
     O_SUB = asm.loc
     PREP_ALU()
     asm.sub()
-    asm.sbf( R_RA )
-    asm.pbf( V_CARRY )
+    asm.pbf( V_CFRA )
     asm.jp()
     debug( "%s\t%02x\t%d bytes" % ( "O_SUB", asm.loc, asm.loc - O_SUB ) )
 
@@ -597,16 +598,14 @@ def generate_meta_interpreter( asm ):
     O_ADC = asm.loc
     PREP_ALU()
     asm.adc()
-    asm.sbf( R_RA )
-    asm.pbf( V_CARRY )
+    asm.pbf( V_CFRA )
     asm.jp()
     debug( "%s\t%02x\t%d bytes" % ( "O_ADC", asm.loc, asm.loc - O_ADC ) )
 
     O_ADD = asm.loc
     PREP_ALU()
     asm.add()
-    asm.sbf( R_RA )
-    asm.pbf( V_CARRY )
+    asm.pbf( V_CFRA )
     asm.jp()
     debug( "%s\t%02x\t%d bytes" % ( "O_ADD", asm.loc, asm.loc - O_ADD ) )
 
@@ -691,7 +690,7 @@ def generate_meta_interpreter( asm ):
     asm.ret()
     debug( "%s\t%02x\t%d bytes" % ( "O_SPLIT", asm.loc, asm.loc - O_SPLIT ) )
 
-    if asm.loc > 0x90:
+    if asm.loc > 0xd0:
         dump_ram( asm.ram )
         debug( "asm.loc = %d %02x" % ( asm.loc, asm.loc ) )
         #raise ValueError("Not expecting asm.loc to be %02x" % asm.loc )
@@ -781,8 +780,10 @@ def generate_meta_interpreter( asm ):
     asm.data( MAIN_RETURN )
     asm.loc = BASE_ADDR + V_ALU
     asm.data( PREP_ALU_REGS )
+    asm.loc = BASE_ADDR + V_CFRA
+    asm.data( SET_CARRY_AND_RA_THEN_RETURN )
     asm.loc = BASE_ADDR + V_CARRY
-    asm.data( SET_CARRY_AND_RETURN )
+    asm.data( SET_CARRY_THEN_RETURN )
 
 class RoundTripTest( TestCase ):
 
