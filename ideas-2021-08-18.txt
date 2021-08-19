@@ -12,8 +12,10 @@ CF - Carry flag
 IMM:  RA <- imm4             # Immediate
 LAE:  RA <- [PA+RB+imm4]     # Load A element
 LAF:  RA <- [PA+imm4]        # Load A field
+LBF:  RA <- [PB+imm4]        # Load B field
 SAE:  [PA+RB+imm4] <- RA     # Store A element
 SAF:  [PA+imm4] <- RA        # Store A field
+SBF:  [PB+imm4] <- RA        # Store B field
 PAF:  PA <- [PA+imm4]        # Pointer A field
 PBE:  PA <- [PB+RB+imm4]     # Pointer B element
 PBF:  PA <- [PB+imm4]        # Pointer B field
@@ -91,22 +93,18 @@ MAIN_RETURN:
 	JP
 
 PREP_ALU_REGS: # Subroutine to load interpreter RA, RB, CF into actual cpu registers
-	PBF	F_CF
-	AX
+	LBF	F_CF
 	RX
 	IMM	0
 	CLB		# CF is loaded
-	PBF	F_RB
-	AX
+	LBF	F_RB
 	RX
-	PBF	F_RA
-	AX		# RA and RB loaded
+	LBF	F_RA	# RA and RB loaded
 	RET
 
 SET_CARRY_AND_RETURN:
 	C2A
-	AX
-	SPBF	F_CF
+	SBF	F_CF
 	PBF	V_RET
 	JP
 
@@ -116,9 +114,8 @@ O_IMM:
 	RET
 
 O_LAE: # UNUSED
-	PBF	F_PA
-	PADD		# PA is PA+imm4
-	AX
+	LBF	F_PA
+	ADD
 	RX		# RB is PA+imm4
 	PBF	F_RB
 	PADD		# PA is PA+RB+IMM4
@@ -134,9 +131,8 @@ O_LAF: # USED ONCE
 	RET
 	
 O_SAE: # UNUSED
-	PBF	F_PA
-	PADD		# PA is PA+imm4
-	AX
+	LBF	F_PA
+	ADD		# RA is PA+imm4
 	RX		# RB is PA+imm4
 	PBF	F_RB
 	PADD		# PA is PA+RB+IMM4
@@ -159,9 +155,8 @@ O_PAF:
 	RET
 
 O_PBE: # UNUSED
-	PBF	F_PB
-	PADD		# PA is PB+imm4
-	AX
+	LBF	F_PB
+	ADD		# RA is PB+imm4
 	RX		# RB is PB+imm4
 	PBF	F_RB
 	PADD		# PA is PB+RB+IMM4
@@ -169,7 +164,14 @@ O_PBE: # UNUSED
 	SPBF	F_PA
 	RET
 	
-O_PBF: # (USED CONSTANTLY)
+O_LBF:
+	PBF	F_PB
+	PADD		# PA is PB+imm4
+	PAF		# PA is value from memory
+	SPBF	F_RA
+	RET
+	
+O_PBF:
 	PBF	F_PB
 	PADD		# PA is PB+imm4
 	PAF		# PA is value from memory
@@ -182,18 +184,22 @@ O_AP:
 	SPBF	F_PA
 	RET
 
+O_SBF:
+	PBF	F_PB
+	PADD		# PA is PB+imm4
+	LBF	F_RA	# RA is RA
+	SAF	0
+	RET
+
 O_SPBF:
 	PBF	F_PB
-	PADD
-	AX		# RA is PB+imm4
-	PBF	F_PA
-	AX		# RA is PA; PA is PB+imm4
+	PADD		# PA is PB+imm4
+	LBF	F_PA	# RA is PA
 	SAF	0
 	RET
 
 O_SCC:
-	PBF	F_CF
-	AX
+	LBF	F_CF
 	CL	1
 	SCS	3	# Ironic
 	PBF	F_PC
@@ -202,8 +208,7 @@ O_SCC:
 	RET
 
 O_SCS:
-	PBF	F_CF
-	AX
+	LBF	F_CF
 	CL	1
 	SCC	3	# Ironic
 	PBF	F_PC
@@ -212,59 +217,50 @@ O_SCS:
 	RET
 
 O_RX:
-	PBF	F_RA
-	AX
+	LBF	F_RA
 	PBF	F_RB
 	SPBF	F_RA
-	AX
-	SPBF	F_RB
+	SBF	F_RB
 	RET
 
 O_PX:
-	PBF	F_PA
-	AX
+	LBF	F_PA
 	PBF	F_PB
 	SPBF	F_PA
-	AX
-	SPBF	F_PB
+	SBF	F_PB
 	RET
 
-O_AX:
-	PBF	F_PA
-	AX
+O_AX: # UNUSED
+	LBF	F_PA
 	PBF	F_RA
 	SPBF	F_PA
-	AX
-	SPBF	F_RA
+	SBF	F_RA
 	RET
 
 O_LPX:
-	PBF	F_PA
-	AX
+	LBF	F_PA
 	PBF	F_LR
 	SPBF	F_PA
-	AX
-	SPBF	F_LR
+	SBF	F_LR
 	RET
 
 O_RA2B:
-	PBF	F_RA
-	SPBF	F_RB
+	LBF	F_RA
+	SBF	F_RB
 	RET
 
 O_PB2A:
-	PBF	F_PB
-	SPBF	F_PA
+	LBF	F_PB
+	SBF	F_PA
 	RET
 
 O_P2R:
-	PBF	F_PA
-	SPBF	F_RA
+	LBF	F_PA
+	SBF	F_RA
 	RET
 
 O_CL:
-	PBF	F_RA
-	AX
+	LBF	F_RA
 	CLB		# B contains the imm4
 	PBF	V_CARRY
 	JP
@@ -294,8 +290,7 @@ O_SUB:
 	PBF	V_ALU
 	JP
 	SUB
-	AX
-	SPBF	F_RA
+	SBF	F_RA
 	PBF	V_CARRY
 	JP
 
@@ -303,8 +298,7 @@ O_SBC:
 	PBF	V_ALU
 	JP
 	SBC
-	AX
-	SPBF	F_RA
+	SBF	F_RA
 	PBF	V_CARRY
 	JP
 
@@ -312,8 +306,7 @@ O_ADC:
 	PBF	V_ALU
 	JP
 	ADC
-	AX
-	SPBF	F_RA
+	SBF	F_RA
 	PBF	V_CARRY
 	JP
 
@@ -321,53 +314,48 @@ O_ADD:
 	PBF	V_ALU
 	JP
 	ADD
-	AX
-	SPBF	F_RA
+	SBF	F_RA
 	PBF	V_CARRY
 	JP
 
 O_LINK:
-	PBF	F_PC
-	PADD
-	SPBF	F_LR
+	LBF	F_PC
+	ADD
+	SBF	F_LR
 	RET
 
 O_SPLIT:
 	PBF	V_ALU
 	JP
 	SPLIT
-	AX
-	SPBF	F_RA
+	SBF	F_RA
 	RX
-	AX
-	SPBF	F_RB
+	SBF	F_RB
 	RET
 
 O_PADD:
-	PBF	F_RB
-	AX
+	LBF	F_RB
 	RX
-	PBF	F_PA
-	PADD
-	SPBF	F_PA
+	LBF	F_PA
+	ADD
+	SBF	F_PA
 	RET
 
 O_JP:
-	PBF	F_PA
-	SPBF	F_PC
+	LBF	F_PA
+	SBF	F_PC
 	RET
 
 O_RET:
-	PBF	F_LR
-	SPBF	F_PC
+	LBF	F_LR
+	SBF	F_PC
 	RET
 
 O_LSR:
 	PBF	V_ALU
 	JP
 	LSR
-	AX		# PA is shifted value
-	SPBF	F_RA
+	SBF	F_RA
 	RET
 
 AX_TRAMPOLINE:
