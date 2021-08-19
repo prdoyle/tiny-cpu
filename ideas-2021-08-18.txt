@@ -17,7 +17,7 @@ SAE:  [PA+RB+imm4] <- RA     # Store A element
 SAF:  [PA+imm4] <- RA        # Store A field
 SBF:  [PB+imm4] <- RA        # Store B field
 PAF:  PA <- [PA+imm4]        # Pointer A field
-PBE:  PA <- [PB+RB+imm4]     # Pointer B element
+PAE:  PA <- [PA+RB+imm4]     # Pointer A element
 PBF:  PA <- [PB+imm4]        # Pointer B field
 AP:   PA <- PA + imm4        # Advance pointer
 SPBF: [PB+imm4] <- PA        # Store pointer
@@ -81,9 +81,8 @@ MAIN_LOOP:
 	SPLIT
 	LSR	4
 	RX		# RA = lo4, RB = hi4
-	PBF	H_MAIN
-	PADD
-	PAF	0	# PA = handler address
+	PAF	H_MAIN
+	PAE	0	# PA = handler address
 	XCHG		# RA = hi4, RB = lo4
 	LINK	1
 	JP
@@ -117,16 +116,14 @@ O_LAE: # UNUSED
 	LBF	F_PA
 	ADD
 	RX		# RB is PA+imm4
-	PBF	F_RB
-	PADD		# PA is PA+RB+IMM4
-	PAF		# PA is value from memory
+	PBF	F_RB	# PA is RB
+	PAE		# PA is [PA+RB+imm4]
 	SPBF	F_RA
 	RET
 	
 O_LAF: # USED ONCE
 	PBF	F_PA
-	PADD		# PA is PA+imm4
-	PAF		# PA is value from memory
+	PAE		# PA is [PA+imm4]
 	SPBF	F_RA
 	RET
 	
@@ -134,47 +131,41 @@ O_SAE: # UNUSED
 	LBF	F_PA
 	ADD		# RA is PA+imm4
 	RX		# RB is PA+imm4
-	PBF	F_RB
-	PADD		# PA is PA+RB+IMM4
-	PBF	F_RA
-	SAF	0
+	PBF	F_RB	# PA is RB
+	LBF	F_RA
+	SAE	0	# Store to [PA+RB+imm4]
 	RET
 
 O_SAF:
 	PBF	F_PA
-	PADD		# PA is PA+imm4
-	PBF	F_RA
-	SAF	0
+	LBF	F_RA
+	SAE	0	# Store to [PA+imm4]
 	RET
 
 O_PAF:
 	PBF	F_PA
-	PADD		# PA is PA+imm4
-	PAF		# PA is value from memory
-	SPBF	F_PA
+	LBF	F_PA
+	SAE	0	# Store to [PA+imm4]
 	RET
 
-O_PBE: # UNUSED
-	LBF	F_PB
-	ADD		# RA is PB+imm4
-	RX		# RB is PB+imm4
-	PBF	F_RB
-	PADD		# PA is PB+RB+IMM4
-	PAF		# PA is value from memory
-	SPBF	F_PA
+O_PAE:
+	LBF	F_PA
+	ADD		# RA is PA+imm4
+	RX		# RB is PA+imm4
+	PBF	F_RB	# PA is RB
+	LBF	F_PA
+	SAE	0	# Store to [PA+RB+imm4]
 	RET
 	
 O_LBF:
 	PBF	F_PB
-	PADD		# PA is PB+imm4
-	PAF		# PA is value from memory
+	PAE		# PA is [PB+imm4]
 	SPBF	F_RA
 	RET
 	
 O_PBF:
 	PBF	F_PB
-	PADD		# PA is PB+imm4
-	PAF		# PA is value from memory
+	PAE		# PA is [PB+imm4]
 	SPBF	F_PA
 	RET
 	
@@ -186,16 +177,14 @@ O_AP:
 
 O_SBF:
 	PBF	F_PB
-	PADD		# PA is PB+imm4
 	LBF	F_RA	# RA is RA
-	SAF	0
+	SAE	0	# Store to [PB+imm4]
 	RET
 
 O_SPBF:
 	PBF	F_PB
-	PADD		# PA is PB+imm4
 	LBF	F_PA	# RA is PA
-	SAF	0
+	SAE	0	# Store to [PB+imm4]
 	RET
 
 O_SCC:
@@ -360,14 +349,12 @@ O_LSR:
 
 AX_TRAMPOLINE:
 	PBF	H_AX
-	PADD
-	PAF	0
+	PAE	0
 	JP
 
 BX_TRAMPOLINE:
 	PBF	H_BX
-	PADD
-	PAF	0
+	PAE	0
 	JP
 
 MAIN_HANDLERS:
@@ -378,7 +365,7 @@ MAIN_HANDLERS:
 
 	IMM	O_SAF
 	IMM	O_PAF
-	IMM	O_PBE
+	IMM	O_PAE
 	IMM	O_PBF
 
 	IMM	O_AP
