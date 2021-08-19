@@ -10,6 +10,10 @@ def debug(*args, **kwargs):
 def ff(n):
     return n & 0xff
 
+def dump_ram( ram ):
+    debug( "".join([ "%02x"%n for n in range(16) ]) )
+    debug( ram.hex( "\n", 16 ) )
+
 class Assembler:
 
     def __init__( self, ram ):
@@ -355,6 +359,8 @@ def generate_all( asm ):
         asm.data( b )
 
 def generate_meta_interpreter( asm ):
+    ## Data field offsets from pb
+
     R_PC = 0
     R_RA = 1
     R_RB = 2
@@ -369,8 +375,10 @@ def generate_meta_interpreter( asm ):
 
     V_MAIN  = 12
     V_RET   = 13
-    V ALU   = 14
+    V_ALU   = 14
     V_CARRY = 15
+
+    ## Entry point
 
     asm.loc = 0x20
 
@@ -421,7 +429,7 @@ def generate_meta_interpreter( asm ):
         asm.link( 1 )
         asm.jp()
 
-    ## Opcode implementations
+    ## Opcode handlers
 
     O_IMM = asm.loc
     asm.sbf( R_RA )
@@ -551,7 +559,7 @@ def generate_meta_interpreter( asm ):
     asm.pbf( V_CARRY )
     asm.jp()
 
-    O_SBC = asm.loc
+    O_SUB = asm.loc
     PREP_ALU()
     asm.sub()
     asm.sbf( R_RA )
@@ -659,12 +667,102 @@ def generate_meta_interpreter( asm ):
     asm.sbf( R_RB )
     asm.ret()
 
+    if asm.loc > 0x90:
+        dump_ram( asm.ram )
+        raise ValueError("Not expecting asm.loc to be %02x" % asm.loc )
 
+    ## Handler tables
+
+    asm.loc = 0x90
+    MAIN_HANDLERS = asm.loc
+    asm.data( O_IMM )
+    asm.data( O_LBF )
+    asm.data( O_LAE )
+    asm.data( O_LAF )
+
+    asm.data( O_SPBF )
+    asm.data( O_SBF )
+    asm.data( O_SAE )
+    asm.data( O_SAF )
+
+    asm.data( O_SCC )
+    asm.data( O_SCS )
+    asm.data( AX_TRAMPOLINE )
+    asm.data( BX_TRAMPOLINE )
+
+    asm.data( O_AP )
+    asm.data( O_PBF )
+    asm.data( O_PAE )
+    asm.data( O_PAF )
+
+    asm.loc = 0xa0
+    AX_HANDLERS = asm.loc
+    asm.data( O_LINK )
+    asm.data( O_LINK )
+    asm.data( O_LINK )
+    asm.data( O_LINK )
+
+    asm.data( O_PX )
+    asm.data( O_PLX )
+    asm.data( O_SBC )
+    asm.data( O_SUB )
+
+    asm.data( O_C2A )
+    asm.data( O_RX )
+    asm.data( O_AX )
+    asm.data( O_RA2B )
+
+    asm.data( O_ADC )
+    asm.data( O_ADD )
+    asm.data( O_PADD )
+    asm.data( 0xFF )
+
+    asm.loc = 0xb0
+    BX_HANDLERS = asm.loc
+    asm.data( O_CL )
+    asm.data( O_CL )
+    asm.data( O_CL )
+    asm.data( O_CL )
+
+    asm.data( O_RET )
+    asm.data( O_CLEB )
+    asm.data( O_CLEBC )
+    asm.data( O_CLB )
+
+    asm.data( O_P2R )
+    asm.data( 0XFF )
+    asm.data( O_PB2A )
+    asm.data( 0xFF )
+
+    asm.data( O_JP )
+    asm.data( O_HALT )
+    asm.data( O_LSR )
+    asm.data( O_SPLIT )
+
+    # Initial state
+
+    BASE_ADDR = 0x00
+    asm.loc = BASE_ADDR + R_PC
+    asm.data( 0x10 )
+    asm.loc = BASE_ADDR + H_MAIN
+    asm.data( MAIN_HANDLERS )
+    asm.loc = BASE_ADDR + H_AX
+    asm.data( AX_HANDLERS )
+    asm.loc = BASE_ADDR + H_BX
+    asm.data( BX_HANDLERS )
+    asm.loc = BASE_ADDR + V_MAIN
+    asm.data( MAIN_LOOP )
+    asm.loc = BASE_ADDR + V_RET
+    asm.data( MAIN_RETURN )
+    asm.loc = BASE_ADDR + V_ALU
+    asm.data( PREP_ALU_REGS )
+    asm.loc = BASE_ADDR + V_CARRY
+    asm.data( SET_CARRY_AND_RETURN )
 
 class RoundTripTest( TestCase ):
     
     def test( self ):
-        for initializer in [ generate_fib, generate_all ]:
+        for initializer in [ generate_fib, generate_all, generate_meta_interpreter ]:
             with self.subTest(initializer=initializer.__name__):
                 original = bytearray( 256 )
                 asm = Assembler( original )
@@ -675,7 +773,7 @@ class RoundTripTest( TestCase ):
                     decode( byte, asm )
                 self.assertEqual( original, dup )
 
-def main():
+def interpret_fib():
     ram = bytearray( 256 )
     asm = Assembler( ram )
     asm.loc = 0x10
@@ -683,6 +781,15 @@ def main():
     interpreter = Interpreter( ram )
     while interpreter.step():
         pass
+
+def assemble_meta_interpreter():
+    ram = bytearray( 256 )
+    asm = Assembler( ram )
+    generate_meta_interpreter( asm )
+    dump_ram( ram )
+
+def main():
+    assemble_meta_interpreter()
 
 if __name__ == "__main__":
     main()
