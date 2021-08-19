@@ -133,9 +133,9 @@ def decode( instr, consumer ):
 
 class Interpreter:
 
-    def __init__( self, ram ):
+    def __init__( self, ram, start_pc ):
         self.ram = ram
-        self.pc = 0x10
+        self.pc = start_pc
         self.ra = 0
         self.rb = 0
         self.pa = 0
@@ -428,16 +428,17 @@ def generate_meta_interpreter( asm ):
     ## Opcode handlers
 
     O_IMM = asm.loc
+    asm.rx()
     asm.sbf( R_RA )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_IMM", asm.loc, asm.loc - O_IMM ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_IMM", O_IMM, asm.loc - O_IMM ) )
 
     O_LBF = asm.loc
     asm.pbf( R_PB )
     asm.pae( 0 )
     asm.spbf( R_RA )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_LBF", asm.loc, asm.loc - O_LBF ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_LBF", O_LBF, asm.loc - O_LBF ) )
 
     O_LAE = asm.loc
     asm.lbf( R_PA )
@@ -447,28 +448,28 @@ def generate_meta_interpreter( asm ):
     asm.pae( 0 )         # PA is [PA+RB+imm4]
     asm.spbf( R_RA )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_LAE", asm.loc, asm.loc - O_LAE ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_LAE", O_LAE, asm.loc - O_LAE ) )
 
     O_LAF = asm.loc
     asm.pbf( R_PA )
     asm.pae( 0 )
     asm.spbf( R_RA )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_LAF", asm.loc, asm.loc - O_LAF ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_LAF", O_LAF, asm.loc - O_LAF ) )
 
     O_SPBF = asm.loc
     asm.pbf( R_PB )
     asm.lbf( R_PA )      # RA is PA
     asm.sae( 0 )         # Store to [PB + imm4]
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_SPBF", asm.loc, asm.loc - O_SPBF ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_SPBF", O_SPBF, asm.loc - O_SPBF ) )
 
     O_SBF = asm.loc
     asm.pbf( R_PB )
     asm.lbf( R_RA )      # RA is RA
     asm.sae( 0 )         # Store to [PB + imm4]
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_SBF", asm.loc, asm.loc - O_SBF ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_SBF", O_SBF, asm.loc - O_SBF ) )
 
     O_SAE = asm.loc
     asm.lbf( R_PA )
@@ -478,14 +479,14 @@ def generate_meta_interpreter( asm ):
     asm.lbf( R_RA )
     asm.sae( 0 )         # Store to [PA+RB+imm4]
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_SAE", asm.loc, asm.loc - O_SAE ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_SAE", O_SAE, asm.loc - O_SAE ) )
 
     O_SAF = asm.loc
     asm.pbf( R_PA )
     asm.lbf( R_RA )      # RA is RA
     asm.sae( 0 )         # Store to [PA + imm4]
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_SAF", asm.loc, asm.loc - O_SAF ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_SAF", O_SAF, asm.loc - O_SAF ) )
 
     O_SCC = asm.loc
     asm.lbf( R_CF )
@@ -495,7 +496,7 @@ def generate_meta_interpreter( asm ):
     asm.padd()
     asm.spbf( R_PC )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_SCC", asm.loc, asm.loc - O_SCC ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_SCC", O_SCC, asm.loc - O_SCC ) )
 
     O_SCS = asm.loc
     asm.lbf( R_CF )
@@ -505,33 +506,33 @@ def generate_meta_interpreter( asm ):
     asm.padd()
     asm.spbf( R_PC )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_SCS", asm.loc, asm.loc - O_SCS ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_SCS", O_SCS, asm.loc - O_SCS ) )
 
     AX_TRAMPOLINE = asm.loc
     asm.pbf( H_AX )
     asm.pae( 0 )
     asm.jp()
-    debug( "%s\t%02x\t%d bytes" % ( "AX_TRAMPOLINE", asm.loc, asm.loc - AX_TRAMPOLINE ) )
+    debug( "%s\t%02x\t%d bytes" % ( "AX_TRAMPOLINE", AX_TRAMPOLINE, asm.loc - AX_TRAMPOLINE ) )
 
     BX_TRAMPOLINE = asm.loc
     asm.pbf( H_BX )
     asm.pae( 0 )
     asm.jp()
-    debug( "%s\t%02x\t%d bytes" % ( "BX_TRAMPOLINE", asm.loc, asm.loc - BX_TRAMPOLINE ) )
+    debug( "%s\t%02x\t%d bytes" % ( "BX_TRAMPOLINE", BX_TRAMPOLINE, asm.loc - BX_TRAMPOLINE ) )
 
     O_AP = asm.loc
     asm.pbf( R_PA )
     asm.padd()
     asm.spbf( R_PA )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_AP", asm.loc, asm.loc - O_AP ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_AP", O_AP, asm.loc - O_AP ) )
 
     O_PBF = asm.loc
     asm.pbf( R_PB )
     asm.pae( 0 )         # PA is [PB+imm4]
     asm.spbf( R_PA )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_PBF", asm.loc, asm.loc - O_PBF ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_PBF", O_PBF, asm.loc - O_PBF ) )
 
     O_PAE = asm.loc
     asm.lbf( R_PA )
@@ -541,7 +542,7 @@ def generate_meta_interpreter( asm ):
     asm.pae( 0 )         # PA is [PA+RB+imm4]
     asm.spbf( R_PA )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_PAE", asm.loc, asm.loc - O_PAE ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_PAE", O_PAE, asm.loc - O_PAE ) )
 
     O_CALL = asm.loc
     asm.lbf( R_PC )
@@ -550,64 +551,64 @@ def generate_meta_interpreter( asm ):
     asm.pae( 0 )
     asm.spbf( R_PC )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_CALL", asm.loc, asm.loc - O_CALL ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_CALL", O_CALL, asm.loc - O_CALL ) )
 
     O_LINK = asm.loc
     asm.lbf( R_PC )
     asm.add()
     asm.sbf( R_LR )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_LINK", asm.loc, asm.loc - O_LINK ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_LINK", O_LINK, asm.loc - O_LINK ) )
 
     O_SBC = asm.loc
     PREP_ALU()
     asm.sbc()
     asm.pbf( V_CFRA )
     asm.jp()
-    debug( "%s\t%02x\t%d bytes" % ( "O_SBC", asm.loc, asm.loc - O_SBC ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_SBC", O_SBC, asm.loc - O_SBC ) )
 
     O_SUB = asm.loc
     PREP_ALU()
     asm.sub()
     asm.pbf( V_CFRA )
     asm.jp()
-    debug( "%s\t%02x\t%d bytes" % ( "O_SUB", asm.loc, asm.loc - O_SUB ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_SUB", O_SUB, asm.loc - O_SUB ) )
 
     O_C2A = asm.loc
     asm.lbf( R_CF )
     asm.sbf( R_RA )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_C2A", asm.loc, asm.loc - O_C2A ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_C2A", O_C2A, asm.loc - O_C2A ) )
 
     O_RX = asm.loc
     EXCHANGE( R_RA, R_RB )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_RX", asm.loc, asm.loc - O_RX ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_RX", O_RX, asm.loc - O_RX ) )
 
     O_AX = asm.loc
     EXCHANGE( R_PA, R_RA )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_AX", asm.loc, asm.loc - O_AX ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_AX", O_AX, asm.loc - O_AX ) )
 
     O_RA2B = asm.loc
     asm.lbf( R_RA )
     asm.sbf( R_RB )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_RA2B", asm.loc, asm.loc - O_RA2B ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_RA2B", O_RA2B, asm.loc - O_RA2B ) )
 
     O_ADC = asm.loc
     PREP_ALU()
     asm.adc()
     asm.pbf( V_CFRA )
     asm.jp()
-    debug( "%s\t%02x\t%d bytes" % ( "O_ADC", asm.loc, asm.loc - O_ADC ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_ADC", O_ADC, asm.loc - O_ADC ) )
 
     O_ADD = asm.loc
     PREP_ALU()
     asm.add()
     asm.pbf( V_CFRA )
     asm.jp()
-    debug( "%s\t%02x\t%d bytes" % ( "O_ADD", asm.loc, asm.loc - O_ADD ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_ADD", O_ADD, asm.loc - O_ADD ) )
 
     O_PADD = asm.loc
     asm.lbf( R_RB )
@@ -616,70 +617,70 @@ def generate_meta_interpreter( asm ):
     asm.add()
     asm.sbf( R_PA )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_PADD", asm.loc, asm.loc - O_PADD ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_PADD", O_PADD, asm.loc - O_PADD ) )
 
     O_CL = asm.loc
     asm.lbf( R_RA )
     asm.clb()            # B contains the imm4
     asm.pbf( V_CARRY )
     asm.jp()
-    debug( "%s\t%02x\t%d bytes" % ( "O_CL", asm.loc, asm.loc - O_CL ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_CL", O_CL, asm.loc - O_CL ) )
 
     O_RET = asm.loc
     asm.lbf( R_LR )
     asm.sbf( R_PC )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_RET", asm.loc, asm.loc - O_RET ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_RET", O_RET, asm.loc - O_RET ) )
 
     O_CLEB = asm.loc
     PREP_ALU()
     asm.cleb()
     asm.pbf( V_CARRY )
     asm.jp()
-    debug( "%s\t%02x\t%d bytes" % ( "O_CLEB", asm.loc, asm.loc - O_CLEB ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_CLEB", O_CLEB, asm.loc - O_CLEB ) )
 
     O_CLEBC = asm.loc
     PREP_ALU()
     asm.clebc()
     asm.pbf( V_CARRY )
     asm.jp()
-    debug( "%s\t%02x\t%d bytes" % ( "O_CLEBC", asm.loc, asm.loc - O_CLEBC ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_CLEBC", O_CLEBC, asm.loc - O_CLEBC ) )
 
     O_CLB = asm.loc
     PREP_ALU()
     asm.clb()
     asm.pbf( V_CARRY )
     asm.jp()
-    debug( "%s\t%02x\t%d bytes" % ( "O_CLB", asm.loc, asm.loc - O_CLB ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_CLB", O_CLB, asm.loc - O_CLB ) )
 
     O_P2R = asm.loc
     asm.lbf( R_PA )
     asm.sbf( R_RA )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_P2R", asm.loc, asm.loc - O_P2R ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_P2R", O_P2R, asm.loc - O_P2R ) )
 
     O_PB2A = asm.loc
     asm.lbf( R_PB )
     asm.sbf( R_PA )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_PB2A", asm.loc, asm.loc - O_PB2A ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_PB2A", O_PB2A, asm.loc - O_PB2A ) )
 
     O_JP = asm.loc
     asm.lbf( R_PA )
     asm.sbf( R_PC )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_JP", asm.loc, asm.loc - O_JP ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_JP", O_JP, asm.loc - O_JP ) )
 
     O_HALT = asm.loc
     asm.halt()
-    debug( "%s\t%02x\t%d bytes" % ( "O_HALT", asm.loc, asm.loc - O_HALT ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_HALT", O_HALT, asm.loc - O_HALT ) )
 
     O_LSR = asm.loc
     PREP_ALU()
     asm.lsr()
     asm.sbf( R_RA )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_LSR", asm.loc, asm.loc - O_LSR ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_LSR", O_LSR, asm.loc - O_LSR ) )
 
     O_SPLIT = asm.loc
     PREP_ALU()
@@ -688,12 +689,11 @@ def generate_meta_interpreter( asm ):
     asm.rx()
     asm.sbf( R_RB )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_SPLIT", asm.loc, asm.loc - O_SPLIT ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_SPLIT", O_SPLIT, asm.loc - O_SPLIT ) )
 
     if asm.loc > 0xd0:
         dump_ram( asm.ram )
-        debug( "asm.loc = %d %02x" % ( asm.loc, asm.loc ) )
-        #raise ValueError("Not expecting asm.loc to be %02x" % asm.loc )
+        raise ValueError( "Code is too big. asm.loc = %d %02x" % ( asm.loc, asm.loc ) )
 
     ## Handler tables
 
@@ -804,7 +804,7 @@ def interpret_fib():
     asm = Assembler( ram )
     asm.loc = 0x10
     generate_fib( asm )
-    interpreter = Interpreter( ram )
+    interpreter = Interpreter( ram, 0x10 )
     while interpreter.step():
         pass
 
@@ -812,10 +812,20 @@ def assemble_meta_interpreter():
     ram = bytearray( 256 )
     asm = Assembler( ram )
     generate_meta_interpreter( asm )
+    asm.loc = 0x10
+    generate_fib( asm )
     dump_ram( ram )
+    return asm
 
 def main():
-    assemble_meta_interpreter()
+    asm = assemble_meta_interpreter()
+    interpreter = Interpreter( asm.ram, 0x18 )
+    for step in range(1,1000):
+        debug( f'--## Step {step} ##--' )
+        dump_ram( asm.ram )
+        if not interpreter.step():
+            break
+    dump_ram( asm.ram )
 
 if __name__ == "__main__":
     main()
