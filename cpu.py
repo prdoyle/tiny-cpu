@@ -37,7 +37,7 @@ class Assembler:
     def ap( self, n ): self.emit( 0xc0 + n )
     def pbf( self, n ): self.emit( 0xd0 + n )
     def pae( self, n ): self.emit( 0xe0 + n )
-    def paf( self, n ): self.emit( 0xf0 + n )
+    def call( self, n ): self.emit( 0xf0 + n )
 
     def link( self, n ): self.emit( 0xa0 + n )
     def sbc( self ): self.emit( 0xa6 )
@@ -57,7 +57,6 @@ class Assembler:
     def clb( self ): self.emit( 0xb7 )
     def p2r( self ): self.emit( 0xb8 )
     def pb2a( self ): self.emit( 0xba )
-    def call( self ): self.emit( 0xbb )
     def jp( self ): self.emit( 0xbc )
     def halt( self ): self.emit( 0xbd )
     def lsr( self ): self.emit( 0xbe )
@@ -84,7 +83,7 @@ def decode( instr, consumer ):
 	lambda n: consumer.ap( n ),
 	lambda n: consumer.pbf( n ),
 	lambda n: consumer.pae( n ),
-	lambda n: consumer.paf( n ),
+	lambda n: consumer.call( n ),
     ]
     ax_handlers = [
 	lambda n: consumer.link( n ),
@@ -121,7 +120,7 @@ def decode( instr, consumer ):
 	lambda n: consumer.p2r(),
 	lambda n: consumer.data( instr ),
 	lambda n: consumer.pb2a(),
-	lambda n: consumer.call(),
+	lambda n: consumer.data( instr ),
 
 	lambda n: consumer.jp(),
 	lambda n: consumer.halt(),
@@ -231,9 +230,9 @@ class Interpreter:
         self._next()
         self.pa = self.ram[ self._ae(n) ]
 
-    def paf( self, n ):
-        self._next()
-        self.pa = self.ram[ self._af(n) ]
+    def call( self, n ):
+        self.lr = ff( self.pc + 1 ) # After the call
+        self.pc = self.ram[ self._bf(n) ]
 
     def link( self, n ):
         self._next()
@@ -314,11 +313,6 @@ class Interpreter:
     def pb2a( self ):
         self._next()
         self.pa = self.pb
-
-    def call( self ):
-        self._next()
-        self.lr = ff( self.pc + 1 )
-        self.pc = self.pa
 
     def jp( self ):
         self.pc = self.pa
@@ -423,10 +417,10 @@ def generate_meta_interpreter( asm ):
 
     def PREP_ALU():
         """Call PREP_ALU_REGS to get ra, rb, and cf fields into actual registers"""
-        asm.pbf( V_ALU )
+        #asm.pbf( V_ALU )
         #asm.link( 1 )
         #asm.jp()
-        asm.call()
+        asm.call( V_ALU )
 
     ## Opcode handlers
 
@@ -546,12 +540,14 @@ def generate_meta_interpreter( asm ):
     asm.ret()
     debug( "%s\t%02x\t%d bytes" % ( "O_PAE", asm.loc, asm.loc - O_PAE ) )
 
-    O_PAF = asm.loc
-    asm.pbf( R_PA )
+    O_CALL = asm.loc
+    asm.lbf( R_PC )
+    asm.sbf( R_LR )
+    asm.pbf( R_PB )
     asm.pae( 0 )
-    asm.spbf( R_PA )
+    asm.spbf( R_PC )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_PAF", asm.loc, asm.loc - O_PAF ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_CALL", asm.loc, asm.loc - O_CALL ) )
 
     O_LINK = asm.loc
     asm.lbf( R_PC )
@@ -697,6 +693,7 @@ def generate_meta_interpreter( asm ):
 
     if asm.loc > 0x90:
         dump_ram( asm.ram )
+        debug( "asm.loc = %d %02x" % ( asm.loc, asm.loc ) )
         #raise ValueError("Not expecting asm.loc to be %02x" % asm.loc )
 
     ## Handler tables
@@ -721,7 +718,7 @@ def generate_meta_interpreter( asm ):
     asm.data( O_AP )
     asm.data( O_PBF )
     asm.data( O_PAE )
-    asm.data( O_PAF )
+    asm.data( O_CALL )
 
     asm.loc = 0xd0
     AX_HANDLERS = asm.loc
