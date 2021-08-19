@@ -40,8 +40,6 @@ class Assembler:
     def paf( self, n ): self.emit( 0xf0 + n )
 
     def link( self, n ): self.emit( 0xa0 + n )
-    def px( self ): self.emit( 0xa4 )
-    def plx( self ): self.emit( 0xa5 )
     def sbc( self ): self.emit( 0xa6 )
     def sub( self ): self.emit( 0xa7 )
     def c2a( self ): self.emit( 0xa8 )
@@ -94,8 +92,8 @@ def decode( instr, consumer ):
 	lambda n: consumer.link( n ),
 	lambda n: consumer.link( n ),
 
-	lambda n: consumer.px(),
-	lambda n: consumer.plx(),
+	lambda n: consumer.data( instr ),
+	lambda n: consumer.data( instr ),
 	lambda n: consumer.sbc(),
 	lambda n: consumer.sub(),
 
@@ -240,14 +238,6 @@ class Interpreter:
     def link( self, n ):
         self._next()
         self.lr = ff( self.pc + n )
-
-    def px( self ):
-        self._next()
-        ( self.pa, self.pb ) = ( self.pb, self.pa )
-
-    def plx( self ):
-        self._next()
-        ( self.pa, self.lr ) = ( self.lr, self.pa )
 
     def sbc( self ):
         self._next()
@@ -570,16 +560,6 @@ def generate_meta_interpreter( asm ):
     asm.ret()
     debug( "%s\t%02x\t%d bytes" % ( "O_LINK", asm.loc, asm.loc - O_LINK ) )
 
-    O_PX = asm.loc
-    EXCHANGE( R_PA, R_PB )
-    asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_PX", asm.loc, asm.loc - O_PX ) )
-
-    O_PLX = asm.loc
-    EXCHANGE( R_PA, R_LR )
-    asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_PLX", asm.loc, asm.loc - O_PLX ) )
-
     O_SBC = asm.loc
     PREP_ALU()
     asm.sbc()
@@ -721,7 +701,7 @@ def generate_meta_interpreter( asm ):
 
     ## Handler tables
 
-    asm.loc = 0x90
+    asm.loc = 0xf0
     MAIN_HANDLERS = asm.loc
     asm.data( O_IMM )
     asm.data( O_LBF )
@@ -743,15 +723,15 @@ def generate_meta_interpreter( asm ):
     asm.data( O_PAE )
     asm.data( O_PAF )
 
-    asm.loc = 0xa0
+    asm.loc = 0xd0
     AX_HANDLERS = asm.loc
     asm.data( O_LINK )
     asm.data( O_LINK )
     asm.data( O_LINK )
     asm.data( O_LINK )
 
-    asm.data( O_PX )
-    asm.data( O_PLX )
+    asm.data( 0xFF )
+    asm.data( 0xFF )
     asm.data( O_SBC )
     asm.data( O_SUB )
 
@@ -765,7 +745,7 @@ def generate_meta_interpreter( asm ):
     asm.data( O_PADD )
     asm.data( 0xFF )
 
-    asm.loc = 0xb0
+    asm.loc = 0xe0
     BX_HANDLERS = asm.loc
     asm.data( O_CL )
     asm.data( O_CL )
