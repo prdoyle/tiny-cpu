@@ -49,6 +49,7 @@ LSR:   Logical shift right RA by signed # bits in RB: 0-7 = right, 8-15 = left
 
 ### Meta interpreter ###
 
+	# Simulated registers
 	R_PC	equ 0
 	R_PA	equ 1
 	R_PB	equ 2
@@ -57,21 +58,17 @@ LSR:   Logical shift right RA by signed # bits in RB: 0-7 = right, 8-15 = left
 	R_LR	equ 5
 	R_CF	equ 6
 
+	# Handler tables
 	H_MAIN	equ 9	# Main handlers
 	H_AX	equ 10	# Ax handlers
 	H_BX	equ 11	# Bx handlers
 
+	# Vector table
 	V_MAIN	equ 12  # MAIN_LOOP
 	V_RET	equ 13  # MAIN_RETURN
 	V_ALU	equ 14	# PREP_ALU_REGS
 	V_CARRY	equ 15	# SET_CARRY_AND_RETURN
 	
-	# Initialization
-	.org	0x00
-	IMM	0x10	# Initial PC
-	IMM	0x00	# Initial PA
-	IMM	0x00	# Initial PB
-
 	.org 0x20
 MAIN_LOOP:
 	# PB points to context
@@ -372,4 +369,104 @@ O_LSR:
 	AX		# PA is shifted value
 	SPBF	F_RA
 	RET
+
+AX_TRAMPOLINE:
+	PBF	H_AX
+	PADD
+	PAF	0
+	JP
+
+BX_TRAMPOLINE:
+	PBF	H_BX
+	PADD
+	PAF	0
+	JP
+
+MAIN_HANDLERS:
+	IMM	O_IMM
+	IMM	O_LAE
+	IMM	O_LAF
+	IMM	O_SAE
+
+	IMM	O_SAF
+	IMM	O_PAF
+	IMM	O_PBE
+	IMM	O_PBF
+
+	IMM	O_AP
+	IMM	O_SPBF
+	IMM	AX_TRAMPOLINE
+	IMM	BX_TRAMPOLINE
+
+	IMM	O_SCC
+	IMM	O_SCS
+	IMM	0xFF
+	IMM	0xFF
+
+AX_HANDLERS:
+	IMM	O_LINK
+	IMM	O_LINK
+	IMM	O_LINK
+	IMM	O_LINK
+
+	IMM	O_PX
+	IMM	O_LPX
+	IMM	O_SBC
+	IMM	O_SUB
+
+	IMM	O_C2A
+	IMM	O_RX
+	IMM	O_AX   # aa
+	IMM	O_RA2B # ab
+
+	IMM	O_ADC
+	IMM	O_ADD
+	IMM	O_PADD
+	IMM	O_AP
+
+BX_HANDLERS:
+	IMM	O_CL
+	IMM	O_CL
+	IMM	O_CL
+	IMM	O_CL
+
+	IMM	O_RET # b4
+	IMM	O_CLEB
+	IMM	O_CLEBC
+	IMM	O_CLB
+
+	IMM	O_P2R
+	IMM	O_LPX
+	IMM	O_PB2A # ba
+	IMM	O_PX
+
+	IMM	O_JP
+	IMM	O_LSR
+	IMM	0XFF
+	IMM	O_SPLIT # bf - needs to end in an f
+
+
+	# Initialization
+	.org	0x00
+	# Registers
+	IMM	0x10	# Initial PC
+	IMM	0
+	IMM	0
+	IMM	0
+
+	IMM	0
+	IMM	0
+	IMM	0
+	IMM	0
+
+	IMM	0
+	IMM	MAIN_HANDLERS
+	IMM	AX_HANDLERS
+	IMM	BX_HANDLERS
+
+	IMM	MAIN_LOOP
+	IMM	MAIN_RETURN
+	IMM	PREP_ALU_REGS
+	IMM	SET_CARRY_AND_RETURN
+
 
