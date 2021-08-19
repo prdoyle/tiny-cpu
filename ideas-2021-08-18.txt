@@ -10,25 +10,25 @@ CF - Carry flag
 
 # Imm4 instructions
 IMM:  RA <- imm4             # Immediate
+LBF:  RA <- [PB+imm4]        # Load B field
 LAE:  RA <- [PA+RB+imm4]     # Load A element
 LAF:  RA <- [PA+imm4]        # Load A field
-LBF:  RA <- [PB+imm4]        # Load B field
+SPBF: [PB+imm4] <- PA        # Store pointer
+SBF:  [PB+imm4] <- RA        # Store B field
 SAE:  [PA+RB+imm4] <- RA     # Store A element
 SAF:  [PA+imm4] <- RA        # Store A field
-SBF:  [PB+imm4] <- RA        # Store B field
-PAF:  PA <- [PA+imm4]        # Pointer A field
-PAE:  PA <- [PA+RB+imm4]     # Pointer A element
-PBF:  PA <- [PB+imm4]        # Pointer B field
-AP:   PA <- PA + imm4        # Advance pointer
-SPBF: [PB+imm4] <- PA        # Store pointer
 SCC:  PC <- PC + imm4        # Skip if carry clear
 SCS:  PC <- PC + imm4        # Skip if carry set
+AP:   PA <- PA + imm4        # Advance pointer
+PBF:  PA <- [PB+imm4]        # Pointer B field
+PAE:  PA <- [PA+RB+imm4]     # Pointer A element
+PAF:  PA <- [PA+imm4]        # Pointer A field
 
 # Opcode-only instructions
 RX:   RA <-> RB             # Register exchange
 PX:   PA <-> PB             # Pointer exchange
 AX:   RA <-> PA             # Register-pointer accumulator exchange
-LPX:  PA <-> LR
+PLX:  PA <-> LR
 RA2B: RB <- RA
 PB2A: PA <- PB
 P2R:  RA <- PA
@@ -70,7 +70,7 @@ LSR:   Logical shift right RA by signed # bits in RB: 0-7 = right, 8-15 = left
 	V_RET	equ 13  # MAIN_RETURN
 	V_ALU	equ 14	# PREP_ALU_REGS
 	V_CARRY	equ 15	# SET_CARRY_AND_RETURN
-	
+
 	.org 0x20
 MAIN_LOOP:
 	# PB points to context
@@ -107,9 +107,17 @@ SET_CARRY_AND_RETURN:
 	PBF	V_RET
 	JP
 
+	## Opcode implementations ##
+
 O_IMM:
 	PB2A
 	SAF	F_RA
+	RET
+
+O_LBF:
+	PBF	F_PB
+	PAE		# PA is [PB+imm4]
+	SPBF	F_RA
 	RET
 
 O_LAE: # UNUSED
@@ -120,14 +128,26 @@ O_LAE: # UNUSED
 	PAE		# PA is [PA+RB+imm4]
 	SPBF	F_RA
 	RET
-	
+
 O_LAF: # USED ONCE
 	PBF	F_PA
 	PAE		# PA is [PA+imm4]
 	SPBF	F_RA
 	RET
-	
-O_SAE: # UNUSED
+
+O_SPBF:
+	PBF	F_PB
+	LBF	F_PA	# RA is PA
+	SAE	0	# Store to [PB+imm4]
+	RET
+
+O_SBF:
+	PBF	F_PB
+	LBF	F_RA	# RA is RA
+	SAE	0	# Store to [PB+imm4]
+	RET
+
+O_SAE:
 	LBF	F_PA
 	ADD		# RA is PA+imm4
 	RX		# RB is PA+imm4
@@ -140,51 +160,6 @@ O_SAF:
 	PBF	F_PA
 	LBF	F_RA
 	SAE	0	# Store to [PA+imm4]
-	RET
-
-O_PAF:
-	PBF	F_PA
-	LBF	F_PA
-	SAE	0	# Store to [PA+imm4]
-	RET
-
-O_PAE:
-	LBF	F_PA
-	ADD		# RA is PA+imm4
-	RX		# RB is PA+imm4
-	PBF	F_RB	# PA is RB
-	LBF	F_PA
-	SAE	0	# Store to [PA+RB+imm4]
-	RET
-	
-O_LBF:
-	PBF	F_PB
-	PAE		# PA is [PB+imm4]
-	SPBF	F_RA
-	RET
-	
-O_PBF:
-	PBF	F_PB
-	PAE		# PA is [PB+imm4]
-	SPBF	F_PA
-	RET
-	
-O_AP:
-	PBF	F_PA
-	PADD
-	SPBF	F_PA
-	RET
-
-O_SBF:
-	PBF	F_PB
-	LBF	F_RA	# RA is RA
-	SAE	0	# Store to [PB+imm4]
-	RET
-
-O_SPBF:
-	PBF	F_PB
-	LBF	F_PA	# RA is PA
-	SAE	0	# Store to [PB+imm4]
 	RET
 
 O_SCC:
@@ -205,11 +180,47 @@ O_SCS:
 	SPBF	F_PC
 	RET
 
-O_RX:
-	LBF	F_RA
-	PBF	F_RB
-	SPBF	F_RA
-	SBF	F_RB
+AX_TRAMPOLINE:
+	PBF	H_AX
+	PAE	0
+	JP
+
+BX_TRAMPOLINE:
+	PBF	H_BX
+	PAE	0
+	JP
+
+O_AP:
+	PBF	F_PA
+	PADD
+	SPBF	F_PA
+	RET
+
+O_PBF:
+	PBF	F_PB
+	PAE		# PA is [PB+imm4]
+	SPBF	F_PA
+	RET
+
+O_PAE:
+	LBF	F_PA
+	ADD		# RA is PA+imm4
+	RX		# RB is PA+imm4
+	PBF	F_RB	# PA is RB
+	LBF	F_PA
+	SAE	0	# Store to [PA+RB+imm4]
+	RET
+
+O_PAF:
+	PBF	F_PA
+	LBF	F_PA
+	SAE	0	# Store to [PA+imm4]
+	RET
+
+O_LINK:
+	LBF	F_PC
+	ADD
+	SBF	F_LR
 	RET
 
 O_PX:
@@ -219,6 +230,41 @@ O_PX:
 	SBF	F_PB
 	RET
 
+O_PLX:
+	LBF	F_PA
+	PBF	F_LR
+	SPBF	F_PA
+	SBF	F_LR
+	RET
+
+O_SBC:
+	PBF	V_ALU
+	JP
+	SBC
+	SBF	F_RA
+	PBF	V_CARRY
+	JP
+
+O_SUB:
+	PBF	V_ALU
+	JP
+	SUB
+	SBF	F_RA
+	PBF	V_CARRY
+	JP
+
+O_C2A:
+	LBF	F_CF
+	SBF	F_RA
+	RET
+
+O_RX:
+	LBF	F_RA
+	PBF	F_RB
+	SPBF	F_RA
+	SBF	F_RB
+	RET
+
 O_AX: # UNUSED
 	LBF	F_PA
 	PBF	F_RA
@@ -226,26 +272,33 @@ O_AX: # UNUSED
 	SBF	F_RA
 	RET
 
-O_LPX:
-	LBF	F_PA
-	PBF	F_LR
-	SPBF	F_PA
-	SBF	F_LR
-	RET
-
 O_RA2B:
 	LBF	F_RA
 	SBF	F_RB
 	RET
 
-O_PB2A:
-	LBF	F_PB
-	SBF	F_PA
-	RET
-
-O_P2R:
-	LBF	F_PA
+O_ADC:
+	PBF	V_ALU
+	JP
+	ADC
 	SBF	F_RA
+	PBF	V_CARRY
+	JP
+
+O_ADD:
+	PBF	V_ALU
+	JP
+	ADD
+	SBF	F_RA
+	PBF	V_CARRY
+	JP
+
+O_PADD:
+	LBF	F_RB
+	RX
+	LBF	F_PA
+	ADD
+	SBF	F_PA
 	RET
 
 O_CL:
@@ -253,6 +306,11 @@ O_CL:
 	CLB		# B contains the imm4
 	PBF	V_CARRY
 	JP
+
+O_RET:
+	LBF	F_LR
+	SBF	F_PC
+	RET
 
 O_CLEB:
 	PBF	V_ALU
@@ -275,42 +333,26 @@ O_CLB:
 	PBF	V_CARRY
 	JP
 
-O_SUB:
+O_P2R:
+	LBF	F_PA
+	SBF	F_RA
+	RET
+
+O_PB2A:
+	LBF	F_PB
+	SBF	F_PA
+	RET
+
+O_JP:
+	LBF	F_PA
+	SBF	F_PC
+	RET
+
+O_LSR:
 	PBF	V_ALU
 	JP
-	SUB
+	LSR
 	SBF	F_RA
-	PBF	V_CARRY
-	JP
-
-O_SBC:
-	PBF	V_ALU
-	JP
-	SBC
-	SBF	F_RA
-	PBF	V_CARRY
-	JP
-
-O_ADC:
-	PBF	V_ALU
-	JP
-	ADC
-	SBF	F_RA
-	PBF	V_CARRY
-	JP
-
-O_ADD:
-	PBF	V_ALU
-	JP
-	ADD
-	SBF	F_RA
-	PBF	V_CARRY
-	JP
-
-O_LINK:
-	LBF	F_PC
-	ADD
-	SBF	F_LR
 	RET
 
 O_SPLIT:
@@ -322,61 +364,26 @@ O_SPLIT:
 	SBF	F_RB
 	RET
 
-O_PADD:
-	LBF	F_RB
-	RX
-	LBF	F_PA
-	ADD
-	SBF	F_PA
-	RET
-
-O_JP:
-	LBF	F_PA
-	SBF	F_PC
-	RET
-
-O_RET:
-	LBF	F_LR
-	SBF	F_PC
-	RET
-
-O_LSR:
-	PBF	V_ALU
-	JP
-	LSR
-	SBF	F_RA
-	RET
-
-AX_TRAMPOLINE:
-	PBF	H_AX
-	PAE	0
-	JP
-
-BX_TRAMPOLINE:
-	PBF	H_BX
-	PAE	0
-	JP
-
 MAIN_HANDLERS:
 	IMM	O_IMM
+	IMM	O_LBF
 	IMM	O_LAE
 	IMM	O_LAF
-	IMM	O_SAE
 
-	IMM	O_SAF
-	IMM	O_PAF
-	IMM	O_PAE
-	IMM	O_PBF
-
-	IMM	O_AP
 	IMM	O_SPBF
-	IMM	AX_TRAMPOLINE
-	IMM	BX_TRAMPOLINE
+	IMM	O_SBF
+	IMM	O_SAE
+	IMM	O_SAF
 
 	IMM	O_SCC
 	IMM	O_SCS
-	IMM	0xFF
-	IMM	0xFF
+	IMM	AX_TRAMPOLINE
+	IMM	BX_TRAMPOLINE
+
+	IMM	O_AP
+	IMM	O_PBF
+	IMM	O_PAE
+	IMM	O_PAF
 
 AX_HANDLERS:
 	IMM	O_LINK
@@ -385,19 +392,19 @@ AX_HANDLERS:
 	IMM	O_LINK
 
 	IMM	O_PX
-	IMM	O_LPX
+	IMM	O_PLX
 	IMM	O_SBC
 	IMM	O_SUB
 
 	IMM	O_C2A
 	IMM	O_RX
-	IMM	O_AX   # aa
-	IMM	O_RA2B # ab
+	IMM	O_AX	# aa
+	IMM	O_RA2B	# ab
 
 	IMM	O_ADC
 	IMM	O_ADD
 	IMM	O_PADD
-	IMM	O_AP
+	IMM	0xFF
 
 BX_HANDLERS:
 	IMM	O_CL
@@ -405,20 +412,20 @@ BX_HANDLERS:
 	IMM	O_CL
 	IMM	O_CL
 
-	IMM	O_RET # b4
+	IMM	O_RET	# b4 - this is not negotiable
 	IMM	O_CLEB
 	IMM	O_CLEBC
 	IMM	O_CLB
 
 	IMM	O_P2R
-	IMM	O_LPX
-	IMM	O_PB2A # ba
-	IMM	O_PX
+	IMM	0XFF
+	IMM	O_PB2A	# ba
+	IMM	0xFF
 
 	IMM	O_JP
 	IMM	O_LSR
 	IMM	0XFF
-	IMM	O_SPLIT # bf - needs to end in an f
+	IMM	O_SPLIT	# bf - needs to end in an f
 
 
 	# Initialization
