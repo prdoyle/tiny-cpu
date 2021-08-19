@@ -407,6 +407,20 @@ def generate_meta_interpreter( asm ):
     asm.pbf( V_RET )
     asm.jp()
 
+    ## Macros
+
+    def EXCHANGE( r1, r2 ):
+        asm.lbf( r1 )
+        asm.pbf( r2 )
+        asm.spbf( r1 )
+        asm.sbf( r2 )
+
+    def PREP_ALU():
+        """Call PREP_ALU_REGS to get ra, rb, and cf fields into actual registers"""
+        asm.pbf( V_ALU )
+        asm.link( 1 )
+        asm.jp()
+
     ## Opcode implementations
 
     O_IMM = asm.loc
@@ -460,6 +474,191 @@ def generate_meta_interpreter( asm ):
     asm.lbf( R_RA )      # RA is RA
     asm.sae( 0 )         # Store to [PA + imm4]
     asm.ret()
+
+    O_SCC = asm.loc
+    asm.lbf( R_CF )
+    asm.cl( 1 )          # CF is ~CF
+    asm.scs( 3 )
+    asm.pbf( R_PC )
+    asm.padd()
+    asm.spbf( R_PC )
+    asm.ret()
+
+    O_SCS = asm.loc
+    asm.lbf( R_CF )
+    asm.cl( 1 )          # CF is ~CF
+    asm.scc( 3 )
+    asm.pbf( R_PC )
+    asm.padd()
+    asm.spbf( R_PC )
+    asm.ret()
+
+    AX_TRAMPOLINE = asm.loc
+    asm.pbf( H_AX )
+    asm.pae( 0 )
+    asm.jp()
+
+    BX_TRAMPOLINE = asm.loc
+    asm.pbf( H_BX )
+    asm.pae( 0 )
+    asm.jp()
+
+    O_AP = asm.loc
+    asm.pbf( R_PA )
+    asm.padd()
+    asm.spbf( R_PA )
+    asm.ret()
+
+    O_PBF = asm.loc
+    asm.pbf( R_PB )
+    asm.pae( 0 )         # PA is [PB+imm4]
+    asm.spbf( R_PA )
+    asm.ret()
+
+    O_PAE = asm.loc
+    asm.lbf( R_PA )
+    asm.add()
+    asm.rx()             # RB is PA+imm4
+    asm.pbf( R_RB )      # PA is RB
+    asm.pae( 0 )         # PA is [PA+RB+imm4]
+    asm.spbf( R_PA )
+    asm.ret()
+
+    O_PAF = asm.loc
+    asm.pbf( R_PA )
+    asm.pae( 0 )
+    asm.spbf( R_PA )
+    asm.ret()
+
+    O_LINK = asm.loc
+    asm.lbf( R_PC )
+    asm.add()
+    asm.sbf( R_LR )
+    asm.ret()
+
+    O_PX = asm.loc
+    EXCHANGE( R_PA, R_PB )
+    asm.ret()
+
+    O_PLX = asm.loc
+    EXCHANGE( R_PA, R_LR )
+    asm.ret()
+
+    O_SBC = asm.loc
+    PREP_ALU()
+    asm.sbc()
+    asm.sbf( R_RA )
+    asm.pbf( V_CARRY )
+    asm.jp()
+
+    O_SBC = asm.loc
+    PREP_ALU()
+    asm.sub()
+    asm.sbf( R_RA )
+    asm.pbf( V_CARRY )
+    asm.jp()
+
+    O_C2A = asm.loc
+    asm.lbf( R_CF )
+    asm.sbf( R_RA )
+    asm.ret()
+
+    O_RX = asm.loc
+    EXCHANGE( R_RA, R_RB )
+    asm.ret()
+
+    O_AX = asm.loc
+    EXCHANGE( R_PA, R_RA )
+    asm.ret()
+
+    O_RA2B = asm.loc
+    asm.lbf( R_RA )
+    asm.sbf( R_RB )
+    asm.ret()
+
+    O_ADC = asm.loc
+    PREP_ALU()
+    asm.adc()
+    asm.sbf( R_RA )
+    asm.pbf( V_CARRY )
+    asm.jp()
+
+    O_ADD = asm.loc
+    PREP_ALU()
+    asm.add()
+    asm.sbf( R_RA )
+    asm.pbf( V_CARRY )
+    asm.jp()
+
+    O_PADD = asm.loc
+    asm.lbf( R_RB )
+    asm.rx()
+    asm.lbf( R_PA )
+    asm.add()
+    asm.sbf( R_PA )
+    asm.ret()
+
+    O_CL = asm.loc
+    asm.lbf( R_RA )
+    asm.clb()            # B contains the imm4
+    asm.pbf( V_CARRY )
+    asm.jp()
+
+    O_RET = asm.loc
+    asm.lbf( R_LR )
+    asm.sbf( R_PC )
+    asm.ret()
+
+    O_CLEB = asm.loc
+    PREP_ALU()
+    asm.cleb()
+    asm.pbf( V_CARRY )
+    asm.jp()
+
+    O_CLEBC = asm.loc
+    PREP_ALU()
+    asm.clebc()
+    asm.pbf( V_CARRY )
+    asm.jp()
+
+    O_CLB = asm.loc
+    PREP_ALU()
+    asm.clb()
+    asm.pbf( V_CARRY )
+    asm.jp()
+
+    O_P2R = asm.loc
+    asm.lbf( R_PA )
+    asm.sbf( R_RA )
+    asm.ret()
+
+    O_PB2A = asm.loc
+    asm.lbf( R_PB )
+    asm.sbf( R_PA )
+    asm.ret()
+
+    O_JP = asm.loc
+    asm.lbf( R_PA )
+    asm.sbf( R_PC )
+    asm.ret()
+
+    O_HALT = asm.loc
+    asm.halt()
+
+    O_LSR = asm.loc
+    PREP_ALU()
+    asm.lsr()
+    asm.sbf( R_RA )
+    asm.ret()
+
+    O_SPLIT = asm.loc
+    PREP_ALU()
+    asm.split()
+    asm.sbf( R_RA )
+    asm.rx()
+    asm.sbf( R_RB )
+    asm.ret()
+
 
 
 class RoundTripTest( TestCase ):
