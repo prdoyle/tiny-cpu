@@ -40,15 +40,15 @@ class Assembler:
     def call( self, n ): self.emit( 0xf0 + n )
 
     def link( self, n ): self.emit( 0xa0 + n )
+    def adc( self ): self.emit( 0xa4 )
+    def add( self ): self.emit( 0xa5 )
     def sbc( self ): self.emit( 0xa6 )
     def sub( self ): self.emit( 0xa7 )
     def c2a( self ): self.emit( 0xa8 )
     def rx( self ): self.emit( 0xa9 )
     def ax( self ): self.emit( 0xaa )
     def ra2b( self ): self.emit( 0xab )
-    def adc( self ): self.emit( 0xac )
-    def add( self ): self.emit( 0xad )
-    def padd( self ): self.emit( 0xae )
+    def padd( self ): self.emit( 0xac )
 
     def cl( self, n ): self.emit( 0xb0 + n )
     def ret( self ): self.emit( 0xb4 )
@@ -56,11 +56,11 @@ class Assembler:
     def clebc( self ): self.emit( 0xb6 )
     def clb( self ): self.emit( 0xb7 )
     def p2r( self ): self.emit( 0xb8 )
+    def lsr( self ): self.emit( 0xb9 )
     def pb2a( self ): self.emit( 0xba )
+    def split( self ): self.emit( 0xbb )
     def jp( self ): self.emit( 0xbc )
     def halt( self ): self.emit( 0xbd )
-    def lsr( self ): self.emit( 0xbe )
-    def split( self ): self.emit( 0xbf )
     def data( self, n ): self.emit( n )
 
 class Disassembler:
@@ -91,14 +91,14 @@ class Disassembler:
     def call( self, n ): return self._format( "call", n )
 
     def link( self, n ): return self._format( "link", n )
+    def adc( self ): return self._format( "adc" )
+    def add( self ): return self._format( "add" )
     def sbc( self ): return self._format( "sbc" )
     def sub( self ): return self._format( "sub" )
     def c2a( self ): return self._format( "c2a" )
     def rx( self ): return self._format( "rx" )
     def ax( self ): return self._format( "ax" )
     def ra2b( self ): return self._format( "ra2b" )
-    def adc( self ): return self._format( "adc" )
-    def add( self ): return self._format( "add" )
     def padd( self ): return self._format( "padd" )
 
     def cl( self, n ): return self._format( "cl", n )
@@ -107,11 +107,11 @@ class Disassembler:
     def clebc( self ): return self._format( "clebc" )
     def clb( self ): return self._format( "clb" )
     def p2r( self ): return self._format( "p2r" )
+    def lsr( self ): return self._format( "lsr" )
     def pb2a( self ): return self._format( "pb2a" )
+    def split( self ): return self._format( "split" )
     def jp( self ): return self._format( "jp" )
     def halt( self ): return self._format( "halt" )
-    def lsr( self ): return self._format( "lsr" )
-    def split( self ): return self._format( "split" )
     def data( self, n ): return self._format( "data", n )
 
 def decode( instr, consumer ):
@@ -142,8 +142,8 @@ def decode( instr, consumer ):
 	lambda n: consumer.link( n ),
 	lambda n: consumer.link( n ),
 
-	lambda n: consumer.data( instr ),
-	lambda n: consumer.data( instr ),
+	lambda n: consumer.adc(),
+	lambda n: consumer.add(),
 	lambda n: consumer.sbc(),
 	lambda n: consumer.sub(),
 
@@ -152,9 +152,9 @@ def decode( instr, consumer ):
 	lambda n: consumer.ax(),
 	lambda n: consumer.ra2b(),
 
-	lambda n: consumer.adc(),
-	lambda n: consumer.add(),
 	lambda n: consumer.padd(),
+	lambda n: consumer.data( instr ),
+	lambda n: consumer.data( instr ),
 	lambda n: consumer.data( instr ),
     ]
     bx_handlers = [
@@ -169,14 +169,14 @@ def decode( instr, consumer ):
 	lambda n: consumer.clb(),
 
 	lambda n: consumer.p2r(),
-	lambda n: consumer.data( instr ),
+	lambda n: consumer.lsr(),
 	lambda n: consumer.pb2a(),
-	lambda n: consumer.data( instr ),
+	lambda n: consumer.split(),
 
 	lambda n: consumer.jp(),
 	lambda n: consumer.halt(),
-	lambda n: consumer.lsr(),
-	lambda n: consumer.split(),
+	lambda n: consumer.data( instr ),
+	lambda n: consumer.data( instr ),
     ]
     hi4 = ff( instr ) >> 4
     lo4 = instr & 0x0F
@@ -291,6 +291,18 @@ class Interpreter:
         self._next()
         self.lr = ff( self.pc + n )
 
+    def adc( self ):
+        self._next()
+        result = ( self.ra + self.rb + self.cf ) & 0x1ff
+        self.ra = ff( result )
+        self.cf = result >> 8
+
+    def add( self ):
+        self._next()
+        result = ( self.ra + self.rb ) & 0x1ff
+        self.ra = ff( result )
+        self.cf = result >> 8
+
     def sbc( self ):
         self._next()
         result = ( self.ra + (~self.rb) + self.cf ) & 0x1ff
@@ -318,18 +330,6 @@ class Interpreter:
     def ra2b( self ):
         self._next()
         self.rb = self.ra
-
-    def adc( self ):
-        self._next()
-        result = ( self.ra + self.rb + self.cf ) & 0x1ff
-        self.ra = ff( result )
-        self.cf = result >> 8
-
-    def add( self ):
-        self._next()
-        result = ( self.ra + self.rb ) & 0x1ff
-        self.ra = ff( result )
-        self.cf = result >> 8
 
     def padd( self ):
         self._next()
@@ -363,16 +363,6 @@ class Interpreter:
         self._next()
         self.ra = self.pa
 
-    def pb2a( self ):
-        self._next()
-        self.pa = self.pb
-
-    def jp( self ):
-        self.pc = self.pa
-
-    def halt( self ):
-        self.halted = True
-
     def lsr( self ):
         d = self.rb
         if d >= 8:
@@ -381,10 +371,20 @@ class Interpreter:
         else:
             self.ra = ff( self.ra >> d )
 
+    def pb2a( self ):
+        self._next()
+        self.pa = self.pb
+
     def split( self ):
         self._next()
         self.rb = self.ra & 0x0F
         self.ra = self.ra >> 4
+
+    def jp( self ):
+        self.pc = self.pa
+
+    def halt( self ):
+        self.halted = True
 
     def data( self, n ):
         raise ValueError("Unimplemented opcode: %x" % n )
@@ -753,7 +753,6 @@ def generate_meta_interpreter( asm ):
 
     ## Handler tables
 
-    asm.loc = 0xf0
     MAIN_HANDLERS = asm.loc
     asm.data( O_IMM )
     asm.data( O_LBF )
@@ -775,15 +774,14 @@ def generate_meta_interpreter( asm ):
     asm.data( O_PAE )
     asm.data( O_CALL )
 
-    asm.loc = 0xd0
     AX_HANDLERS = asm.loc
     asm.data( O_LINK )
     asm.data( O_LINK )
     asm.data( O_LINK )
     asm.data( O_LINK )
 
-    asm.data( 0xFF )
-    asm.data( 0xFF )
+    asm.data( O_ADC )
+    asm.data( O_ADD )
     asm.data( O_SBC )
     asm.data( O_SUB )
 
@@ -792,12 +790,8 @@ def generate_meta_interpreter( asm ):
     asm.data( O_AX )
     asm.data( O_RA2B )
 
-    asm.data( O_ADC )
-    asm.data( O_ADD )
     asm.data( O_PADD )
-    asm.data( 0xFF )
 
-    asm.loc = 0xe0
     BX_HANDLERS = asm.loc
     asm.data( O_CL )
     asm.data( O_CL )
@@ -810,14 +804,12 @@ def generate_meta_interpreter( asm ):
     asm.data( O_CLB )
 
     asm.data( O_P2R )
-    asm.data( 0XFF )
+    asm.data( O_LSR )
     asm.data( O_PB2A )
-    asm.data( 0xFF )
+    asm.data( O_SPLIT )
 
     asm.data( O_JP )
     asm.data( O_HALT )
-    asm.data( O_LSR )
-    asm.data( O_SPLIT )
 
     # Initial state
 
