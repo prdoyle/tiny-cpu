@@ -41,6 +41,7 @@ class Assembler:
     def call( self, n ): self.emit( 0xf0 + n )
 
     def link( self, n ): self.emit( 0xa0 + n )
+    def padd( self ): self.emit( 0xa3 )
     def adc( self ): self.emit( 0xa4 )
     def add( self ): self.emit( 0xa5 )
     def sbc( self ): self.emit( 0xa6 )
@@ -49,7 +50,6 @@ class Assembler:
     def rx( self ): self.emit( 0xa9 )
     def ax( self ): self.emit( 0xaa )
     def ra2b( self ): self.emit( 0xab )
-    def padd( self ): self.emit( 0xac )
 
     def cle( self, n ): self.emit( 0xb0 + n )
     def ret( self ): self.emit( 0xb4 )
@@ -148,7 +148,7 @@ def decode( instr, consumer ):
 	lambda n: consumer.link( n ),
 	lambda n: consumer.link( n ),
 	lambda n: consumer.link( n ),
-	lambda n: consumer.link( n ),
+	lambda n: consumer.padd(),
 
 	lambda n: consumer.adc(),
 	lambda n: consumer.add(),
@@ -160,7 +160,7 @@ def decode( instr, consumer ):
 	lambda n: consumer.ax(),
 	lambda n: consumer.ra2b(),
 
-	lambda n: consumer.padd(),
+	lambda n: consumer.data( instr ),
 	lambda n: consumer.data( instr ),
 	lambda n: consumer.data( instr ),
 	lambda n: consumer.data( instr ),
@@ -787,7 +787,7 @@ def generate_meta_interpreter( asm ):
     asm.data( O_LINK )
     asm.data( O_LINK )
     asm.data( O_LINK )
-    asm.data( O_LINK )
+    asm.data( O_PADD )
 
     asm.data( O_ADC )
     asm.data( O_ADD )
@@ -798,8 +798,6 @@ def generate_meta_interpreter( asm ):
     asm.data( O_RX )
     asm.data( O_AX )
     asm.data( O_RA2B )
-
-    asm.data( O_PADD )
 
     BX_HANDLERS = asm.loc
     asm.data( O_CLE )
