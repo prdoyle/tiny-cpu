@@ -484,13 +484,6 @@ def generate_interpreter( asm, start_pcs ):
         asm.spbf( r1 )
         asm.sbf( r2 )
 
-    def PREP_ALU():
-        """Call PREP_ALU_REGS to get ra, rb, and cf fields into actual registers"""
-        #asm.pbf( V_ALU )
-        #asm.link( 1 )
-        #asm.jp()
-        asm.call( V_ALU )
-
     ## Opcode handlers
 
     O_IMM = asm.loc
@@ -620,13 +613,13 @@ def generate_interpreter( asm, start_pcs ):
     debug( "%s\t%02x\t%d bytes" % ( "O_LINK", O_LINK, asm.loc - O_LINK ) )
 
     O_SBC = asm.loc
-    PREP_ALU()
+    asm.call( V_ALU )
     asm.sbc()
     asm.jbf( V_CFRA )
     debug( "%s\t%02x\t%d bytes" % ( "O_SBC", O_SBC, asm.loc - O_SBC ) )
 
     O_SUB = asm.loc
-    PREP_ALU()
+    asm.call( V_ALU )
     asm.sub()
     asm.jbf( V_CFRA )
     debug( "%s\t%02x\t%d bytes" % ( "O_SUB", O_SUB, asm.loc - O_SUB ) )
@@ -654,13 +647,13 @@ def generate_interpreter( asm, start_pcs ):
     debug( "%s\t%02x\t%d bytes" % ( "O_RA2B", O_RA2B, asm.loc - O_RA2B ) )
 
     O_ADC = asm.loc
-    PREP_ALU()
+    asm.call( V_ALU )
     asm.adc()
     asm.jbf( V_CFRA )
     debug( "%s\t%02x\t%d bytes" % ( "O_ADC", O_ADC, asm.loc - O_ADC ) )
 
     O_ADD = asm.loc
-    PREP_ALU()
+    asm.call( V_ALU )
     asm.add()
     asm.jbf( V_CFRA )
     debug( "%s\t%02x\t%d bytes" % ( "O_ADD", O_ADD, asm.loc - O_ADD ) )
@@ -687,19 +680,19 @@ def generate_interpreter( asm, start_pcs ):
     debug( "%s\t%02x\t%d bytes" % ( "O_RET", O_RET, asm.loc - O_RET ) )
 
     O_CLEB = asm.loc
-    PREP_ALU()
+    asm.call( V_ALU )
     asm.cleb()
     asm.jbf( V_CARRY )
     debug( "%s\t%02x\t%d bytes" % ( "O_CLEB", O_CLEB, asm.loc - O_CLEB ) )
 
     O_CLEBC = asm.loc
-    PREP_ALU()
+    asm.call( V_ALU )
     asm.clebc()
     asm.jbf( V_CARRY )
     debug( "%s\t%02x\t%d bytes" % ( "O_CLEBC", O_CLEBC, asm.loc - O_CLEBC ) )
 
     O_CLB = asm.loc
-    PREP_ALU()
+    asm.call( V_ALU )
     asm.clb()
     asm.jbf( V_CARRY )
     debug( "%s\t%02x\t%d bytes" % ( "O_CLB", O_CLB, asm.loc - O_CLB ) )
@@ -738,24 +731,24 @@ def generate_interpreter( asm, start_pcs ):
     debug( "%s\t%02x\t%d bytes" % ( "O_LAE", O_LAE, asm.loc - O_LAE ) )
 
     O_HALT = asm.loc
-    PREP_ALU() # Set actual ALU registers to simulated ones
+    asm.call( V_ALU ) # Set actual ALU registers to simulated ones
     asm.halt()
     debug( "%s\t%02x\t%d bytes" % ( "O_HALT", O_HALT, asm.loc - O_HALT ) )
 
     O_LSR = asm.loc
-    PREP_ALU()
+    asm.call( V_ALU )
     asm.lsr()
     asm.sbf( R_RA )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_LSR", O_LSR, asm.loc - O_LSR ) )
 
     O_SPLIT = asm.loc
-    PREP_ALU()
+    asm.call( V_ALU )
     asm.split()
     asm.sbf( R_RA )
     asm.rx()
     asm.sbf( R_RB )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_SPLIT", O_SPLIT, asm.loc - O_SPLIT ) )
 
     if False and asm.loc > 0xd0:
