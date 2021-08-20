@@ -442,7 +442,7 @@ def generate_interpreter( asm, start_pcs ):
 
     ## Entry point
 
-    asm.loc = 0x2c
+    asm.loc = 0x28
 
     MAIN_LOOP = asm.loc
     asm.pbf( R_PC )
@@ -713,17 +713,12 @@ def generate_interpreter( asm, start_pcs ):
     debug( "%s\t%02x\t%d bytes" % ( "O_JP", O_JP, asm.loc - O_JP ) )
 
     O_LAE = asm.loc
-    # CHEAT! Save the bytes for an instruction we're not using
-    if True:
-        pass
-        # Fall into HALT
-    else:
-        asm.lbf( R_PA )
-        asm.add()
-        asm.rx()             # RB is PA+imm4
-        asm.pbf( R_RB )      # PA is RB
-        asm.pae( 0 )         # PA is [PA+RB+imm4]
-        asm.spbf( R_RA )
+    asm.lbf( R_PA )
+    asm.add()
+    asm.rx()             # RB is PA+imm4
+    asm.pbf( R_RB )      # PA is RB
+    asm.pae( 0 )         # PA is [PA+RB+imm4]
+    asm.spbf( R_RA )
     asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_LAE", O_LAE, asm.loc - O_LAE ) )
 
