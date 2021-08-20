@@ -1,0 +1,41 @@
+So now I need to save six bytes to run a meta-interpreter.
+
+Ideas:
+
+1. Several instructions, like AP and SCS, have no need to support an immediate of zero,
+because they would be no-ops. If I could evacuate one of the instruction ranges (say, BX)
+and put them as the n=0 versions of those instructions, I could save a whole jump table,
+and also free up that instruction range for a new imm4 instruction like JV which might
+save even more bytes over PBF+JP. However, (1) every handler would then need a special
+case for zero, which would be extra code, and (2) there are actually not that many instructions
+where n=0 is a no-op, so I can't evacuate an entire range.
+
+2. AP having an imm4 is overkill. My interpreter actually just needs n=1; n=0 is useless,
+and pointers are actually only going to be advanced by a few values, like 1, 2, 4, 8 and
+maybe a few others. AP 14 won't be used very often in a machine with 256 bytes of memory.
+I could split the n range into two; say, {0,1,2} could be AP and all other values could
+be JV. Then the PBF+JP combos could be squashed. However, there are only eleven PBF+JPs,
+so if I'm to save 6 bytes, the JV implementation must add only 5 bytes, which seems unlikely.
+The combined implementation would look something like this:
+
+    O_AP_JV = asm.loc
+    asm.cl( 3 )
+    asm.scs( 4 )
+    asm.pbf( R_PB )
+    asm.pae( 0 )         # PA is [PB+imm4]
+    asm.spbf( R_PC )
+    asm.ret()
+    # Original AP implementation
+    asm.pbf( R_PA )
+    asm.padd()
+    asm.spbf( R_PA )
+    asm.ret()
+
+This adds 6 bytes, so is probably just barely not enough. However, I do get a nice useful
+JV instruction in the bargain, so I might do this anyway.
+
+3. Eliminate the compare opcodes and use subtraction instead. There are 4 compares, two of
+which are already equivalent to subtracts (CLB=SUB, CLEB=SBC). I could remove two compares
+and add two more subtracts for CLEB and CL. The compares and subs are 4 bytes each, so
+a net savings of two would save 2*4=8 bytes plus two more for the saved table entries.
+
