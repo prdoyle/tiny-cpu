@@ -13,7 +13,7 @@ where n=0 is a no-op, so I can't evacuate an entire range.
 2. AP having an imm4 is overkill. My interpreter actually just needs n=1; n=0 is useless,
 and pointers are actually only going to be advanced by a few values, like 1, 2, 4, 8 and
 maybe a few others. AP 14 won't be used very often in a machine with 256 bytes of memory.
-I could split the n range into two; say, {0,1,2} could be AP and all other values could
+I could split the n range into two; say, {0,1,2,3} could be AP and all other values could
 be JBF. Then the PBF+JP combos could be squashed. However, there are only eleven PBF+JPs,
 so if I'm to save 6 bytes, the JBF implementation must add only 5 bytes, which seems unlikely.
 The combined implementation would look something like this:

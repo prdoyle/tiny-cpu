@@ -585,7 +585,7 @@ def generate_meta_interpreter( asm ):
     debug( "%s\t%02x\t%d bytes" % ( "BX_TRAMPOLINE", BX_TRAMPOLINE, asm.loc - BX_TRAMPOLINE ) )
 
     O_AP_JBF = asm.loc
-    asm.cle( 2 )
+    asm.cle( 3 )
     # JBF
     asm.scs( 4 )
     asm.pbf( R_PB )
