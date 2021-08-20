@@ -501,20 +501,6 @@ def generate_meta_interpreter( asm ):
     asm.ret()
     debug( "%s\t%02x\t%d bytes" % ( "O_LBF", O_LBF, asm.loc - O_LBF ) )
 
-    O_LAE = asm.loc
-    # CHEAT! Save the bytes for an instruction we're not using
-    if True:
-        asm.halt()
-    else:
-        asm.lbf( R_PA )
-        asm.add()
-        asm.rx()             # RB is PA+imm4
-        asm.pbf( R_RB )      # PA is RB
-        asm.pae( 0 )         # PA is [PA+RB+imm4]
-        asm.spbf( R_RA )
-        asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_LAE", O_LAE, asm.loc - O_LAE ) )
-
     O_LAF = asm.loc
     asm.pbf( R_PA )
     asm.pae( 0 )
@@ -735,6 +721,21 @@ def generate_meta_interpreter( asm ):
     asm.sbf( R_PC )
     asm.ret()
     debug( "%s\t%02x\t%d bytes" % ( "O_JP", O_JP, asm.loc - O_JP ) )
+
+    O_LAE = asm.loc
+    # CHEAT! Save the bytes for an instruction we're not using
+    if True:
+        pass
+        # Fall into HALT
+    else:
+        asm.lbf( R_PA )
+        asm.add()
+        asm.rx()             # RB is PA+imm4
+        asm.pbf( R_RB )      # PA is RB
+        asm.pae( 0 )         # PA is [PA+RB+imm4]
+        asm.spbf( R_RA )
+        asm.ret()
+    debug( "%s\t%02x\t%d bytes" % ( "O_LAE", O_LAE, asm.loc - O_LAE ) )
 
     O_HALT = asm.loc
     asm.halt()
