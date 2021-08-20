@@ -452,8 +452,7 @@ def generate_meta_interpreter( asm ):
     asm.link( 1 )
     asm.jp()
     MAIN_RETURN = asm.loc
-    asm.pbf( V_MAIN )
-    asm.jp()
+    asm.jbf( V_MAIN )
 
     PREP_ALU_REGS = asm.loc
     asm.lbf( R_CF )
@@ -470,8 +469,7 @@ def generate_meta_interpreter( asm ):
     SET_CARRY_THEN_RETURN = asm.loc
     asm.c2a()
     asm.sbf( R_CF )
-    asm.pbf( V_MAIN )
-    asm.jp()
+    asm.jbf( V_MAIN )
 
     ## Macros
 
@@ -637,15 +635,13 @@ def generate_meta_interpreter( asm ):
     O_SBC = asm.loc
     PREP_ALU()
     asm.sbc()
-    asm.pbf( V_CFRA )
-    asm.jp()
+    asm.jbf( V_CFRA )
     debug( "%s\t%02x\t%d bytes" % ( "O_SBC", O_SBC, asm.loc - O_SBC ) )
 
     O_SUB = asm.loc
     PREP_ALU()
     asm.sub()
-    asm.pbf( V_CFRA )
-    asm.jp()
+    asm.jbf( V_CFRA )
     debug( "%s\t%02x\t%d bytes" % ( "O_SUB", O_SUB, asm.loc - O_SUB ) )
 
     O_C2A = asm.loc
@@ -673,15 +669,13 @@ def generate_meta_interpreter( asm ):
     O_ADC = asm.loc
     PREP_ALU()
     asm.adc()
-    asm.pbf( V_CFRA )
-    asm.jp()
+    asm.jbf( V_CFRA )
     debug( "%s\t%02x\t%d bytes" % ( "O_ADC", O_ADC, asm.loc - O_ADC ) )
 
     O_ADD = asm.loc
     PREP_ALU()
     asm.add()
-    asm.pbf( V_CFRA )
-    asm.jp()
+    asm.jbf( V_CFRA )
     debug( "%s\t%02x\t%d bytes" % ( "O_ADD", O_ADD, asm.loc - O_ADD ) )
 
     O_PADD = asm.loc
@@ -696,8 +690,7 @@ def generate_meta_interpreter( asm ):
     O_CL = asm.loc
     asm.lbf( R_RA )
     asm.clb()            # B contains the imm4
-    asm.pbf( V_CARRY )
-    asm.jp()
+    asm.jbf( V_CARRY )
     debug( "%s\t%02x\t%d bytes" % ( "O_CL", O_CL, asm.loc - O_CL ) )
 
     O_RET = asm.loc
@@ -709,22 +702,19 @@ def generate_meta_interpreter( asm ):
     O_CLEB = asm.loc
     PREP_ALU()
     asm.cleb()
-    asm.pbf( V_CARRY )
-    asm.jp()
+    asm.jbf( V_CARRY )
     debug( "%s\t%02x\t%d bytes" % ( "O_CLEB", O_CLEB, asm.loc - O_CLEB ) )
 
     O_CLEBC = asm.loc
     PREP_ALU()
     asm.clebc()
-    asm.pbf( V_CARRY )
-    asm.jp()
+    asm.jbf( V_CARRY )
     debug( "%s\t%02x\t%d bytes" % ( "O_CLEBC", O_CLEBC, asm.loc - O_CLEBC ) )
 
     O_CLB = asm.loc
     PREP_ALU()
     asm.clb()
-    asm.pbf( V_CARRY )
-    asm.jp()
+    asm.jbf( V_CARRY )
     debug( "%s\t%02x\t%d bytes" % ( "O_CLB", O_CLB, asm.loc - O_CLB ) )
 
     O_P2R = asm.loc
