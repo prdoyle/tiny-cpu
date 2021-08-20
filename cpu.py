@@ -402,6 +402,8 @@ class Interpreter:
         raise ValueError("Unimplemented opcode: %x" % n )
 
 def generate_fib( asm ):
+    entry_point = asm.loc
+
     asm.imm( 1 )
     asm.ra2b()
     asm.link( 0 )
@@ -411,11 +413,13 @@ def generate_fib( asm ):
     asm.ret()
     asm.halt()
 
+    return entry_point
+
 def generate_all( asm ):
     for b in range(256):
         asm.data( b )
 
-def generate_interpreter( asm, start_pc ):
+def generate_interpreter( asm, start_pcs ):
     ## Data field offsets from pb
 
     R_PC = 0
@@ -437,7 +441,7 @@ def generate_interpreter( asm, start_pc ):
 
     ## Entry point
 
-    asm.loc = 0x30
+    asm.loc = 0x2c
 
     MAIN_LOOP = asm.loc
     asm.pbf( R_PC )
@@ -732,6 +736,7 @@ def generate_interpreter( asm, start_pc ):
     debug( "%s\t%02x\t%d bytes" % ( "O_LAE", O_LAE, asm.loc - O_LAE ) )
 
     O_HALT = asm.loc
+    PREP_ALU() # Set actual ALU registers to simulated ones
     asm.halt()
     debug( "%s\t%02x\t%d bytes" % ( "O_HALT", O_HALT, asm.loc - O_HALT ) )
 
@@ -813,30 +818,38 @@ def generate_interpreter( asm, start_pc ):
     asm.data( O_JP )
     asm.data( O_HALT )
 
-    # Initial state
+    # Initialize interpreter state records
 
-    BASE_ADDR = 0x00
-    asm.loc = BASE_ADDR + R_PC
-    asm.data( start_pc )
-    asm.loc = BASE_ADDR + H_MAIN
-    asm.data( MAIN_HANDLERS )
-    asm.loc = BASE_ADDR + H_AX
-    asm.data( AX_HANDLERS )
-    asm.loc = BASE_ADDR + H_BX
-    asm.data( BX_HANDLERS )
-    asm.loc = BASE_ADDR + V_MAIN
-    asm.data( MAIN_LOOP )
-    asm.loc = BASE_ADDR + V_ALU
-    asm.data( PREP_ALU_REGS )
-    asm.loc = BASE_ADDR + V_CFRA
-    asm.data( SET_CARRY_AND_RA_THEN_RETURN )
-    asm.loc = BASE_ADDR + V_CARRY
-    asm.data( SET_CARRY_THEN_RETURN )
+    base = 0x00
+    for start_pc in start_pcs:
+        asm.loc = base + R_PC
+        asm.data( start_pc )
+        asm.loc = base + R_PB
+        asm.data( base+16 )
+        asm.loc = base + H_MAIN
+        asm.data( MAIN_HANDLERS )
+        asm.loc = base + H_AX
+        asm.data( AX_HANDLERS )
+        asm.loc = base + H_BX
+        asm.data( BX_HANDLERS )
+        asm.loc = base + V_MAIN
+        asm.data( MAIN_LOOP )
+        asm.loc = base + V_ALU
+        asm.data( PREP_ALU_REGS )
+        asm.loc = base + V_CFRA
+        asm.data( SET_CARRY_AND_RA_THEN_RETURN )
+        asm.loc = base + V_CARRY
+        asm.data( SET_CARRY_THEN_RETURN )
+        base += 16
+
+    asm.loc = MAIN_LOOP
 
 class RoundTripTest( TestCase ):
 
     def test( self ):
-        for initializer in [ generate_fib, generate_all, generate_interpreter ]:
+        def generate_test_interpreter( asm ):
+            generate_interpreter( asm, [ 0x30, 0x20 ] )
+        for initializer in [ generate_fib, generate_all, generate_test_interpreter ]:
             with self.subTest(initializer=initializer.__name__):
                 original = bytearray( 256 )
                 asm = Assembler( original )
@@ -856,19 +869,20 @@ def interpret_fib():
     while interpreter.step():
         pass
 
-def assemble_interpreter( start_pc ):
+def assemble_interpreter( start_pcs ):
     ram = bytearray( 256 )
     asm = Assembler( ram )
-    generate_interpreter( asm, start_pc )
-    asm.loc = start_pc
+    generate_interpreter( asm, start_pcs )
     dump_ram( ram )
     return asm
 
 def main():
     fib_start = 0x20
-    asm = assemble_interpreter( fib_start )
+    asm = assemble_interpreter( [ fib_start ] )
+    interpreter_start = asm.loc
+    asm.loc = fib_start
     generate_fib( asm )
-    interpreter = Interpreter( asm.ram, 0x30 )
+    interpreter = Interpreter( asm.ram, interpreter_start )
     for step in range(1,1200):
         debug( f'--## Step {step} ##--' )
         dump_ram( asm.ram )
