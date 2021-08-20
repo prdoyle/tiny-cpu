@@ -295,7 +295,7 @@ class Interpreter:
         self._next()
         self.pa = self.ram[ self._ae(n) ]
 
-    def call( self, n ):
+    def call( self, n ): # Same as link(1);jbf(n)
         self.lr = ff( self.pc + 1 ) # After the call
         self.pc = self.ram[ self._bf(n) ]
 
