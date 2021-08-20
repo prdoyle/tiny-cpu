@@ -564,7 +564,7 @@ def generate_meta_interpreter( asm ):
 
     O_SCS = asm.loc
     asm.lbf( R_CF )
-    asm.cle( 0 )          # CF is ~CF
+    asm.cle( 0 )         # CF is ~CF
     asm.scs( 3 )         # So confusing
     asm.pbf( R_PC )
     asm.padd()
