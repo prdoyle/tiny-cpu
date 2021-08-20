@@ -415,7 +415,7 @@ def generate_all( asm ):
     for b in range(256):
         asm.data( b )
 
-def generate_meta_interpreter( asm, start_pc ):
+def generate_interpreter( asm, start_pc ):
     ## Data field offsets from pb
 
     R_PC = 0
@@ -836,7 +836,7 @@ def generate_meta_interpreter( asm, start_pc ):
 class RoundTripTest( TestCase ):
 
     def test( self ):
-        for initializer in [ generate_fib, generate_all, generate_meta_interpreter ]:
+        for initializer in [ generate_fib, generate_all, generate_interpreter ]:
             with self.subTest(initializer=initializer.__name__):
                 original = bytearray( 256 )
                 asm = Assembler( original )
@@ -856,17 +856,17 @@ def interpret_fib():
     while interpreter.step():
         pass
 
-def assemble_meta_interpreter( start_pc ):
+def assemble_interpreter( start_pc ):
     ram = bytearray( 256 )
     asm = Assembler( ram )
-    generate_meta_interpreter( asm, start_pc )
+    generate_interpreter( asm, start_pc )
     asm.loc = start_pc
     dump_ram( ram )
     return asm
 
 def main():
     fib_start = 0x20
-    asm = assemble_meta_interpreter( fib_start )
+    asm = assemble_interpreter( fib_start )
     generate_fib( asm )
     interpreter = Interpreter( asm.ram, 0x30 )
     for step in range(1,1200):
