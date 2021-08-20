@@ -377,8 +377,8 @@ class Interpreter:
 
     def split( self ):
         self._next()
-        self.rb = self.ra & 0x0F
-        self.ra = self.ra >> 4
+        self.rb = self.ra >> 4
+        self.ra = self.ra & 0x0F
 
     def jp( self ):
         self.pc = self.pa
@@ -433,8 +433,7 @@ def generate_meta_interpreter( asm ):
     asm.ap( 1 )
     asm.spbf( R_PC )     # Advance PC
 
-    asm.split()
-    asm.rx()             # RA = lo4, RB = hi4
+    asm.split()          # RA = lo4, RB = hi4
     asm.pbf( H_MAIN )
     asm.pae( 0 )         # PA = handler
     asm.rx()             # RA = hi4, RB = lo4
