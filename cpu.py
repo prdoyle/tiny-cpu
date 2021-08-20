@@ -12,6 +12,7 @@ def ff(n):
 
 def dump_ram( ram ):
     debug( "".join([ "%02x"%n for n in range(16) ]) )
+    debug( "".join([ "\\/" for n in range(16) ]) )
     debug( ram.hex( "\n", 16 ) )
 
 class Assembler:
@@ -574,8 +575,9 @@ def generate_interpreter( asm, start_pcs ):
     debug( "%s\t%02x\t%d bytes" % ( "BX_TRAMPOLINE", BX_TRAMPOLINE, asm.loc - BX_TRAMPOLINE ) )
 
     O_AP_JBF = asm.loc
-    asm.cle( 3 )
-    asm.scc( 6 )
+    asm.imm( 3 )
+    asm.cleb()
+    asm.scs( 6 )
     # AP
     asm.pbf( R_PA )
     asm.padd()
@@ -878,7 +880,7 @@ def assemble_interpreter( start_pcs ):
 
 def main():
     fib_start = 0x20
-    asm = assemble_interpreter( [ fib_start ] )
+    asm = assemble_interpreter( [ 0x2c, fib_start ] ) # cheese
     interpreter_start = asm.loc
     asm.loc = fib_start
     generate_fib( asm )
@@ -888,7 +890,9 @@ def main():
         dump_ram( asm.ram )
         if not interpreter.step():
             break
+    debug( "Final state:" )
     dump_ram( asm.ram )
+    interpreter.debug()
 
 if __name__ == "__main__":
     main()
