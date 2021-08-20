@@ -586,8 +586,8 @@ def generate_meta_interpreter( asm ):
 
     O_AP_JBF = asm.loc
     asm.cle( 3 )
-    # JBF
     asm.scs( 4 )
+    # JBF
     asm.pbf( R_PB )
     asm.pae( 0 )         # PA is [PB+imm4]
     asm.spbf( R_PC )
