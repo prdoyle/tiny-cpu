@@ -419,10 +419,9 @@ def generate_meta_interpreter( asm ):
     H_BX   = 10
 
     V_MAIN  = 11
-    V_RET   = 12
-    V_ALU   = 13
-    V_CFRA  = 14
-    V_CARRY = 15
+    V_ALU   = 12
+    V_CFRA  = 13
+    V_CARRY = 14
 
     ## Entry point
 
@@ -460,7 +459,7 @@ def generate_meta_interpreter( asm ):
     SET_CARRY_THEN_RETURN = asm.loc
     asm.c2a()
     asm.sbf( R_CF )
-    asm.pbf( V_RET )
+    asm.pbf( V_MAIN )
     asm.jp()
 
     ## Macros
@@ -824,8 +823,6 @@ def generate_meta_interpreter( asm ):
     asm.data( BX_HANDLERS )
     asm.loc = BASE_ADDR + V_MAIN
     asm.data( MAIN_LOOP )
-    asm.loc = BASE_ADDR + V_RET
-    asm.data( MAIN_RETURN )
     asm.loc = BASE_ADDR + V_ALU
     asm.data( PREP_ALU_REGS )
     asm.loc = BASE_ADDR + V_CFRA
