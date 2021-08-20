@@ -454,10 +454,7 @@ def generate_interpreter( asm, start_pcs ):
     asm.pbf( H_MAIN )
     asm.pae( 0 )         # PA = handler
     asm.rx()             # RA = hi4, RB = lo4
-    asm.link( 1 )
     asm.jp()
-    MAIN_RETURN = asm.loc
-    asm.jbf( V_MAIN )
 
     PREP_ALU_REGS = asm.loc
     asm.lbf( R_CF )
@@ -489,35 +486,35 @@ def generate_interpreter( asm, start_pcs ):
     O_IMM = asm.loc
     asm.rx()
     asm.sbf( R_RA )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_IMM", O_IMM, asm.loc - O_IMM ) )
 
     O_LBF = asm.loc
     asm.pbf( R_PB )
     asm.pae( 0 )
     asm.spbf( R_RA )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_LBF", O_LBF, asm.loc - O_LBF ) )
 
     O_LAF = asm.loc
     asm.pbf( R_PA )
     asm.pae( 0 )
     asm.spbf( R_RA )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_LAF", O_LAF, asm.loc - O_LAF ) )
 
     O_SPBF = asm.loc
     asm.pbf( R_PB )
     asm.lbf( R_PA )      # RA is PA
     asm.sae( 0 )         # Store to [PB + imm4]
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_SPBF", O_SPBF, asm.loc - O_SPBF ) )
 
     O_SBF = asm.loc
     asm.pbf( R_PB )
     asm.lbf( R_RA )      # RA is RA
     asm.sae( 0 )         # Store to [PB + imm4]
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_SBF", O_SBF, asm.loc - O_SBF ) )
 
     O_SAE = asm.loc
@@ -527,21 +524,21 @@ def generate_interpreter( asm, start_pcs ):
     asm.pbf( R_RB )      # PA is RB
     asm.lbf( R_RA )
     asm.sae( 0 )         # Store to [PA+RB+imm4]
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_SAE", O_SAE, asm.loc - O_SAE ) )
 
     O_SAF = asm.loc
     asm.pbf( R_PA )
     asm.lbf( R_RA )      # RA is RA
     asm.sae( 0 )         # Store to [PA + imm4]
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_SAF", O_SAF, asm.loc - O_SAF ) )
 
     O_SCC = asm.loc
     asm.lbf( R_CF )
     asm.cle( 0 )         # CF is ~CF
     asm.scs( 4 )         # So confusing: CF=1 means simulated CF=0, so we DO want to skip
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_SCC", O_SCC, asm.loc - O_SCC ) )
 
     O_SCS = asm.loc
@@ -552,7 +549,7 @@ def generate_interpreter( asm, start_pcs ):
     asm.pbf( R_PC )
     asm.padd()
     asm.spbf( R_PC )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_SCS", O_SCS, asm.loc - O_SCS ) )
 
     AX_TRAMPOLINE = asm.loc
@@ -575,7 +572,7 @@ def generate_interpreter( asm, start_pcs ):
     asm.pbf( R_PA )
     asm.padd()
     asm.spbf( R_PA )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_AP_JBF", O_AP_JBF, asm.loc - O_AP_JBF ) )
 
     O_CALL = asm.loc
@@ -585,14 +582,14 @@ def generate_interpreter( asm, start_pcs ):
     asm.pbf( R_PB )
     asm.pae( 0 )
     asm.spbf( R_PC )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_CALL", O_CALL, asm.loc - O_CALL ) )
 
     O_PBF = asm.loc
     asm.pbf( R_PB )
     asm.pae( 0 )         # PA is [PB+imm4]
     asm.spbf( R_PA )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_PBF", O_PBF, asm.loc - O_PBF ) )
 
     O_PAE = asm.loc
@@ -602,14 +599,14 @@ def generate_interpreter( asm, start_pcs ):
     asm.pbf( R_RB )      # PA is RB
     asm.pae( 0 )         # PA is [PA+RB+imm4]
     asm.spbf( R_PA )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_PAE", O_PAE, asm.loc - O_PAE ) )
 
     O_LINK = asm.loc
     asm.lbf( R_PC )
     asm.add()
     asm.sbf( R_LR )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_LINK", O_LINK, asm.loc - O_LINK ) )
 
     O_SBC = asm.loc
@@ -627,23 +624,23 @@ def generate_interpreter( asm, start_pcs ):
     O_C2A = asm.loc
     asm.lbf( R_CF )
     asm.sbf( R_RA )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_C2A", O_C2A, asm.loc - O_C2A ) )
 
     O_RX = asm.loc
     EXCHANGE( R_RA, R_RB )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_RX", O_RX, asm.loc - O_RX ) )
 
     O_AX = asm.loc
     EXCHANGE( R_PA, R_RA )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_AX", O_AX, asm.loc - O_AX ) )
 
     O_RA2B = asm.loc
     asm.lbf( R_RA )
     asm.sbf( R_RB )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_RA2B", O_RA2B, asm.loc - O_RA2B ) )
 
     O_ADC = asm.loc
@@ -664,7 +661,7 @@ def generate_interpreter( asm, start_pcs ):
     asm.lbf( R_PA )
     asm.add()
     asm.sbf( R_PA )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_PADD", O_PADD, asm.loc - O_PADD ) )
 
     O_CLE = asm.loc
@@ -676,7 +673,7 @@ def generate_interpreter( asm, start_pcs ):
     O_RET = asm.loc
     asm.lbf( R_LR )
     asm.sbf( R_PC )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_RET", O_RET, asm.loc - O_RET ) )
 
     O_CLEB = asm.loc
@@ -700,19 +697,19 @@ def generate_interpreter( asm, start_pcs ):
     O_P2R = asm.loc
     asm.lbf( R_PA )
     asm.sbf( R_RA )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_P2R", O_P2R, asm.loc - O_P2R ) )
 
     O_PB2A = asm.loc
     asm.lbf( R_PB )
     asm.sbf( R_PA )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_PB2A", O_PB2A, asm.loc - O_PB2A ) )
 
     O_JP = asm.loc
     asm.lbf( R_PA )
     asm.sbf( R_PC )
-    asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_JP", O_JP, asm.loc - O_JP ) )
 
     O_LAE = asm.loc
@@ -727,7 +724,7 @@ def generate_interpreter( asm, start_pcs ):
         asm.pbf( R_RB )      # PA is RB
         asm.pae( 0 )         # PA is [PA+RB+imm4]
         asm.spbf( R_RA )
-        asm.ret()
+    asm.jbf( V_MAIN )
     debug( "%s\t%02x\t%d bytes" % ( "O_LAE", O_LAE, asm.loc - O_LAE ) )
 
     O_HALT = asm.loc
