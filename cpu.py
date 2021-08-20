@@ -502,6 +502,7 @@ def generate_meta_interpreter( asm ):
     debug( "%s\t%02x\t%d bytes" % ( "O_LBF", O_LBF, asm.loc - O_LBF ) )
 
     O_LAE = asm.loc
+    # CHEAT! Save the bytes for an instruction we're not using
     if True:
         asm.halt()
     else:
