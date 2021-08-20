@@ -542,10 +542,7 @@ def generate_meta_interpreter( asm ):
     O_SCC = asm.loc
     asm.lbf( R_CF )
     asm.cle( 0 )         # CF is ~CF
-    asm.scc( 3 )         # So confusing
-    asm.pbf( R_PC )
-    asm.padd()
-    asm.spbf( R_PC )
+    asm.scs( 4 )         # So confusing: CF=1 means simulated CF=0, so we DO want to skip
     asm.ret()
     debug( "%s\t%02x\t%d bytes" % ( "O_SCC", O_SCC, asm.loc - O_SCC ) )
 
@@ -553,6 +550,7 @@ def generate_meta_interpreter( asm ):
     asm.lbf( R_CF )
     asm.cle( 0 )         # CF is ~CF
     asm.scs( 3 )         # So confusing
+    # Merge point for SCC
     asm.pbf( R_PC )
     asm.padd()
     asm.spbf( R_PC )
@@ -573,18 +571,23 @@ def generate_meta_interpreter( asm ):
 
     O_AP_JBF = asm.loc
     asm.cle( 3 )
-    asm.scs( 4 )
-    # JBF
-    asm.pbf( R_PB )
-    asm.pae( 0 )         # PA is [PB+imm4]
-    asm.spbf( R_PC )
-    asm.ret()
+    asm.scc( 6 )
     # AP
     asm.pbf( R_PA )
     asm.padd()
     asm.spbf( R_PA )
     asm.ret()
     debug( "%s\t%02x\t%d bytes" % ( "O_AP_JBF", O_AP_JBF, asm.loc - O_AP_JBF ) )
+
+    O_CALL = asm.loc
+    asm.lbf( R_PC )
+    asm.sbf( R_LR )
+    # Merge point for JBF
+    asm.pbf( R_PB )
+    asm.pae( 0 )
+    asm.spbf( R_PC )
+    asm.ret()
+    debug( "%s\t%02x\t%d bytes" % ( "O_CALL", O_CALL, asm.loc - O_CALL ) )
 
     O_PBF = asm.loc
     asm.pbf( R_PB )
@@ -602,15 +605,6 @@ def generate_meta_interpreter( asm ):
     asm.spbf( R_PA )
     asm.ret()
     debug( "%s\t%02x\t%d bytes" % ( "O_PAE", O_PAE, asm.loc - O_PAE ) )
-
-    O_CALL = asm.loc
-    asm.lbf( R_PC )
-    asm.sbf( R_LR )
-    asm.pbf( R_PB )
-    asm.pae( 0 )
-    asm.spbf( R_PC )
-    asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_CALL", O_CALL, asm.loc - O_CALL ) )
 
     O_LINK = asm.loc
     asm.lbf( R_PC )
