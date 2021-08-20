@@ -5,7 +5,7 @@ Ideas:
 1. Several instructions, like AP and SCS, have no need to support an immediate of zero,
 because they would be no-ops. If I could evacuate one of the instruction ranges (say, BX)
 and put them as the n=0 versions of those instructions, I could save a whole jump table,
-and also free up that instruction range for a new imm4 instruction like JV which might
+and also free up that instruction range for a new imm4 instruction like JBF which might
 save even more bytes over PBF+JP. However, (1) every handler would then need a special
 case for zero, which would be extra code, and (2) there are actually not that many instructions
 where n=0 is a no-op, so I can't evacuate an entire range.
@@ -14,11 +14,11 @@ where n=0 is a no-op, so I can't evacuate an entire range.
 and pointers are actually only going to be advanced by a few values, like 1, 2, 4, 8 and
 maybe a few others. AP 14 won't be used very often in a machine with 256 bytes of memory.
 I could split the n range into two; say, {0,1,2} could be AP and all other values could
-be JV. Then the PBF+JP combos could be squashed. However, there are only eleven PBF+JPs,
-so if I'm to save 6 bytes, the JV implementation must add only 5 bytes, which seems unlikely.
+be JBF. Then the PBF+JP combos could be squashed. However, there are only eleven PBF+JPs,
+so if I'm to save 6 bytes, the JBF implementation must add only 5 bytes, which seems unlikely.
 The combined implementation would look something like this:
 
-    O_AP_JV = asm.loc
+    O_AP_JBF = asm.loc
     asm.cl( 3 )
     asm.scs( 4 )
     asm.pbf( R_PB )
@@ -32,7 +32,7 @@ The combined implementation would look something like this:
     asm.ret()
 
 This adds 6 bytes, so is probably just barely not enough. However, I do get a nice useful
-JV instruction in the bargain, so I might do this anyway.
+JBF instruction in the bargain, so I might do this anyway.
 
 3. Eliminate the compare opcodes and use subtraction instead. There are 4 compares, two of
 which are already equivalent to subtracts (CLB=SUB, CLEB=SBC). I could remove two compares

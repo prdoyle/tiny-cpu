@@ -34,7 +34,8 @@ class Assembler:
     def saf( self, n ): self.emit( 0x70 + n )
     def scc( self, n ): self.emit( 0x80 + n )
     def scs( self, n ): self.emit( 0x90 + n )
-    def ap( self, n ): self.emit( 0xc0 + n )
+    def ap( self, n ): self.emit( 0xc0 + n ) # Same as jbf
+    def jbf( self, n ): self.emit( 0xc0 + n ) # Same as ap
     def pbf( self, n ): self.emit( 0xd0 + n )
     def pae( self, n ): self.emit( 0xe0 + n )
     def call( self, n ): self.emit( 0xf0 + n )
@@ -86,6 +87,7 @@ class Disassembler:
     def scc( self, n ): return self._format( "scc", n )
     def scs( self, n ): return self._format( "scs", n )
     def ap( self, n ): return self._format( "ap", n )
+    def jbf( self, n ): return self._format( "jbf", n )
     def pbf( self, n ): return self._format( "pbf", n )
     def pae( self, n ): return self._format( "pae", n )
     def call( self, n ): return self._format( "call", n )
@@ -115,6 +117,12 @@ class Disassembler:
     def data( self, n ): return self._format( "data", n )
 
 def decode( instr, consumer ):
+    def ap_or_jbf( n ):
+        if n <= 2:
+            consumer.ap( n )
+        else:
+            consumer.jbf( n )
+
     main_handlers = [
         lambda n: consumer.imm( n ),
         lambda n: consumer.lbf( n ),
@@ -131,7 +139,7 @@ def decode( instr, consumer ):
 	lambda n: ax_handlers[ n ]( n ),
 	lambda n: bx_handlers[ n ]( n ),
 
-	lambda n: consumer.ap( n ),
+	lambda n: ap_or_jbf( n ),
 	lambda n: consumer.pbf( n ),
 	lambda n: consumer.pae( n ),
 	lambda n: consumer.call( n ),
@@ -274,6 +282,10 @@ class Interpreter:
     def ap( self, n ):
         self._next()
         self.pa = ff( self.pa + n )
+
+    def jbf( self, n ):
+        self._next()
+        self.pc = self.ram[ self._bf(n) ]
 
     def pbf( self, n ):
         self._next()
@@ -574,12 +586,20 @@ def generate_meta_interpreter( asm ):
     asm.jp()
     debug( "%s\t%02x\t%d bytes" % ( "BX_TRAMPOLINE", BX_TRAMPOLINE, asm.loc - BX_TRAMPOLINE ) )
 
-    O_AP = asm.loc
+    O_AP_JBF = asm.loc
+    asm.cl( 3 )
+    # JBF
+    asm.scs( 4 )
+    asm.pbf( R_PB )
+    asm.pae( 0 )         # PA is [PB+imm4]
+    asm.spbf( R_PC )
+    asm.ret()
+    # AP
     asm.pbf( R_PA )
     asm.padd()
     asm.spbf( R_PA )
     asm.ret()
-    debug( "%s\t%02x\t%d bytes" % ( "O_AP", O_AP, asm.loc - O_AP ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_AP_JBF", O_AP_JBF, asm.loc - O_AP_JBF ) )
 
     O_PBF = asm.loc
     asm.pbf( R_PB )
@@ -767,7 +787,7 @@ def generate_meta_interpreter( asm ):
     asm.data( AX_TRAMPOLINE )
     asm.data( BX_TRAMPOLINE )
 
-    asm.data( O_AP )
+    asm.data( O_AP_JBF )
     asm.data( O_PBF )
     asm.data( O_PAE )
     asm.data( O_CALL )
