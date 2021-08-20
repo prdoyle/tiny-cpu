@@ -883,7 +883,7 @@ def main():
     asm.loc = fib_start
     generate_fib( asm )
     interpreter = Interpreter( asm.ram, interpreter_start )
-    for step in range(1,1200):
+    for step in range(1,25000):
         debug( f'--## Step {step} ##--' )
         dump_ram( asm.ram )
         if not interpreter.step():
