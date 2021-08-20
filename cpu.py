@@ -51,7 +51,7 @@ class Assembler:
     def ra2b( self ): self.emit( 0xab )
     def padd( self ): self.emit( 0xac )
 
-    def cl( self, n ): self.emit( 0xb0 + n )
+    def cle( self, n ): self.emit( 0xb0 + n )
     def ret( self ): self.emit( 0xb4 )
     def cleb( self ): self.emit( 0xb5 )
     def clebc( self ): self.emit( 0xb6 )
@@ -103,7 +103,7 @@ class Disassembler:
     def ra2b( self ): return self._format( "ra2b" )
     def padd( self ): return self._format( "padd" )
 
-    def cl( self, n ): return self._format( "cl", n )
+    def cle( self, n ): return self._format( "cle", n )
     def ret( self ): return self._format( "ret" )
     def cleb( self ): return self._format( "cleb" )
     def clebc( self ): return self._format( "clebc" )
@@ -166,10 +166,10 @@ def decode( instr, consumer ):
 	lambda n: consumer.data( instr ),
     ]
     bx_handlers = [
-	lambda n: consumer.cl( n ),
-	lambda n: consumer.cl( n ),
-	lambda n: consumer.cl( n ),
-	lambda n: consumer.cl( n ),
+	lambda n: consumer.cle( n ),
+	lambda n: consumer.cle( n ),
+	lambda n: consumer.cle( n ),
+	lambda n: consumer.cle( n ),
 
 	lambda n: consumer.ret(),
 	lambda n: consumer.cleb(),
@@ -348,9 +348,9 @@ class Interpreter:
         result = ( self.pa + self.rb ) & 0x1ff
         self.pa = ff( result )
 
-    def cl( self, n ):
+    def cle( self, n ):
         self._next()
-        result = ( self.ra + (~n) + 1 ) & 0x1ff
+        result = ( self.ra + (~n) ) & 0x1ff
         self.cf = result >> 8
 
     def ret( self ):
@@ -554,7 +554,7 @@ def generate_meta_interpreter( asm ):
 
     O_SCC = asm.loc
     asm.lbf( R_CF )
-    asm.cl( 1 )          # CF is ~CF
+    asm.cle( 0 )         # CF is ~CF
     asm.scc( 3 )         # So confusing
     asm.pbf( R_PC )
     asm.padd()
@@ -564,7 +564,7 @@ def generate_meta_interpreter( asm ):
 
     O_SCS = asm.loc
     asm.lbf( R_CF )
-    asm.cl( 1 )          # CF is ~CF
+    asm.cle( 0 )          # CF is ~CF
     asm.scs( 3 )         # So confusing
     asm.pbf( R_PC )
     asm.padd()
@@ -585,7 +585,7 @@ def generate_meta_interpreter( asm ):
     debug( "%s\t%02x\t%d bytes" % ( "BX_TRAMPOLINE", BX_TRAMPOLINE, asm.loc - BX_TRAMPOLINE ) )
 
     O_AP_JBF = asm.loc
-    asm.cl( 3 )
+    asm.cle( 2 )
     # JBF
     asm.scs( 4 )
     asm.pbf( R_PB )
@@ -687,11 +687,11 @@ def generate_meta_interpreter( asm ):
     asm.ret()
     debug( "%s\t%02x\t%d bytes" % ( "O_PADD", O_PADD, asm.loc - O_PADD ) )
 
-    O_CL = asm.loc
+    O_CLE = asm.loc
     asm.lbf( R_RA )
-    asm.clb()            # B contains the imm4
+    asm.cleb()           # B contains the imm4
     asm.jbf( V_CARRY )
-    debug( "%s\t%02x\t%d bytes" % ( "O_CL", O_CL, asm.loc - O_CL ) )
+    debug( "%s\t%02x\t%d bytes" % ( "O_CLE", O_CLE, asm.loc - O_CLE ) )
 
     O_RET = asm.loc
     asm.lbf( R_LR )
@@ -801,10 +801,10 @@ def generate_meta_interpreter( asm ):
     asm.data( O_PADD )
 
     BX_HANDLERS = asm.loc
-    asm.data( O_CL )
-    asm.data( O_CL )
-    asm.data( O_CL )
-    asm.data( O_CL )
+    asm.data( O_CLE )
+    asm.data( O_CLE )
+    asm.data( O_CLE )
+    asm.data( O_CLE )
 
     asm.data( O_RET )
     asm.data( O_CLEB )
