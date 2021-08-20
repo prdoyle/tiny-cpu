@@ -415,7 +415,7 @@ def generate_all( asm ):
     for b in range(256):
         asm.data( b )
 
-def generate_meta_interpreter( asm ):
+def generate_meta_interpreter( asm, start_pc ):
     ## Data field offsets from pb
 
     R_PC = 0
@@ -437,7 +437,7 @@ def generate_meta_interpreter( asm ):
 
     ## Entry point
 
-    asm.loc = 0x18 # CHEESE
+    asm.loc = 0x30
 
     MAIN_LOOP = asm.loc
     asm.pbf( R_PC )
@@ -751,7 +751,7 @@ def generate_meta_interpreter( asm ):
     asm.ret()
     debug( "%s\t%02x\t%d bytes" % ( "O_SPLIT", O_SPLIT, asm.loc - O_SPLIT ) )
 
-    if asm.loc > 0xd0:
+    if False and asm.loc > 0xd0:
         dump_ram( asm.ram )
         raise ValueError( "Code is too big. asm.loc = %d %02x" % ( asm.loc, asm.loc ) )
 
@@ -817,7 +817,7 @@ def generate_meta_interpreter( asm ):
 
     BASE_ADDR = 0x00
     asm.loc = BASE_ADDR + R_PC
-    asm.data( 0x10 )
+    asm.data( start_pc )
     asm.loc = BASE_ADDR + H_MAIN
     asm.data( MAIN_HANDLERS )
     asm.loc = BASE_ADDR + H_AX
@@ -850,24 +850,25 @@ class RoundTripTest( TestCase ):
 def interpret_fib():
     ram = bytearray( 256 )
     asm = Assembler( ram )
-    asm.loc = 0x10
+    asm.loc = 0x20
     generate_fib( asm )
-    interpreter = Interpreter( ram, 0x10 )
+    interpreter = Interpreter( ram, 0x20 )
     while interpreter.step():
         pass
 
-def assemble_meta_interpreter():
+def assemble_meta_interpreter( start_pc ):
     ram = bytearray( 256 )
     asm = Assembler( ram )
-    generate_meta_interpreter( asm )
-    asm.loc = 0x10
-    generate_fib( asm )
+    generate_meta_interpreter( asm, start_pc )
+    asm.loc = start_pc
     dump_ram( ram )
     return asm
 
 def main():
-    asm = assemble_meta_interpreter()
-    interpreter = Interpreter( asm.ram, 0x18 )
+    fib_start = 0x20
+    asm = assemble_meta_interpreter( fib_start )
+    generate_fib( asm )
+    interpreter = Interpreter( asm.ram, 0x30 )
     for step in range(1,1200):
         debug( f'--## Step {step} ##--' )
         dump_ram( asm.ram )
