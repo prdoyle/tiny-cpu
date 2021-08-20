@@ -119,9 +119,9 @@ class Disassembler:
 def decode( instr, consumer ):
     def ap_or_jbf( n ):
         if n <= 2:
-            consumer.ap( n )
+            return consumer.ap( n )
         else:
-            consumer.jbf( n )
+            return consumer.jbf( n )
 
     main_handlers = [
         lambda n: consumer.imm( n ),
