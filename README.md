@@ -1,5 +1,5 @@
 # TinyCPU
-A 8-bit cpu just barely capable of emulating itself.
+An 8-bit cpu just barely capable of emulating itself.
 
 _You're going to want to look at `cpu.py`. The rest of the files are secondary._
 
@@ -79,7 +79,6 @@ The interpreter isn't the goal. The goal is to design a useful CPU, and demonstr
         ADD             # RA = RA+RB
         SCS     2       # Leave the loop by skipping two instructions once we overflow RA
         RX              # Swap RA & RB
-        ADD             # RA = RA+RB
         RET             # End of loop
         HALT
 ```
