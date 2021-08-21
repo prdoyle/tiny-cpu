@@ -1,5 +1,5 @@
 # TinyCPU
-A 8-bit cpu just barely capable of simulating itself.
+A 8-bit cpu just barely capable of emulating itself.
 
 _You're going to want to look at `cpu.py`. The rest of the files are secondary._
 
@@ -62,6 +62,14 @@ Some highlights:
 - `LINK 0` is useful to mark the entry point of a loop. A subsequent `RET` can then branch back to the entry point.
 - `LINK 1` is useful to record the return address, thereby turning a jump into a call.
 
+### Couldn't you eliminate some of these instructions?
+
+Technically, yes. Many of these instructions are not used in the interpreter, so I could eliminate them and still reach my stated goal of creating a CPU that can emulate itself.
+
+However, the reason for writing the interpreter is to demonstrate the capabilities of the CPU. It's meant to be a general-purpose CPU; distorting the design so it can run just one particular application felt like cheating.
+
+The interpreter isn't the goal. The goal is to design a useful CPU, and demonstrate its usefulness via the interpreter.
+
 ## Fibonacci example
 
 ```
@@ -78,7 +86,7 @@ Some highlights:
 
 ## Metacircular interpreter
 
-The interpreter begins with PB pointing to a 16-byte data structure containing the state of the simulated registers, plus a collection of useful address vectors.
+The interpreter begins with PB pointing to a 16-byte data structure containing the state of the emulated registers, plus a collection of useful address vectors.
 The layout can be seen in cpu.py [here](https://github.com/prdoyle/tiny-cpu/blob/master/cpu.py#L426).
 
 The main loop reads the instruction indicated by PC, then uses `SPLIT` to separate the high four and low four bits. The high four bits are used to index into an array of "handlers", and the low four bits are passed as an operand to the handler.
@@ -89,7 +97,7 @@ To make this all fit required two pairs of handlers to share code:
 - `SCC` branches into the middle of `SCS` because they have four instructions in common; and
 - `JBF` is actually inside `CALL` because they are identical aside from their effect on `LR`.
 
-There is also a very handy common subroutine `PREP_ALU_REGS` which loads RA, RB, and the carry flag with their simulated counterparts.
+There is also a very handy common subroutine `PREP_ALU_REGS` which loads RA, RB, and the carry flag with their emulated counterparts.
 This permits a lot of ALU instructions to be implemented simply by _executing the instruction itself_.
 
 For example, `ADD` is implemented in three instructions as follows:
@@ -97,7 +105,7 @@ For example, `ADD` is implemented in three instructions as follows:
 ```
         CALL    V_ALU   # PREP_ALU_REGS
         ADD             # The instruction itself
-        JBF     V_CFRA  # Store carry flag and RA into simulated state structure
+        JBF     V_CFRA  # Store carry flag and RA into emulated state structure
 ```
 
-Ten instructions are implemented in a similar economical fashion, including `HALT`, which uses `PREP_ALU_REGS` to propagate the computation result from the simulation state into the actual CPU registers before terminating.
+Ten instructions are implemented in a similar economical fashion, including `HALT`, which uses `PREP_ALU_REGS` to propagate the computation result from the emulated state into the actual CPU registers before terminating.
