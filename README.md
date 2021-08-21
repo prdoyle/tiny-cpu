@@ -11,7 +11,7 @@ The main program is `cpu.py`. It contains:
 - Fibonacci written in TinyCPU assembly code
 - Some unit tests
 
-When executed, it runs the interpreter running the interpreter running Fibonacci.
+When executed, it runs the (Python) interpreter, running the interpreter, running the interpreter, running Fibonacci.
 
 ## Architecture
 
