@@ -39,10 +39,10 @@ Here are the 17 instructions that accept a 4-bit immediate value `n`:
   - `SBF` - _Store B Field_: stores RA into [PB + n]
   - `SAE` - _Store A Element_: stores RA into [PA + RB + n]
 - Pointer-load instructions
-  - `PAF` - _Pointer-load A Field_: loads [PA + n] into PA
-  - `PBF` - _Pointer-load B Field_: loads [PB + n] into PA
+  - `PAF` - _Pointer from A Field_: loads [PA + n] into PA
+  - `PBF` - _Pointer from B Field_: loads [PB + n] into PA
 - Pointer-store instruction
-  - `SPBF` - _Store Pointer B Field_: stores PA into [PB + n]
+  - `SPBF` - _Store Pointer to B Field_: stores PA into [PB + n]
 - Conditionsl branch "skip" instructions
   - `SCC` - _Skip if Carry Clear_: add n to PC if carry flag is 0
   - `SCS` - _Skip if Carry Set_: add n to PC if carry flag is 1
