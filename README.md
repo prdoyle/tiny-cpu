@@ -1,4 +1,4 @@
-[![Status](https://circleci.com/gh/prdoyle/tiny-cpu.svg?style=svg)](https://app.circleci.com/pipelines/github/prdoyle/tiny-cpu)
+[![Status](https://circleci.com/gh/prdoyle/tiny-cpu/tree/master.svg?style=svg)](https://app.circleci.com/pipelines/github/prdoyle/tiny-cpu)
 # TinyCPU
 An 8-bit cpu just barely capable of emulating itself.
 
