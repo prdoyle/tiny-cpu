@@ -4,7 +4,7 @@ from unittest import TestCase
 import sys
 
 def debug(*args, **kwargs):
-    if True:
+    if False:
         print(*args, file=sys.stdout, **kwargs)
 
 def ff(n):
@@ -212,6 +212,15 @@ class Interpreter:
             debug( "Execute opcode %02x: %s" % ( instr, decode( instr, self._disassembler ) ) )
             decode( instr, self )
         return not self.halted
+
+    def run( self, limit ):
+        for i in range( limit ):
+            if self.halted:
+                return
+            else:
+                self.step()
+        # If we get here, we exceeded the limit
+        raise IndexError( "Interpreter did not halt within the step limit" )
 
     def debug( self ):
         v = vars( self ).copy()
@@ -855,6 +864,7 @@ def interpret_fib():
     interpreter = Interpreter( ram, 0x20 )
     while interpreter.step():
         pass
+    return interpreter
 
 def assemble_interpreter( start_pcs ):
     ram = bytearray( 256 )
@@ -862,6 +872,43 @@ def assemble_interpreter( start_pcs ):
     generate_interpreter( asm, start_pcs )
     dump_ram( ram )
     return asm
+
+class ExecutionTest( TestCase ):
+
+    def setUp( self ):
+        self.ram = bytearray( 256 )
+
+    def test_fib( self ):
+        asm = Assembler( self.ram )
+        asm.loc = 0x20
+        generate_fib( asm )
+        i = Interpreter( self.ram, 0x20 )
+        i.run( 60 )
+        self._check_fib_result( i )
+
+    def test_interpret_fib( self ):
+        fib_start = 0x20
+        asm = assemble_interpreter( [ fib_start ] )
+        interpreter_start = asm.loc
+        asm.loc = fib_start
+        generate_fib( asm )
+        i = Interpreter( asm.ram, interpreter_start )
+        i.run( 1200 )
+        self._check_fib_result( i )
+
+    def test_interpret_interpreter( self ):
+        fib_start = 0x20
+        asm = assemble_interpreter( [ 0x2c, fib_start ] ) # cheese
+        interpreter_start = asm.loc
+        asm.loc = fib_start
+        generate_fib( asm )
+        i = Interpreter( asm.ram, interpreter_start )
+        i.run( 24000 )
+        self._check_fib_result( i )
+
+    def _check_fib_result( self, interpreter ):
+        self.assertEqual( 233, interpreter.rb )
+        self.assertEqual( 377 % 256, interpreter.ra )
 
 def main():
     fib_start = 0x20
