@@ -17,9 +17,6 @@ jobs:
       - python/install-packages:
           pkg-manager: pip
       - run:
-          name: dsim unit tests
-          command: "python -m unittest -f dsim"
-      - run:
           name: cpu unit tests
           command: "python -m unittest -f cpu"
 
