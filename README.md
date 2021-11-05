@@ -12,7 +12,7 @@ The main program is `cpu.py`. It contains:
 - Fibonacci written in TinyCPU assembly code
 - Some unit tests
 
-When executed, it runs the (Python) interpreter, running the interpreter, running the interpreter, running Fibonacci.
+When executed, it runs the (Python) interpreter, running the emulator, running the emulator, running Fibonacci.
 
 ## Architecture
 
@@ -65,11 +65,11 @@ Some highlights:
 
 ### Couldn't you eliminate some of these instructions?
 
-Technically, yes. Many of these instructions are not used in the interpreter, so I could eliminate them and still reach my stated goal of creating a CPU that can emulate itself.
+Technically, yes. Many of these instructions are not used in the emulator, so I could eliminate them and still reach my stated goal of creating a CPU that can emulate itself.
 
-However, the reason for writing the interpreter is to demonstrate the capabilities of the CPU. It's meant to be a general-purpose CPU; distorting the design so it can run just one particular application felt like cheating.
+However, the reason for writing the emulator is to demonstrate the capabilities of the CPU. It's meant to be a general-purpose CPU; distorting the design so it can run just one particular application felt like cheating.
 
-The interpreter isn't the goal. The goal is to design a useful CPU, and demonstrate its usefulness via the interpreter.
+The emulator isn't the goal. The goal is to design a useful CPU, and demonstrate its usefulness via the emulator.
 
 ## Fibonacci example
 
@@ -84,14 +84,14 @@ The interpreter isn't the goal. The goal is to design a useful CPU, and demonstr
         HALT
 ```
 
-## Metacircular interpreter
+## Metacircular emulator
 
-The interpreter begins with PB pointing to a 16-byte data structure containing the state of the emulated registers, plus a collection of useful address vectors.
+The emulator begins with PB pointing to a 16-byte data structure containing the state of the emulated registers, plus a collection of useful address vectors.
 The layout can be seen in cpu.py [here](https://github.com/prdoyle/tiny-cpu/blob/master/cpu.py#L426).
 
 The main loop reads the instruction indicated by PC, then uses `SPLIT` to separate the high four and low four bits. The high four bits are used to index into an array of "handlers", and the low four bits are passed as an operand to the handler.
 
-With only 256 bytes available, space is very tight. For the interpreter to run itself requires two copies of the interpreter state, for a total of 32 bytes, plus room to store the program being interpreted&mdash;Fibonacci is 8 bytes. This leaves only 216 bytes for the handler code to implement 35 different instructions, which is only 6 bytes per handler; and one of those bytes must return to the main loop!
+With only 256 bytes available, space is very tight. For the emulator to run itself requires two copies of the emulated state, for a total of 32 bytes, plus room to store the program being emulated&mdash;Fibonacci is 8 bytes. This leaves only 216 bytes for the handler code to implement 35 different instructions, which is only 6 bytes per handler; and one of those bytes must return to the main loop!
 
 To make this all fit required two pairs of handlers to share code:
 - `SCC` branches into the middle of `SCS` because they have four instructions in common; and
